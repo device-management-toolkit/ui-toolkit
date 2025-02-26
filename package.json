@@ -43,7 +43,7 @@
     "filereader": "^0.10.3",
     "jest": "^27.0.4",
     "jest-junit": "^16.0.0",
-    "ts-jest": "^27.0.3",
+    "ts-jest": "^29.2.6",
     "ts-loader": "^9.2.3",
     "typescript": "^4.3.4",
     "webpack": "^5.40.0",
