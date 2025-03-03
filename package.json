@@ -30,7 +30,7 @@
     "@types/node": "^22.0.0",
     "@types/ws": "^8.2.0",
     "@typescript-eslint/eslint-plugin": "^6.11.0",
-    "@typescript-eslint/parser": "^6.11.0",
+    "@typescript-eslint/parser": "^8.25.0",
     "babel-loader": "^10.0.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "canvas": "^3.0.1",
