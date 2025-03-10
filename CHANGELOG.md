@@ -1,3 +1,5 @@
+## [3.3.1](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.0...v3.3.1) (2025-03-10)
+
 # [3.3.0](https://github.com/open-amt-cloud-toolkit/ui-toolkit/compare/v3.2.9...v3.3.0) (2025-01-13)
 
 
