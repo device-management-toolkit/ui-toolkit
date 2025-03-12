@@ -35,7 +35,7 @@
     "babel-plugin-transform-remove-console": "^6.9.4",
     "canvas": "^3.0.1",
     "eslint": "^8.40.0",
-    "eslint-config-love": "^43.1.0",
+    "eslint-config-love": "^119.0.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.23.4",
     "eslint-plugin-node": "^11.1.0",
