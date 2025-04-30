@@ -1,7 +1,7 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 import { Encoding } from '../core/RFBStateProcessors/Encoding'
 
@@ -24,14 +24,23 @@ describe('Test processState function in Encoding', () => {
     })
 
     // Test input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) + // x
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // y
-                  String.fromCharCode(0x00) + String.fromCharCode(0x02) + // width
-                  String.fromCharCode(0x00) + String.fromCharCode(0x02) + // height
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // encoding byte 0-1
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // encoding byte 2-3;
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // data
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // x
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // y
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // width
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // height
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // encoding byte 0-1
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // encoding byte 2-3;
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // data
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00)
     desktop.frameRateDelay = 2
     desktop.state = 101
 
@@ -48,14 +57,22 @@ describe('Test processState function in Encoding', () => {
     const serverinit = new Encoding(communicator, desktop, decoder, callback)
 
     // Test input - acc.length < cs
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) + // x
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // y
-                  String.fromCharCode(0x00) + String.fromCharCode(0x02) + // width
-                  String.fromCharCode(0x00) + String.fromCharCode(0x02) + // height
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // encoding byte 0-1
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // encoding byte 2-3;
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // data
-                  String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // x
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // y
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // width
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // height
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // encoding byte 0-1
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // encoding byte 2-3;
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // data
+      String.fromCharCode(0x00)
 
     // Test processState
     const returnvalue1 = serverinit.processState(input)
@@ -75,14 +92,22 @@ describe('Test processState function in Encoding', () => {
     })
 
     // Test input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) + // x
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00) + // y
-                    String.fromCharCode(0x00) + String.fromCharCode(0x02) + // width
-                    String.fromCharCode(0x00) + String.fromCharCode(0x02) + // height
-                    String.fromCharCode(0xFF) + String.fromCharCode(0xFF) + // encoding byte 0-1
-                    String.fromCharCode(0xFF) + String.fromCharCode(0x21) + // encoding byte 2-3;
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00) + // data
-                    String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // x
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // y
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // width
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // height
+      String.fromCharCode(0xff) +
+      String.fromCharCode(0xff) + // encoding byte 0-1
+      String.fromCharCode(0xff) +
+      String.fromCharCode(0x21) + // encoding byte 2-3;
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // data
+      String.fromCharCode(0x00)
     desktop.frameRateDelay = 2
     desktop.state = 101
 
@@ -104,17 +129,29 @@ describe('Test processState function in Encoding', () => {
     })
 
     // Test input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) + // x
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00) + // y
-                    String.fromCharCode(0x00) + String.fromCharCode(0x02) + // width
-                    String.fromCharCode(0x00) + String.fromCharCode(0x02) + // height
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00) + // encoding byte 0-1
-                    String.fromCharCode(0x00) + String.fromCharCode(0x10) + // encoding byte 2-3;
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00) + // datalen
-                    String.fromCharCode(0x00) + String.fromCharCode(0x06) +
-                    String.fromCharCode(0x00) + String.fromCharCode(0x01) + // data
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // x
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // y
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // width
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // height
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // encoding byte 0-1
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x10) + // encoding byte 2-3;
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // datalen
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x06) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x01) + // data
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00)
     desktop.frameRateDelay = 2
     desktop.state = 101
 
@@ -136,17 +173,29 @@ describe('Test processState function in Encoding', () => {
     })
 
     // Test input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) + // x:0-1
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00) + // y:2-3
-                    String.fromCharCode(0x00) + String.fromCharCode(0x02) + // width
-                    String.fromCharCode(0x00) + String.fromCharCode(0x02) + // height
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00) + // encoding byte 0-1
-                    String.fromCharCode(0x00) + String.fromCharCode(0x10) + // encoding byte 2-3;
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00) + // datalen:12-15
-                    String.fromCharCode(0x00) + String.fromCharCode(0x06) +
-                    String.fromCharCode(0x01) + String.fromCharCode(0x01) + // data:16-21
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // x:0-1
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // y:2-3
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // width
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // height
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // encoding byte 0-1
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x10) + // encoding byte 2-3;
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // datalen:12-15
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x06) +
+      String.fromCharCode(0x01) +
+      String.fromCharCode(0x01) + // data:16-21
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00)
     desktop.frameRateDelay = 2
     desktop.state = 101
 
@@ -168,17 +217,29 @@ describe('Test processState function in Encoding', () => {
     })
 
     // Test input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) + // x:0-1
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // y:2-3
-                  String.fromCharCode(0x00) + String.fromCharCode(0x02) + // width
-                  String.fromCharCode(0x00) + String.fromCharCode(0x02) + // height
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // encoding byte 0-1
-                  String.fromCharCode(0x00) + String.fromCharCode(0x10) + // encoding byte 2-3;
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // datalen:12-15
-                  String.fromCharCode(0x00) + String.fromCharCode(0x06) +
-                  String.fromCharCode(0x01) + String.fromCharCode(0x01) + // data:16-21
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // x:0-1
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // y:2-3
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // width
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // height
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // encoding byte 0-1
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x10) + // encoding byte 2-3;
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // datalen:12-15
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x06) +
+      String.fromCharCode(0x01) +
+      String.fromCharCode(0x01) + // data:16-21
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00)
     desktop.frameRateDelay = 2
     desktop.state = 101
 
@@ -195,14 +256,22 @@ describe('Test processState function in Encoding', () => {
     const serverinit = new Encoding(communicator, desktop, decoder, callback)
 
     // Test input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) + // x:0-1
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // y:2-3
-                  String.fromCharCode(0x00) + String.fromCharCode(0x02) + // width
-                  String.fromCharCode(0x00) + String.fromCharCode(0x02) + // height
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // encoding byte 0-1
-                  String.fromCharCode(0x00) + String.fromCharCode(0x10) + // encoding byte 2-3;
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // datalen:12-15
-                  String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // x:0-1
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // y:2-3
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // width
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // height
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // encoding byte 0-1
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x10) + // encoding byte 2-3;
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // datalen:12-15
+      String.fromCharCode(0x00)
 
     // Test processState
     const returnvalue1 = serverinit.processState(input)
@@ -217,17 +286,28 @@ describe('Test processState function in Encoding', () => {
     const serverinit = new Encoding(communicator, desktop, decoder, callback)
 
     // Test input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) + // x:0-1
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // y:2-3
-                  String.fromCharCode(0x00) + String.fromCharCode(0x02) + // width
-                  String.fromCharCode(0x00) + String.fromCharCode(0x02) + // height
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // encoding byte 0-1
-                  String.fromCharCode(0x00) + String.fromCharCode(0x10) + // encoding byte 2-3;
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) + // datalen:12-15
-                  String.fromCharCode(0x00) + String.fromCharCode(0x06) +
-                  String.fromCharCode(0x01) + String.fromCharCode(0x01) + // data:16-21
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                  String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // x:0-1
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // y:2-3
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // width
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // height
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // encoding byte 0-1
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x10) + // encoding byte 2-3;
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // datalen:12-15
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x06) +
+      String.fromCharCode(0x01) +
+      String.fromCharCode(0x01) + // data:16-21
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00)
 
     // Test processState
     const returnvalue1 = serverinit.processState(input)
@@ -262,17 +342,28 @@ describe('Test processState function in Encoding', () => {
     })
 
     // Test input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) + // x:0-1
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) + // y:2-3
-                String.fromCharCode(0x00) + String.fromCharCode(0x02) + // width
-                String.fromCharCode(0x00) + String.fromCharCode(0x02) + // height
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) + // encoding byte 0-1
-                String.fromCharCode(0x00) + String.fromCharCode(0x10) + // encoding byte 2-3;
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) + // datalen:12-15
-                String.fromCharCode(0x00) + String.fromCharCode(0x05) +
-                String.fromCharCode(0x01) + String.fromCharCode(0x01) + // data:16-21
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // x:0-1
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // y:2-3
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // width
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // height
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // encoding byte 0-1
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x10) + // encoding byte 2-3;
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // datalen:12-15
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x05) +
+      String.fromCharCode(0x01) +
+      String.fromCharCode(0x01) + // data:16-21
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00)
     desktop.frameRateDelay = 0
     desktop.state = 101
 
@@ -294,17 +385,29 @@ describe('Test processState function in Encoding', () => {
     })
 
     // Test input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) + // x:0-1
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) + // y:2-3
-                String.fromCharCode(0x00) + String.fromCharCode(0x02) + // width
-                String.fromCharCode(0x00) + String.fromCharCode(0x02) + // height
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) + // encoding byte 0-1
-                String.fromCharCode(0x00) + String.fromCharCode(0x10) + // encoding byte 2-3;
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) + // datalen:12-15
-                String.fromCharCode(0x00) + String.fromCharCode(0x06) +
-                String.fromCharCode(0x01) + String.fromCharCode(0x01) + // data:16-21
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x00) + String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // x:0-1
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // y:2-3
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // width
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) + // height
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // encoding byte 0-1
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x10) + // encoding byte 2-3;
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) + // datalen:12-15
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x06) +
+      String.fromCharCode(0x01) +
+      String.fromCharCode(0x01) + // data:16-21
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00)
     desktop.frameRateDelay = 2
     desktop.state = 101
 
@@ -315,5 +418,4 @@ describe('Test processState function in Encoding', () => {
 })
 
 // callback function for Unit testing
-function callback (state: number): any {
-}
+function callback(state: number): any {}

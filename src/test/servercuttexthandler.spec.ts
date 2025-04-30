@@ -1,7 +1,7 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 import { ServerCutTextHandler } from '../core/RFBStateProcessors/ServerCutTextHandler'
 
@@ -17,11 +17,16 @@ describe('Test handleServerCutText function in ServerCutTextHandler', () => {
     const securityresponse = new ServerCutTextHandler(communicator, desktop)
 
     // Test input (byte 0-3) value === 0
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                    String.fromCharCode(0x00) + String.fromCharCode(0x10) +
-                    '\0KvmDataChannel1'
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x10) +
+      '\0KvmDataChannel1'
     desktop.start()
 
     // Test processState
@@ -39,11 +44,16 @@ describe('Test handleServerCutText function in ServerCutTextHandler', () => {
     const securityresponse = new ServerCutTextHandler(communicator, desktop)
 
     // Test input (byte 0-3) value === 0
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                      String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                      String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                      String.fromCharCode(0x00) + String.fromCharCode(0x0F) +
-                      'KvmDataChannel'
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x0f) +
+      'KvmDataChannel'
 
     // Test processState
     const returnvalue1 = securityresponse.handleServerCutText(input)

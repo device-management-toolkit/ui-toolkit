@@ -1,18 +1,15 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 class TestKeyBoardEvent implements KeyboardEvent {
-  initKeyboardEvent (): any {
+  initKeyboardEvent(): any {}
 
-  }
+  initUIEvent(): any {}
 
-  initUIEvent (): any {
-
-  }
-
-  altKey: boolean; char: string
+  altKey: boolean
+  char: string
   charCode: number
   code: string
   ctrlKey: boolean
@@ -23,7 +20,7 @@ class TestKeyBoardEvent implements KeyboardEvent {
   metaKey: boolean
   repeat: boolean
   shiftKey: boolean
-  getModifierState (keyArg: string): boolean {
+  getModifierState(keyArg: string): boolean {
     return false
   }
 
@@ -49,21 +46,19 @@ class TestKeyBoardEvent implements KeyboardEvent {
   type: string
   preventDefaultVar: boolean
   stopPropagationVar: boolean
-  composedPath (): any {
+  composedPath(): any {
     return null
   }
 
-  initEvent (type: string, bubbles?: boolean, cancelable?: boolean): void {
-  }
+  initEvent(type: string, bubbles?: boolean, cancelable?: boolean): void {}
 
-  preventDefault (): void {
+  preventDefault(): void {
     this.preventDefaultVar = true
   }
 
-  stopImmediatePropagation (): void {
-  }
+  stopImmediatePropagation(): void {}
 
-  stopPropagation (): void {
+  stopPropagation(): void {
     this.stopPropagationVar = true
   }
 

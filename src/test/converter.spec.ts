@@ -1,14 +1,14 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 import { TypeConverter } from '../core/Converter'
 
 describe('Test ReadShort function: ', () => {
   // Test Input "1928"
-  const input = String.fromCharCode(0x00) + String.fromCharCode(0x13) +
-               String.fromCharCode(0x00) + String.fromCharCode(0x1C)
+  const input =
+    String.fromCharCode(0x00) + String.fromCharCode(0x13) + String.fromCharCode(0x00) + String.fromCharCode(0x1c)
 
   it('Test if ReadShort works for positive test case: first two nibbles', () => {
     const value = TypeConverter.ReadShort(input, 0)
@@ -23,8 +23,8 @@ describe('Test ReadShort function: ', () => {
 
 describe('Test ReadShortX function: ', () => {
   // Test Input "9876"
-  const input = String.fromCharCode(0x62) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x4C) + String.fromCharCode(0x00)
+  const input =
+    String.fromCharCode(0x62) + String.fromCharCode(0x00) + String.fromCharCode(0x4c) + String.fromCharCode(0x00)
 
   it('Test if ReadShortX works for positive test case: first two nibbles', () => {
     const value = TypeConverter.ReadShortX(input, 0)
@@ -39,10 +39,15 @@ describe('Test ReadShortX function: ', () => {
 
 describe('Test ReadInt function: ', () => {
   // Test Input "98765432"
-  const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x26) + String.fromCharCode(0x94) +
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x15) + String.fromCharCode(0x38)
+  const input =
+    String.fromCharCode(0x00) +
+    String.fromCharCode(0x00) +
+    String.fromCharCode(0x26) +
+    String.fromCharCode(0x94) +
+    String.fromCharCode(0x00) +
+    String.fromCharCode(0x00) +
+    String.fromCharCode(0x15) +
+    String.fromCharCode(0x38)
 
   it('Test if ReadInt works for positive test case: position 0th-3rd bytes', () => {
     const value = TypeConverter.ReadInt(input, 0)
@@ -57,10 +62,15 @@ describe('Test ReadInt function: ', () => {
 
 describe('Test ReadSInt function: ', () => {
   // Test Input "-98765432"
-  const input = String.fromCharCode(0xFF) + String.fromCharCode(0xFF) +
-                String.fromCharCode(0xD9) + String.fromCharCode(0x6C) +
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x15) + String.fromCharCode(0x38)
+  const input =
+    String.fromCharCode(0xff) +
+    String.fromCharCode(0xff) +
+    String.fromCharCode(0xd9) +
+    String.fromCharCode(0x6c) +
+    String.fromCharCode(0x00) +
+    String.fromCharCode(0x00) +
+    String.fromCharCode(0x15) +
+    String.fromCharCode(0x38)
 
   it('Test if ReadSInt works for positive test case: position 0th-3rd bytes', () => {
     const value = TypeConverter.ReadSInt(input, 0)
@@ -75,10 +85,15 @@ describe('Test ReadSInt function: ', () => {
 
 describe('Test ReadIntX function: ', () => {
   // Test Input "98765432"
-  const input = String.fromCharCode(0x94) + String.fromCharCode(0x26) +
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x38) + String.fromCharCode(0x15) +
-                String.fromCharCode(0x00) + String.fromCharCode(0x00)
+  const input =
+    String.fromCharCode(0x94) +
+    String.fromCharCode(0x26) +
+    String.fromCharCode(0x00) +
+    String.fromCharCode(0x00) +
+    String.fromCharCode(0x38) +
+    String.fromCharCode(0x15) +
+    String.fromCharCode(0x00) +
+    String.fromCharCode(0x00)
 
   it('Test if ReadIntX works for positive test case: position 0th-3rd bytes', () => {
     const value = TypeConverter.ReadIntX(input, 0)
@@ -93,7 +108,7 @@ describe('Test ReadIntX function: ', () => {
 
 describe('Test ShortToStr function: ', () => {
   // Test Input 43
-  const input = 0X3433
+  const input = 0x3433
 
   it('Test if ShortToStr works for positive test case', () => {
     const value = TypeConverter.ShortToStr(input)
@@ -103,7 +118,7 @@ describe('Test ShortToStr function: ', () => {
 
 describe('Test ShortToStrX function: ', () => {
   // Test Input 34
-  const input = 0X3433
+  const input = 0x3433
 
   it('Test if ShortToStrX works for positive test case', () => {
     const value = TypeConverter.ShortToStrX(input)
@@ -113,7 +128,7 @@ describe('Test ShortToStrX function: ', () => {
 
 describe('Test IntToStr function: ', () => {
   // Test Input 9876
-  const input = 0X39383736
+  const input = 0x39383736
 
   it('Test if IntToStr works for positive test case', () => {
     const value = TypeConverter.IntToStr(input)
@@ -123,7 +138,7 @@ describe('Test IntToStr function: ', () => {
 
 describe('Test IntToStrX function: ', () => {
   // Test Input 4321
-  const input = 0X31323334
+  const input = 0x31323334
 
   it('Test if IntToStrX works for positive test case', () => {
     const value = TypeConverter.IntToStrX(input)
@@ -180,10 +195,28 @@ describe('Test EscapeHtml function: ', () => {
 
 describe('Test ArrayElementMove function: ', () => {
   // Test Input [1, 2, 3, 4, 5, 6, 7, 8]
-  const input = [1, 2, 3, 4, 5, 6, 7, 8]
+  const input = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ]
   // Expected Output with movement of element from
   // position 2 to 5 is [1, 2, 4, 5, 6, 3, 7, 8]
-  const output = [1, 2, 4, 5, 6, 3, 7, 8]
+  const output = [
+    1,
+    2,
+    4,
+    5,
+    6,
+    3,
+    7,
+    8
+  ]
 
   it('Test if ArrayElementMove works for positive test case', () => {
     TypeConverter.ArrayElementMove(input, 2, 5)
@@ -193,12 +226,17 @@ describe('Test ArrayElementMove function: ', () => {
 
 describe('Test ObjectToStringEx function: ', () => {
   // Test Input number:[10, 20, 30]
-  const input = [10, 20, 30]
+  const input = [
+    10,
+    20,
+    30
+  ]
   // 4 non-breaking space
   const space = 1
-  const output = '<br />&nbsp;&nbsp;&nbsp;&nbsp;Item #0: 10' +
-                 '<br />&nbsp;&nbsp;&nbsp;&nbsp;Item #1: 20' +
-                 '<br />&nbsp;&nbsp;&nbsp;&nbsp;Item #2: 30'
+  const output =
+    '<br />&nbsp;&nbsp;&nbsp;&nbsp;Item #0: 10' +
+    '<br />&nbsp;&nbsp;&nbsp;&nbsp;Item #1: 20' +
+    '<br />&nbsp;&nbsp;&nbsp;&nbsp;Item #2: 30'
 
   it('Test if ObjectToStringEx works for positive test case: array', () => {
     const value = TypeConverter.ObjectToStringEx(input, space)
@@ -216,9 +254,10 @@ describe('Test ObjectToStringEx function: ', () => {
   input2.test1 = 22
   input2.test2 = 'Test'
   input2.test3 = 33
-  const output2 = '<br />&nbsp;&nbsp;&nbsp;&nbsp;test1 = 22' +
-                  '<br />&nbsp;&nbsp;&nbsp;&nbsp;test2 = Test' +
-                  '<br />&nbsp;&nbsp;&nbsp;&nbsp;test3 = 33'
+  const output2 =
+    '<br />&nbsp;&nbsp;&nbsp;&nbsp;test1 = 22' +
+    '<br />&nbsp;&nbsp;&nbsp;&nbsp;test2 = Test' +
+    '<br />&nbsp;&nbsp;&nbsp;&nbsp;test3 = 33'
 
   it('Test if ObjectToStringEx works for positive test case: Object', () => {
     const value = TypeConverter.ObjectToStringEx(input2, space)
@@ -228,12 +267,14 @@ describe('Test ObjectToStringEx function: ', () => {
 
 describe('Test ObjectToStringEx2 function: ', () => {
   // Test Input number:[10, 20, 30]
-  const input = [10, 20, 30]
+  const input = [
+    10,
+    20,
+    30
+  ]
   // 4 non-breaking space
   const space = 1
-  const output = '\r\n    Item #0: 10' +
-                 '\r\n    Item #1: 20' +
-                 '\r\n    Item #2: 30'
+  const output = '\r\n    Item #0: 10' + '\r\n    Item #1: 20' + '\r\n    Item #2: 30'
 
   it('Test if ObjectToStringEx2 works for positive test case: array', () => {
     const value = TypeConverter.ObjectToStringEx2(input, space)
@@ -251,9 +292,7 @@ describe('Test ObjectToStringEx2 function: ', () => {
   input2.test1 = 22
   input2.test2 = 'Test'
   input2.test3 = 33
-  const output2 = '\r\n    test1 = 22' +
-                  '\r\n    test2 = Test' +
-                  '\r\n    test3 = 33'
+  const output2 = '\r\n    test1 = 22' + '\r\n    test2 = Test' + '\r\n    test3 = 33'
 
   it('Test if ObjectToStringEx2 works for positive test case: Object', () => {
     const value = TypeConverter.ObjectToStringEx2(input2, space)
@@ -293,9 +332,7 @@ describe('Test ObjectToString function: ', () => {
   input.test2 = true
   input.test3 = 'TEST'
   // Test Output
-  const output = '<br />test1 = 25' +
-                 '<br />test2 = true' +
-                 '<br />test3 = TEST'
+  const output = '<br />test1 = 25' + '<br />test2 = true' + '<br />test3 = TEST'
 
   it('Test if ObjectToString works for positive test case', () => {
     const value = TypeConverter.ObjectToString(input)
@@ -315,9 +352,7 @@ describe('Test ObjectToString2 function: ', () => {
   input.test2 = false
   input.test3 = 'TEST'
   // Test Output
-  const output = '\r\ntest1 = 35' +
-                 '\r\ntest2 = (Null)' +
-                 '\r\ntest3 = TEST'
+  const output = '\r\ntest1 = 35' + '\r\ntest2 = (Null)' + '\r\ntest3 = TEST'
 
   it('Test if ObjectToString2 works for positive test case', () => {
     const value = TypeConverter.ObjectToString2(input)

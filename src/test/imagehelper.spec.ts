@@ -3,9 +3,9 @@
  */
 
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 import { ImageHelper } from '../core/Utilities/ImageHelper'
 import { createCanvas, ImageData } from 'canvas'
@@ -464,7 +464,7 @@ describe('Test ImageHelper', () => {
     expect(parent.spare.data[0]).toBe(192)
     expect(parent.spare.data[1]).toBe(96)
     expect(parent.spare.data[2]).toBe(224)
-    expect(parent.spare.data[3]).toBe(0XFF)
+    expect(parent.spare.data[3]).toBe(0xff)
   })
 
   it('Test setPixel function with parent.rotation = 1', () => {
@@ -490,7 +490,7 @@ describe('Test ImageHelper', () => {
     expect(parent.spare.data[140]).toBe(192)
     expect(parent.spare.data[141]).toBe(96)
     expect(parent.spare.data[142]).toBe(224)
-    expect(parent.spare.data[143]).toBe(0XFF)
+    expect(parent.spare.data[143]).toBe(0xff)
   })
 
   it('Test setPixel function with parent.rotation = 2', () => {
@@ -516,7 +516,7 @@ describe('Test ImageHelper', () => {
     expect(parent.spare.data[240]).toBe(192)
     expect(parent.spare.data[241]).toBe(96)
     expect(parent.spare.data[242]).toBe(224)
-    expect(parent.spare.data[243]).toBe(0XFF)
+    expect(parent.spare.data[243]).toBe(0xff)
   })
 
   it('Test setPixel function with parent.rotation = 3', () => {
@@ -542,7 +542,7 @@ describe('Test ImageHelper', () => {
     expect(parent.spare.data[256]).toBe(32)
     expect(parent.spare.data[257]).toBe(224)
     expect(parent.spare.data[258]).toBe(120)
-    expect(parent.spare.data[259]).toBe(0XFF)
+    expect(parent.spare.data[259]).toBe(0xff)
   })
 
   it('Test setRotation function with parent.holding == true', () => {

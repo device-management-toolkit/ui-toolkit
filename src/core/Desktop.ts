@@ -51,16 +51,16 @@ class Desktop implements IModule {
   ZLIB: any
   lastMouseMoveTime: number
 
-  processData (data: string): any {}
+  processData(data: string): any {}
   updateScreenDimensions: (width: number, height: number) => void
-  onStateChange (state: number): any {}
+  onStateChange(state: number): any {}
   onKvmData: (data: string) => void
   onScreenResize: (width: number, height: number, canvasId: string) => void
   onScreenSizeChange: (width: number, height: number) => void
   setDeskFocus: (el: string, focusmode: number) => void
   getDeskFocus: (el: string) => CSSStyleDeclaration
-  start (): any {}
-  onSendKvmData (data: string): any {}
+  start(): any {}
+  onSendKvmData(data: string): any {}
 
   onSend: (data: string) => void
   onProcessData: (data: string) => void

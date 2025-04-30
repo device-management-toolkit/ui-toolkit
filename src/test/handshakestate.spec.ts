@@ -1,7 +1,7 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 import { HandshakeState } from '../core/RFBStateProcessors/HandshakeState'
 
@@ -51,5 +51,4 @@ describe('Test processState function in HandshakeState', () => {
 })
 
 // callback function for Unit testing
-function callback (state: number): any {
-}
+function callback(state: number): any {}

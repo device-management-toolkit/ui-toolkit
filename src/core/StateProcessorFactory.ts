@@ -5,7 +5,14 @@
  **********************************************************************/
 
 import { type IStateProcessor, type ICommunicator, type IKvmDataCommunicator } from './Interfaces'
-import { HandshakeState, SecurityOptions, SecurityResponse, ServerInit, FrameBufferBellServerCutText, Encoding } from './RFBStateProcessors'
+import {
+  HandshakeState,
+  SecurityOptions,
+  SecurityResponse,
+  ServerInit,
+  FrameBufferBellServerCutText,
+  Encoding
+} from './RFBStateProcessors'
 import { type Desktop } from './Desktop'
 import { ServerCutTextHandler } from './RFBStateProcessors/ServerCutTextHandler'
 import { RLEDecoder } from './ImageData/RLEDecoder'
@@ -15,7 +22,7 @@ import { RLEDecoder } from './ImageData/RLEDecoder'
  */
 class StateProcessorFactory {
   stateProcessors: any
-  constructor (comm: ICommunicator, parent: Desktop, updateRFBState: (state: number) => void) {
+  constructor(comm: ICommunicator, parent: Desktop, updateRFBState: (state: number) => void) {
     this.stateProcessors = {}
     this.stateProcessors[0] = new HandshakeState(comm, updateRFBState) // Got server version. Send client version
     this.stateProcessors[1] = new SecurityOptions(comm, updateRFBState) // Got security options, send None security type
@@ -30,8 +37,9 @@ class StateProcessorFactory {
    * getProcessor returns the StateProcessor to handle the next RFB state
    * @param state RFB state to process next
    */
-  getProcessor (state: number): IStateProcessor {
-    if (state <= 100) { // regular states before encoding information
+  getProcessor(state: number): IStateProcessor {
+    if (state <= 100) {
+      // regular states before encoding information
       return this.stateProcessors[state]
     } else {
       return this.stateProcessors['100plus'] // when it reaches the encoding stage 100 is added to number of tiles in the image and processed by the Encoding processor

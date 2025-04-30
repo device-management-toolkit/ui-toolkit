@@ -1,7 +1,7 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 import { type IDataProcessor } from '../core'
 import { DataProcessor } from '../core/ImageData/DataProcessor'
 import { Desktop } from '../core/Desktop'
@@ -61,9 +61,9 @@ class AmtDesktop extends Desktop {
   setDeskFocus: (el: string, focusmode: number) => void
   getDeskFocus: (el: string) => any
 
-  protocol: number = 2
+  protocol = 2
 
-  constructor () {
+  constructor() {
     super()
     this.inflate = ZLIB.inflateInit(15)
     this.bpp = 1
@@ -94,15 +94,15 @@ class AmtDesktop extends Desktop {
     this.sparecache = {}
   }
 
-  processData (data: string): void {
+  processData(data: string): void {
     this.onProcessData(data)
   }
 
-  onStateChange (state: number): void {
+  onStateChange(state: number): void {
     console.log('state change', state)
   }
 
-  start (): void {
+  start(): void {
     console.log('Starting desktop here')
     this.state = 0
     this.inflate.inflateReset()
@@ -111,14 +111,18 @@ class AmtDesktop extends Desktop {
     this.onKvmDataAck = -1
     this.kvmDataSupported = false
     // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-    for (const i in this.sparecache) { delete this.sparecache[i] }
+    for (const i in this.sparecache) {
+      delete this.sparecache[i]
+    }
   }
 
-  onSendKvmData (data: string): any {
+  onSendKvmData(data: string): any {
     if (this.onKvmDataAck !== true) {
       this.onKvmDataPending.push(data)
     } else {
-      if (isTruthy(this.urlvars) && isTruthy(this.urlvars.kvmdatatrace)) { console.log(`KVM-Send(${data.length}): ${data}`) }
+      if (isTruthy(this.urlvars) && isTruthy(this.urlvars.kvmdatatrace)) {
+        console.log(`KVM-Send(${data.length}): ${data}`)
+      }
       data = '\0KvmDataChannel\0' + data
       this.onSend(String.fromCharCode(6, 0, 0, 0) + TypeConverter.IntToStr(data.length) + data)
       this.onKvmDataAck = false
@@ -144,7 +148,7 @@ class UIToolKitKVM {
     authToken: '104.42.171.35/mps'
   }
 
-  constructor () {
+  constructor() {
     this.module = new AmtDesktop()
     this.redirector = new AMTKvmDataRedirector(this.config)
     this.dataProcessor = new DataProcessor(this.redirector, new AmtDesktop())
@@ -158,15 +162,11 @@ class UIToolKitKVM {
     this.module.onProcessData = this.dataProcessor.processData.bind(this.dataProcessor)
   }
 
-  sendKvmData (data: string): any {
+  sendKvmData(data: string): any {}
 
-  }
+  onSend(data: string): any {}
 
-  onSend (data: string): any {
-
-  }
-
-  start (): void {
+  start(): void {
     this.redirector.start(WebSocket)
   }
 }

@@ -18,7 +18,7 @@ export class DataProcessor implements IDataProcessor {
   remoteFrameBufferStateManager: IStateProcessor
   stateProcessorFac: StateProcessorFactory
   parent: Desktop
-  constructor (comm: ICommunicator, parent: Desktop) {
+  constructor(comm: ICommunicator, parent: Desktop) {
     this.acc = ''
     // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     this.stateProcessorFac = new StateProcessorFactory(comm, parent, this.updateRFBState.bind(this))
@@ -29,7 +29,7 @@ export class DataProcessor implements IDataProcessor {
    * processData is called from ICommunicator on new data coming over the wire
    * @param data is the current data block received on the web socket
    */
-  processData (data: string): any {
+  processData(data: string): any {
     if (!isTruthy(data)) return
     this.acc += data
     let cmdSize = 0
@@ -46,7 +46,7 @@ export class DataProcessor implements IDataProcessor {
     }
   }
 
-  updateRFBState (state: number): void {
+  updateRFBState(state: number): void {
     this.parent.state = state
   }
 }

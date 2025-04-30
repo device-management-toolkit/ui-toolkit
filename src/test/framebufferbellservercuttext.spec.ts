@@ -1,7 +1,7 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 import { FrameBufferBellServerCutText } from '../core/RFBStateProcessors/FrameBufferBellServerCutText'
 
@@ -22,8 +22,8 @@ describe('Test processState function in FrameBufferBellServerCutText', () => {
     })
 
     // input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                    String.fromCharCode(0x00) + String.fromCharCode(0x05)
+    const input =
+      String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(0x05)
 
     // Test processState
     const returnvalue1 = framebuffer.processState(input)
@@ -42,9 +42,12 @@ describe('Test processState function in FrameBufferBellServerCutText', () => {
     })
 
     // input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                    String.fromCharCode(0x00) + String.fromCharCode(0x08) +
-                    String.fromCharCode(0x05)
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x08) +
+      String.fromCharCode(0x05)
 
     // Test processState
     const returnvalue1 = framebuffer.processState(input)
@@ -58,8 +61,7 @@ describe('Test processState function in FrameBufferBellServerCutText', () => {
     const framebuffer = new FrameBufferBellServerCutText(communicator, servercuttexthandler, callback)
 
     // input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                    String.fromCharCode(0x06)
+    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(0x06)
 
     // Test processState
     const returnvalue1 = framebuffer.processState(input)
@@ -73,8 +75,7 @@ describe('Test processState function in FrameBufferBellServerCutText', () => {
     const framebuffer = new FrameBufferBellServerCutText(communicator, servercuttexthandler, callback)
 
     // input
-    const input = String.fromCharCode(0x02) + String.fromCharCode(0x00) +
-                    String.fromCharCode(0x06)
+    const input = String.fromCharCode(0x02) + String.fromCharCode(0x00) + String.fromCharCode(0x06)
 
     // Test processState
     const returnvalue1 = framebuffer.processState(input)
@@ -88,12 +89,19 @@ describe('Test processState function in FrameBufferBellServerCutText', () => {
     const framebuffer = new FrameBufferBellServerCutText(communicator, servercuttexthandler, callback)
 
     // input
-    const input = String.fromCharCode(0x03) + String.fromCharCode(0x00) +
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                    String.fromCharCode(0x00) + String.fromCharCode(0x04) + // len = 4
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                    String.fromCharCode(0x00) + String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x03) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x04) + // len = 4
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00)
 
     // Test processState
     const returnvalue1 = framebuffer.processState(input)
@@ -107,13 +115,20 @@ describe('Test processState function in FrameBufferBellServerCutText', () => {
     const framebuffer = new FrameBufferBellServerCutText(communicator, servercuttexthandler, callback)
 
     // input
-    const input = String.fromCharCode(0x03) + String.fromCharCode(0x00) +
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                  String.fromCharCode(0x00) + String.fromCharCode(0x04) + // len = 4
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                  String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                  String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x03) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x04) + // len = 4
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00)
 
     // Test processState
     const returnvalue1 = framebuffer.processState(input)
@@ -127,10 +142,14 @@ describe('Test processState function in FrameBufferBellServerCutText', () => {
     const framebuffer = new FrameBufferBellServerCutText(communicator, servercuttexthandler, callback)
 
     // input
-    const input = String.fromCharCode(0x03) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x03) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00)
 
     // Test processState
     const returnvalue1 = framebuffer.processState(input)
@@ -144,11 +163,17 @@ describe('Test processState function in FrameBufferBellServerCutText', () => {
     const framebuffer = new FrameBufferBellServerCutText(communicator, servercuttexthandler, callback)
 
     // input
-    const input = String.fromCharCode(0x03) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x00) + String.fromCharCode(0x03) + // len = 3
-                String.fromCharCode(0x00) + String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x03) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x03) + // len = 3
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00)
 
     // Test processState
     const returnvalue1 = framebuffer.processState(input)
@@ -162,11 +187,17 @@ describe('Test processState function in FrameBufferBellServerCutText', () => {
     const framebuffer = new FrameBufferBellServerCutText(communicator, servercuttexthandler, callback)
 
     // input
-    const input = String.fromCharCode(0x01) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x00) + String.fromCharCode(0x03) + // len = 3
-                String.fromCharCode(0x00) + String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x01) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x03) + // len = 3
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00)
 
     // Test processState
     const returnvalue1 = framebuffer.processState(input)
@@ -175,5 +206,4 @@ describe('Test processState function in FrameBufferBellServerCutText', () => {
 })
 
 // callback function for Unit testing
-function callback (state: number): any {
-}
+function callback(state: number): any {}

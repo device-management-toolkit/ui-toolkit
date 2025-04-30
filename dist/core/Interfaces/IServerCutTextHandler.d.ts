@@ -4,6 +4,6 @@
  * Author : Ramu Bachala
  **********************************************************************/
 interface IServerCutTextHandler {
-    handleServerCutText: (acc: string) => number;
+  handleServerCutText: (acc: string) => number
 }
-export type { IServerCutTextHandler };
+export type { IServerCutTextHandler }

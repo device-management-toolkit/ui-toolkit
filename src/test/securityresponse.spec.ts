@@ -1,7 +1,7 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 import { SecurityResponse } from '../core/RFBStateProcessors/SecurityResponse'
 
@@ -20,9 +20,13 @@ describe('Test processState function in SecurityResponse', () => {
     })
 
     // Test input (byte 0-3) value === 0
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                      String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                      String.fromCharCode(0x01) + String.fromCharCode(0x02)
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x01) +
+      String.fromCharCode(0x02)
 
     // Test processState
     const returnvalue1 = securityresponse.processState(input)
@@ -40,8 +44,8 @@ describe('Test processState function in SecurityResponse', () => {
     })
 
     // Test input (byte 0-3) value === 0
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                      String.fromCharCode(0x00) + String.fromCharCode(0x00)
+    const input =
+      String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(0x00)
 
     // Test processState
     const returnvalue2 = securityresponse.processState(input)
@@ -54,9 +58,13 @@ describe('Test processState function in SecurityResponse', () => {
     const securityresponse = new SecurityResponse(communicator, callback)
 
     // Test input (byte 0-3) value != 0
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                      String.fromCharCode(0x00) + String.fromCharCode(0x01) +
-                      String.fromCharCode(0x01) + String.fromCharCode(0x07)
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x01) +
+      String.fromCharCode(0x01) +
+      String.fromCharCode(0x07)
 
     // Test processState
     try {
@@ -75,8 +83,8 @@ describe('Test processState function in SecurityResponse', () => {
     const securityresponse = new SecurityResponse(communicator, callback)
 
     // Test input (byte 0-3) value != 0
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                    String.fromCharCode(0x00) + String.fromCharCode(0x10)
+    const input =
+      String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(0x00) + String.fromCharCode(0x10)
 
     // Test processState
     try {
@@ -104,5 +112,4 @@ describe('Test processState function in SecurityResponse', () => {
 })
 
 // callback function for Unit testing
-function callback (state: number): any {
-}
+function callback(state: number): any {}

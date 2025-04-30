@@ -7,6 +7,6 @@
  * Interface for Data processing
  */
 interface IDataProcessor {
-    processData: (data: string) => void;
+  processData: (data: string) => void
 }
-export type { IDataProcessor };
+export type { IDataProcessor }

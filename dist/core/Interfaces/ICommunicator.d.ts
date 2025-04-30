@@ -7,20 +7,20 @@
  * ICommunicator interface handles all communication over the websocket
  */
 interface ICommunicator {
-    onProcessData: (data: string) => void;
-    onStart: () => void;
-    onNewState: (state: number) => void;
-    onStateChanged: (redirector: any, state: number) => void;
-    onError: () => void;
-    start: <T extends WebSocket>(c: new (path: string) => T) => void;
-    socketSend: (data: string) => void;
-    send: (data: string) => void;
-    stop: () => void;
+  onProcessData: (data: string) => void
+  onStart: () => void
+  onNewState: (state: number) => void
+  onStateChanged: (redirector: any, state: number) => void
+  onError: () => void
+  start: <T extends WebSocket>(c: new (path: string) => T) => void
+  socketSend: (data: string) => void
+  send: (data: string) => void
+  stop: () => void
 }
 /**
  * ICommunicator refined for KvmData
  */
 interface IKvmDataCommunicator extends ICommunicator {
-    onSendKvmData: (data: string) => void;
+  onSendKvmData: (data: string) => void
 }
-export type { ICommunicator, IKvmDataCommunicator };
+export type { ICommunicator, IKvmDataCommunicator }

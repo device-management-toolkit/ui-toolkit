@@ -1,7 +1,7 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2020
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2020
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 module.exports = {
   globals: {
@@ -15,13 +15,13 @@ module.exports = {
     'tsx'
   ],
   transform: {
-    '^.+\\.(ts|tsx)?$': 'ts-jest',
+    '^.+\\.(ts|tsx)?$': 'ts-jest'
   },
   testMatch: [
     '**/test/**/*.test.ts',
     '**/test/**/*.spec.ts',
     '**/test/**/*.spec.js'
   ],
-  reporters: ["default", "jest-junit"],
-  testEnvironment: 'jsdom',
+  reporters: ['default', 'jest-junit'],
+  testEnvironment: 'jsdom'
 }

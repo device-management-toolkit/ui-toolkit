@@ -1,7 +1,7 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 import { ServerInit } from '../core/RFBStateProcessors/ServerInit'
 
@@ -22,10 +22,17 @@ describe('Test processState function in ServerInit', () => {
     })
 
     // Test input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x3C) + // First 2 bytes represent Screen size : 60
-                  String.fromCharCode(0x00) + String.fromCharCode(0x3C) + // 3rd-4th bytes represent Screen size : 60
-                  '0030008000000000' + String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                  String.fromCharCode(0x00) + String.fromCharCode(0x03) + '0000000' // acc length greater than 24 + count value at bytes20-23 value
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x3c) + // First 2 bytes represent Screen size : 60
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x3c) + // 3rd-4th bytes represent Screen size : 60
+      '0030008000000000' +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x03) +
+      '0000000' // acc length greater than 24 + count value at bytes20-23 value
 
     // Test processState
     const returnvalue1 = serverinit.processState(input)
@@ -44,10 +51,17 @@ describe('Test processState function in ServerInit', () => {
     })
 
     // Test input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x3C) + // First 2 bytes represent Screen size : 60
-                  String.fromCharCode(0x00) + String.fromCharCode(0x3C) + // 3rd-4th bytes represent Screen size : 60
-                  '0030008000000000' + String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                  String.fromCharCode(0x00) + String.fromCharCode(0x02) + '00' // acc length equal to that of 24 + count value at bytes20-23 value
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x3c) + // First 2 bytes represent Screen size : 60
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x3c) + // 3rd-4th bytes represent Screen size : 60
+      '0030008000000000' +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x02) +
+      '00' // acc length equal to that of 24 + count value at bytes20-23 value
 
     // Test processState
     const returnvalue1 = serverinit.processState(input)
@@ -66,10 +80,16 @@ describe('Test processState function in ServerInit', () => {
     })
 
     // Test input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x3C) + // First 2 bytes represent Screen size : 60
-                String.fromCharCode(0x00) + String.fromCharCode(0x3C) + // 3rd-4th bytes represent Screen size : 60
-                '0030008000000000' + String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x00) + String.fromCharCode(0x00) // acc length is equal to 24 and count value at bytes20-23 value is 0
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x3c) + // First 2 bytes represent Screen size : 60
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x3c) + // 3rd-4th bytes represent Screen size : 60
+      '0030008000000000' +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) // acc length is equal to 24 and count value at bytes20-23 value is 0
 
     // Test processState
     const returnvalue2 = serverinit.processState(input)
@@ -82,10 +102,17 @@ describe('Test processState function in ServerInit', () => {
     const serverinit = new ServerInit(communicator, new AmtDesktop(), callback)
 
     // Test input
-    const input = String.fromCharCode(0x00) + String.fromCharCode(0x3C) + // First 2 bytes represent Screen size : 60
-                String.fromCharCode(0x00) + String.fromCharCode(0x3C) + // 3rd-4th bytes represent Screen size : 60
-                '0030008000000000' + String.fromCharCode(0x00) + String.fromCharCode(0x00) +
-                String.fromCharCode(0x00) + String.fromCharCode(0x09) + '000000' // acc length less than 24 + count value at bytes20-23 value
+    const input =
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x3c) + // First 2 bytes represent Screen size : 60
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x3c) + // 3rd-4th bytes represent Screen size : 60
+      '0030008000000000' +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x00) +
+      String.fromCharCode(0x09) +
+      '000000' // acc length less than 24 + count value at bytes20-23 value
 
     // Test processState
     const returnvalue2 = serverinit.processState(input)
@@ -104,5 +131,4 @@ describe('Test processState function in ServerInit', () => {
 })
 
 // callback function for Unit testing
-function callback (state: number): any {
-}
+function callback(state: number): any {}
