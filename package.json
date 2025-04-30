@@ -34,7 +34,7 @@
     "babel-loader": "^10.0.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "canvas": "^3.0.1",
-    "eslint": "^8.40.0",
+    "eslint": "^9.25.1",
     "eslint-config-prettier": "^10.1.2",
     "filereader": "^0.10.3",
     "jest": "^27.0.4",
