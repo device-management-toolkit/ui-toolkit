@@ -1,13 +1,12 @@
 # UI Toolkit
+
 ![CodeQL](https://img.shields.io/github/actions/workflow/status/open-amt-cloud-toolkit/ui-toolkit/codeql-analysis.yml?style=for-the-badge&label=CodeQL&logo=github)
 ![Build](https://img.shields.io/github/actions/workflow/status/open-amt-cloud-toolkit/ui-toolkit/node.js.yml?style=for-the-badge&logo=github)
 ![Codecov](https://img.shields.io/codecov/c/github/open-amt-cloud-toolkit/ui-toolkit?style=for-the-badge&logo=codecov)
 [![OSSF-Scorecard Score](https://img.shields.io/ossf-scorecard/github.com/open-amt-cloud-toolkit/ui-toolkit?style=for-the-badge&label=OSSF%20Score)](https://api.securityscorecards.dev/projects/github.com/open-amt-cloud-toolkit/ui-toolkit)
 [![Discord](https://img.shields.io/discord/1063200098680582154?style=for-the-badge&label=Discord&logo=discord&logoColor=white&labelColor=%235865F2&link=https%3A%2F%2Fdiscord.gg%2FDKHeUNEWVH)](https://discord.gg/DKHeUNEWVH)
 
-
 > Disclaimer: Production viable releases are tagged and listed under 'Releases'. All other check-ins should be considered 'in-development' and should not be used in production
-
 
 The UI Toolkit is a framework agnostic implementation of remote management features like Keyboard, Video, Mouse (KVM) or Serial-over-LAN (SOL). The provided core components simplify the task of adding these complex manageability controls into a management console UI.
 
@@ -25,11 +24,10 @@ The UI Toolkit can be used with your front-end framework of choice such as React
 
 - Need additional support or want to get the latest news and events about Open AMT? Connect with the team directly through Discord.
 
-    [![Discord Banner 1](https://discordapp.com/api/guilds/1063200098680582154/widget.png?style=banner2)](https://discord.gg/DKHeUNEWVH)
+  [![Discord Banner 1](https://discordapp.com/api/guilds/1063200098680582154/widget.png?style=banner2)](https://discord.gg/DKHeUNEWVH)
 
 <br>
 
 ## License Note
 
 If you are distributing the FortAwesome Icons, please provide attribution to the source per the [CC-by 4.0](https://creativecommons.org/licenses/by/4.0/deed.ast) license obligations.
-

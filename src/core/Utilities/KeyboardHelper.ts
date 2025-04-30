@@ -20,7 +20,7 @@ export class KeyBoardHelper {
   KeyInputGrab: boolean
   Comms: ICommunicator
   parent: Desktop
-  constructor (parent: Desktop, comms: ICommunicator) {
+  constructor(parent: Desktop, comms: ICommunicator) {
     this.Comms = comms
     this.parent = parent
   }
@@ -28,8 +28,10 @@ export class KeyBoardHelper {
   /**
    * Starts grabbing keyboard events on the document object
    */
-  GrabKeyInput (): any {
-    if (this.KeyInputGrab) { return }
+  GrabKeyInput(): any {
+    if (this.KeyInputGrab) {
+      return
+    }
     document.onkeyup = this.handleKeyUp.bind(this)
     document.onkeydown = this.handleKeyDown.bind(this)
     document.onkeypress = this.handleKeys.bind(this)
@@ -39,15 +41,17 @@ export class KeyBoardHelper {
   /**
    * releases event handlers used for keyboard event handling
    */
-  UnGrabKeyInput (): any {
-    if (!this.KeyInputGrab) { return }
+  UnGrabKeyInput(): any {
+    if (!this.KeyInputGrab) {
+      return
+    }
     document.onkeyup = null
     document.onkeydown = null
     document.onkeypress = null
     this.KeyInputGrab = false
   }
 
-  handleKeys (e: Event): any {
+  handleKeys(e: Event): any {
     return this.haltEvent(e)
   }
 
@@ -55,36 +59,44 @@ export class KeyBoardHelper {
    * halts default keyboard event  handling. Since the sole purpose of this event is to send it to the remote desktop
    * @param e keyboard event
    */
-  haltEvent (e: any): boolean {
-    if (isTruthy(e.preventDefault)) { e.preventDefault() }
-    if (isTruthy(e.stopPropagation)) { e.stopPropagation() }
+  haltEvent(e: any): boolean {
+    if (isTruthy(e.preventDefault)) {
+      e.preventDefault()
+    }
+    if (isTruthy(e.stopPropagation)) {
+      e.stopPropagation()
+    }
     return false
   }
 
-  handleKeyUp (e: KeyboardEvent): boolean {
+  handleKeyUp(e: KeyboardEvent): boolean {
     return this.handleKeyEvent(UpDown.Up, e)
   }
 
-  handleKeyDown (e: KeyboardEvent): boolean {
+  handleKeyDown(e: KeyboardEvent): boolean {
     return this.handleKeyEvent(UpDown.Down, e)
   }
 
-  handleKeyEvent (d: UpDown, ke: KeyboardEvent): boolean {
+  handleKeyEvent(d: UpDown, ke: KeyboardEvent): boolean {
     let e: any = ke
-    if (!isTruthy(e)) { e = window.event }
+    if (!isTruthy(e)) {
+      e = window.event
+    }
 
     if (isTruthy(e.code)) {
       // For new browsers, this mapping is keyboard language independent
       const k = AMTKeyCodeConverter.convertAMTKeyCode(e)
       console.debug(`Key ${d} : ${String(k)}`)
-      if (k != null) { CommsHelper.sendKey(this.Comms, k, d) }
+      if (k != null) {
+        CommsHelper.sendKey(this.Comms, k, d)
+      }
     } else {
       let k: number = e.keyCode
       if (k === 173) k = 189 // '-' key (Firefox)
       if (k === 61) k = 187 // '=' key (Firefox)
       let kk = k
       if (e.shiftKey === false && k >= 65 && k <= 90) kk = k + 32
-      if (k >= 112 && k <= 124) kk = k + 0xFF4E
+      if (k >= 112 && k <= 124) kk = k + 0xff4e
       if (k === 8) kk = 0xff08 // Backspace
       if (k === 9) kk = 0xff09 // Tab
       if (k === 13) kk = 0xff0d // Return

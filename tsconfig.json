@@ -1,23 +1,23 @@
 {
-    "compilerOptions": {
-        "outDir": "./dist",
-        "sourceMap": true,
-        "noImplicitAny": false,
-        "moduleResolution": "node",
-        "allowJs": true,
-        "target": "es6",
-        "jsx": "react",
-        "module": "esnext",
-        "esModuleInterop": true,
-        "resolveJsonModule": true,
-        "strictNullChecks": true,
-        "declaration": true,
-        "declarationDir": "./dist"        
-    },
-    "include": [
-        "./src/core/**/*",
-        "./src/test/**/*",
-        "./src/reactjs/**/*",
-        "jest.setup.ts"
-    ]
+  "compilerOptions": {
+    "outDir": "./dist",
+    "sourceMap": true,
+    "noImplicitAny": false,
+    "moduleResolution": "node",
+    "allowJs": true,
+    "target": "es6",
+    "jsx": "react",
+    "module": "esnext",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "strictNullChecks": true,
+    "declaration": true,
+    "declarationDir": "./dist"
+  },
+  "include": [
+    "./src/core/**/*",
+    "./src/test/**/*",
+    "./src/reactjs/**/*",
+    "jest.setup.ts"
+  ]
 }

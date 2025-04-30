@@ -272,10 +272,12 @@ export class AmtTerminal {
     0x00a0
   ]
 
-  StateChange = (newState): any => { }
+  StateChange = (newState): any => {}
 
   /** sending  multiple unicode values to socket */
-  TermSendKeys = (keys): any => { this.onSend(keys) }
+  TermSendKeys = (keys): any => {
+    this.onSend(keys)
+  }
 
   onSend: (data: any) => void
 

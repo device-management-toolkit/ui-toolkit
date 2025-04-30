@@ -8,11 +8,11 @@ import { IDEModeSenceArray, IDECDConfigArray, IDECD, IDEModeSenceRecoveryArray, 
 
 export class IDERDataProcessor {
   ider: AMTIDER
-  constructor (ider: AMTIDER) {
+  constructor(ider: AMTIDER) {
     this.ider = ider
   }
 
-  interpretCommandData (header: number): number {
+  interpretCommandData(header: number): number {
     switch (header) {
       case 0x41: // OPEN_SESSION (65)
         return this.processOpenSessionCommand()
@@ -27,9 +27,9 @@ export class IDERDataProcessor {
         return this.processResetOccurredCommand()
       case 0x49: // STATUS_DATA - DisableEnableFeaturesReply (73)
         return this.processStatusDataCommand()
-      case 0x4A: // ERROR OCCURRED (74)
+      case 0x4a: // ERROR OCCURRED (74)
         return this.processErrorOccurredCommand()
-      case 0x4B: // HEARTBEAT (75)
+      case 0x4b: // HEARTBEAT (75)
         return this.processHeartbeatCommand()
       case 0x50: // COMMAND WRITTEN (80)
         return this.processWrittenCommand()
@@ -42,7 +42,7 @@ export class IDERDataProcessor {
     }
   }
 
-  processOpenSessionCommand (): number {
+  processOpenSessionCommand(): number {
     console.debug('acc data:', JSON.stringify(this.ider.acc))
 
     // Checks if data is atleast 30 bytes. If not, returns
@@ -93,20 +93,20 @@ export class IDERDataProcessor {
   }
 
   // Process the CLOSE (0x43) command
-  processCloseCommand (): number {
+  processCloseCommand(): number {
     console.log('CLOSE')
     this.ider.stop()
     return 8
   }
 
   // Process the KEEPALIVEPONG (0x45) command
-  processPongCommand (): number {
+  processPongCommand(): number {
     console.log('PONG')
     return 8
   }
 
   // Process the RESETOCCURRED (0x46) command
-  processResetOccurredCommand (): number {
+  processResetOccurredCommand(): number {
     if (this.ider.acc.length < 9) {
       return 0
     }
@@ -127,7 +127,7 @@ export class IDERDataProcessor {
   }
 
   // Process the STATUS_DATA (0x49) command
-  processStatusDataCommand (): number {
+  processStatusDataCommand(): number {
     if (this.ider.acc.length < 13) {
       return 0
     }
@@ -164,7 +164,7 @@ export class IDERDataProcessor {
   }
 
   // Process the ERROR OCCURRED (0x4A) command
-  processErrorOccurredCommand (): number {
+  processErrorOccurredCommand(): number {
     if (this.ider.acc.length < 11) {
       return 0
     }
@@ -173,18 +173,18 @@ export class IDERDataProcessor {
   }
 
   // Process the HEARTBEAT (0x4B) command
-  processHeartbeatCommand (): number {
+  processHeartbeatCommand(): number {
     console.log('HEARTBEAT')
     return 8
   }
 
   // Process the COMMAND WRITTEN (0x50) command
-  processWrittenCommand (): number {
+  processWrittenCommand(): number {
     if (this.ider.acc.length < 28) {
       return 0
     }
 
-    const device = ((this.ider.acc.charCodeAt(14) & 0x10) !== 0) ? 0xB0 : 0xA0
+    const device = (this.ider.acc.charCodeAt(14) & 0x10) !== 0 ? 0xb0 : 0xa0
     const deviceFlags = this.ider.acc.charCodeAt(14)
     const cdb = this.ider.acc.substring(16, 28)
     const featureRegister = this.ider.acc.charCodeAt(9)
@@ -196,7 +196,7 @@ export class IDERDataProcessor {
   }
 
   // Process the DATA FROM HOST (0x53) command
-  processDataFromHostCommand (): number {
+  processDataFromHostCommand(): number {
     if (this.ider.acc.length < 14) {
       return 0
     }
@@ -206,18 +206,42 @@ export class IDERDataProcessor {
       return 0
     }
 
-    console.debug(`SCSI_WRITE, len = ${(14 + len)}`)
+    console.debug(`SCSI_WRITE, len = ${14 + len}`)
 
     this.ider.sendCommand(
       0x51,
-      String.fromCharCode(0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x87, 0x70, 0x03, 0x00, 0x00, 0x00, 0xa0, 0x51, 0x07, 0x27, 0x00),
+      String.fromCharCode(
+        0x00,
+        0x00,
+        0x00,
+        0x00,
+        0x00,
+        0x00,
+        0x00,
+        0x00,
+        0x00,
+        0x00,
+        0x00,
+        0x00,
+        0x87,
+        0x70,
+        0x03,
+        0x00,
+        0x00,
+        0x00,
+        0xa0,
+        0x51,
+        0x07,
+        0x27,
+        0x00
+      ),
       true
     )
 
     return 14 + len
   }
 
-  handleSCSI (cdbFirstByte: number, dev: number, cdb: string, featureRegister: number, deviceFlags: number): number {
+  handleSCSI(cdbFirstByte: number, dev: number, cdb: string, featureRegister: number, deviceFlags: number): number {
     switch (cdbFirstByte) {
       case 0x00: // TEST_UNIT_READY (0)
         return this.handleTestUnitReady(dev)
@@ -252,7 +276,14 @@ export class IDERDataProcessor {
         this.handleGetEventStatusNotification(dev, cdb, featureRegister)
         break
       case 0x4c: // SEND_CUE_SHEET (76)
-        this.ider.sendCommand(0x51, TypeConverter.IntToStrX(0) + TypeConverter.IntToStrX(0) + TypeConverter.IntToStrX(0) + String.fromCharCode(0x87, 0x50, 0x03, 0x00, 0x00, 0x00, 0xb0, 0x51, 0x05, 0x20, 0x00), true)
+        this.ider.sendCommand(
+          0x51,
+          TypeConverter.IntToStrX(0) +
+            TypeConverter.IntToStrX(0) +
+            TypeConverter.IntToStrX(0) +
+            String.fromCharCode(0x87, 0x50, 0x03, 0x00, 0x00, 0x00, 0xb0, 0x51, 0x05, 0x20, 0x00),
+          true
+        )
         break
       case 0x51: // READ_DISC_INFO (81)
         return this.handleReadDiscInfo(dev)
@@ -263,7 +294,7 @@ export class IDERDataProcessor {
       // case 0x51: // READ_DISK_INFORMATION (81)
       //   this.ider.sendDataToHost(dev, true, RDCD.DiskInfo(), featureRegister & 1)
       //   break
-      case 0xAC: // GET_PERFORMANCE (172)
+      case 0xac: // GET_PERFORMANCE (172)
         this.ider.sendDataToHost(dev, true, RDCD.Performance(), featureRegister & 1)
         break
       default: // UNKNOWN COMMAND
@@ -275,11 +306,11 @@ export class IDERDataProcessor {
   }
 
   // Handle TEST_UNIT_READY command
-  handleTestUnitReady (dev: number): number {
+  handleTestUnitReady(dev: number): number {
     console.debug('SCSI: TEST_UNIT_READY', dev)
 
     switch (dev) {
-      case 0xA0: // DEV_FLOPPY (160)
+      case 0xa0: // DEV_FLOPPY (160)
         if (this.ider.floppy == null) {
           this.ider.sendCommandEndResponse(true, 0x02, dev, 0x3a, 0x00)
           return -1
@@ -290,7 +321,7 @@ export class IDERDataProcessor {
           return -1
         } // Switch to ready
         break
-      case 0xB0: // DEV_CDDVD (176)
+      case 0xb0: // DEV_CDDVD (176)
         if (this.ider.cdrom == null) {
           this.ider.sendCommandEndResponse(true, 0x02, dev, 0x3a, 0x00)
           return -1
@@ -310,33 +341,37 @@ export class IDERDataProcessor {
   }
 
   // Handle READ_6 command
-  handleRead6 (dev: number, cdb: string, featureRegister: number): void {
+  handleRead6(dev: number, cdb: string, featureRegister: number): void {
     const lba = ((cdb.charCodeAt(1) & 0x1f) << 16) + (cdb.charCodeAt(2) << 8) + cdb.charCodeAt(3)
     let len = cdb.charCodeAt(4)
-    if (len === 0) { len = 256 }
+    if (len === 0) {
+      len = 256
+    }
     console.debug('SCSI: READ_6', dev, lba, len)
     this.ider.sendDiskData(dev, lba, len, featureRegister)
   }
 
   // Handle WRITE_6 command
-  handleWrite6 (dev: number, cdb: string): number {
+  handleWrite6(dev: number, cdb: string): number {
     const lba = ((cdb.charCodeAt(1) & 0x1f) << 16) + (cdb.charCodeAt(2) << 8) + cdb.charCodeAt(3)
     let len = cdb.charCodeAt(4)
-    if (len === 0) { len = 256 }
+    if (len === 0) {
+      len = 256
+    }
     console.debug('SCSI: WRITE_6', dev, lba, len)
     this.ider.sendCommandEndResponse(true, 0x02, dev, 0x3a, 0x00) // Write is not supported, remote no medium.
     return -1
   }
 
   // Handle MODE_SENSE_6 command
-  handleModeSense6 (dev: number, cdb: string, featureRegister: number): number {
+  handleModeSense6(dev: number, cdb: string, featureRegister: number): number {
     console.debug('SCSI: MODE_SENSE_6', dev)
 
-    if ((cdb.charCodeAt(2) === 0x3f) && (cdb.charCodeAt(3) === 0x00)) {
+    if (cdb.charCodeAt(2) === 0x3f && cdb.charCodeAt(3) === 0x00) {
       let a = 0
       let b = 0
       switch (dev) {
-        case 0xA0: // DEV_FLOPPY
+        case 0xa0: // DEV_FLOPPY
           if (this.ider.floppy == null) {
             this.ider.sendCommandEndResponse(true, 0x02, dev, 0x3a, 0x00)
             return -1
@@ -344,7 +379,7 @@ export class IDERDataProcessor {
           a = 0x00
           b = 0x80 // Read only = 0x80, Read write = 0x00
           break
-        case 0xB0: // DEV_CDDVD
+        case 0xb0: // DEV_CDDVD
           if (this.ider.cdrom == null) {
             this.ider.sendCommandEndResponse(true, 0x02, dev, 0x3a, 0x00)
             return -1
@@ -364,7 +399,7 @@ export class IDERDataProcessor {
   }
 
   // Handle START_STOP command
-  handleStartStop (dev: number): void {
+  handleStartStop(dev: number): void {
     // var immediate = cdb.charCodeAt(1) & 0x01
     // var loej = cdb.charCodeAt(4) & 0x02
     // var start = cdb.charCodeAt(4) & 0x01
@@ -372,14 +407,14 @@ export class IDERDataProcessor {
   }
 
   // Handle ALLOW_MEDIUM_REMOVAL command
-  handleAllowMediumRemoval (dev: number): number {
+  handleAllowMediumRemoval(dev: number): number {
     console.debug('SCSI: ALLOW_MEDIUM_REMOVAL', dev)
 
-    if ((dev === 0xA0) && (this.ider.floppy == null)) {
+    if (dev === 0xa0 && this.ider.floppy == null) {
       this.ider.sendCommandEndResponse(true, 0x02, dev, 0x3a, 0x00)
       return -1
     }
-    if ((dev === 0xB0) && (this.ider.cdrom == null)) {
+    if (dev === 0xb0 && this.ider.cdrom == null) {
       this.ider.sendCommandEndResponse(true, 0x02, dev, 0x3a, 0x00)
       return -1
     }
@@ -388,22 +423,22 @@ export class IDERDataProcessor {
   }
 
   // Handle READ_FORMAT_CAPACITIES command
-  handleReadFormatCapacities (dev: number, cdb: string, featureRegister: number): number {
+  handleReadFormatCapacities(dev: number, cdb: string, featureRegister: number): number {
     console.debug('SCSI: READ_FORMAT_CAPACITIES', dev)
     // const buflen = TypeConverter.ReadShort(cdb, 7)
     // const mediaStatus = 0
     // let sectors
     // const mcSize = buflen / 8 // Capacity descriptor size is 8
     switch (dev) {
-      case 0xA0: // DEV_FLOPPY
-        if ((this.ider.floppy == null) || (this.ider.floppy.size === 0)) {
+      case 0xa0: // DEV_FLOPPY
+        if (this.ider.floppy == null || this.ider.floppy.size === 0) {
           this.ider.sendCommandEndResponse(false, 0x05, dev, 0x24, 0x00)
           return -1
         }
         // sectors = (this.ider.floppy.size >> 9) - 1
         break
-      case 0xB0: // DEV_CDDVD
-        if ((this.ider.cdrom == null) || (this.ider.cdrom.size === 0)) {
+      case 0xb0: // DEV_CDDVD
+        if (this.ider.cdrom == null || this.ider.cdrom.size === 0) {
           this.ider.sendCommandEndResponse(false, 0x05, dev, 0x24, 0x00)
           return -1
         }
@@ -413,18 +448,23 @@ export class IDERDataProcessor {
         console.debug('SCSI Internal error 4', dev)
         return -1
     }
-    this.ider.sendDataToHost(dev, true, TypeConverter.IntToStr(8) + String.fromCharCode(0x00, 0x00, 0x0b, 0x40, 0x02, 0x00, 0x02, 0x00), featureRegister & 1)
+    this.ider.sendDataToHost(
+      dev,
+      true,
+      TypeConverter.IntToStr(8) + String.fromCharCode(0x00, 0x00, 0x0b, 0x40, 0x02, 0x00, 0x02, 0x00),
+      featureRegister & 1
+    )
     return 0
   }
 
   // Handle READ_CAPACITY command
-  handleReadCapacity (dev: number, featureRegister: number, deviceFlags: number): number {
+  handleReadCapacity(dev: number, featureRegister: number, deviceFlags: number): number {
     console.debug('SCSI: READ_CAPACITY', dev)
     let len = 0
 
     switch (dev) {
-      case 0xA0: // DEV_FLOPPY
-        if ((this.ider.floppy == null) || (this.ider.floppy.size === 0)) {
+      case 0xa0: // DEV_FLOPPY
+        if (this.ider.floppy == null || this.ider.floppy.size === 0) {
           this.ider.sendCommandEndResponse(false, 0x02, dev, 0x3a, 0x00)
           return -1
         }
@@ -433,8 +473,8 @@ export class IDERDataProcessor {
         }
         console.debug('DEV_FLOPPY', len) // Number 512 byte blocks
         break
-      case 0xB0: // DEV_CDDVD
-        if ((this.ider.cdrom == null) || (this.ider.cdrom.size === 0)) {
+      case 0xb0: // DEV_CDDVD
+        if (this.ider.cdrom == null || this.ider.cdrom.size === 0) {
           this.ider.sendCommandEndResponse(false, 0x02, dev, 0x3a, 0x00)
           return -1
         }
@@ -449,12 +489,17 @@ export class IDERDataProcessor {
     }
     // if (dev == 0xA0) { dev = 0x00; } else { dev = 0x10; } // Weird but seems to work.
     console.debug('SCSI: READ_CAPACITY2', dev, deviceFlags)
-    this.ider.sendDataToHost(deviceFlags, true, TypeConverter.IntToStr(len) + String.fromCharCode(0, 0, ((dev === 0xB0) ? 0x08 : 0x02), 0), featureRegister & 1)
+    this.ider.sendDataToHost(
+      deviceFlags,
+      true,
+      TypeConverter.IntToStr(len) + String.fromCharCode(0, 0, dev === 0xb0 ? 0x08 : 0x02, 0),
+      featureRegister & 1
+    )
     return 0
   }
 
   // Handle READ_10 command
-  handleRead10 (dev: number, cdb: string, featureRegister: number): void {
+  handleRead10(dev: number, cdb: string, featureRegister: number): void {
     const lba = TypeConverter.ReadInt(cdb, 2)
     const len = TypeConverter.ReadShort(cdb, 7)
     console.debug('SCSI: READ_10', dev, lba, len)
@@ -462,7 +507,7 @@ export class IDERDataProcessor {
   }
 
   // Handle WRITE_10 command
-  handleWrite10 (dev: number, cdb: string): void {
+  handleWrite10(dev: number, cdb: string): void {
     const lba = TypeConverter.ReadInt(cdb, 2)
     const len = TypeConverter.ReadShort(cdb, 7)
     console.debug('SCSI: WRITE_10', dev, lba, len)
@@ -470,17 +515,19 @@ export class IDERDataProcessor {
   }
 
   // Handle READ_TOC command
-  handleReadTOC (dev: number, cdb: string, featureRegister: number): number {
+  handleReadTOC(dev: number, cdb: string, featureRegister: number): number {
     const buflen = TypeConverter.ReadShort(cdb, 7)
     const msf = (cdb.charCodeAt(1) & 0x02) !== 0
     let format = cdb.charCodeAt(2) & 0x07
-    if (format === 0) { format = cdb.charCodeAt(9) >> 6 }
+    if (format === 0) {
+      format = cdb.charCodeAt(9) >> 6
+    }
     console.debug(`SCSI: READ_TOC, dev= ${dev}, buflen= ${buflen}, format=${format}`)
     switch (dev) {
-      case 0xA0: // DEV_FLOPPY
+      case 0xa0: // DEV_FLOPPY
         this.ider.sendCommandEndResponse(true, 0x05, dev, 0x20, 0x00) // Not implemented
         return -1
-      case 0xB0: // DEV_CDDVD
+      case 0xb0: // DEV_CDDVD
         // NOP
         break
       default:
@@ -488,27 +535,89 @@ export class IDERDataProcessor {
         return -1
     }
     if (format === 1) {
-      this.ider.sendDataToHost(dev, true, String.fromCharCode(0x00, 0x0a, 0x01, 0x01, 0x00, 0x14, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00), featureRegister & 1)
+      this.ider.sendDataToHost(
+        dev,
+        true,
+        String.fromCharCode(0x00, 0x0a, 0x01, 0x01, 0x00, 0x14, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00),
+        featureRegister & 1
+      )
     } else if (format === 0) {
       if (msf) {
-        this.ider.sendDataToHost(dev, true, String.fromCharCode(0x00, 0x12, 0x01, 0x01, 0x00, 0x14, 0x01, 0x00, 0x00, 0x00, 0x02, 0x00, 0x00, 0x14, 0xaa, 0x00, 0x00, 0x00, 0x34, 0x13), featureRegister & 1)
+        this.ider.sendDataToHost(
+          dev,
+          true,
+          String.fromCharCode(
+            0x00,
+            0x12,
+            0x01,
+            0x01,
+            0x00,
+            0x14,
+            0x01,
+            0x00,
+            0x00,
+            0x00,
+            0x02,
+            0x00,
+            0x00,
+            0x14,
+            0xaa,
+            0x00,
+            0x00,
+            0x00,
+            0x34,
+            0x13
+          ),
+          featureRegister & 1
+        )
       } else {
-        this.ider.sendDataToHost(dev, true, String.fromCharCode(0x00, 0x12, 0x01, 0x01, 0x00, 0x14, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x14, 0xaa, 0x00, 0x00, 0x00, 0x00, 0x00), featureRegister & 1)
+        this.ider.sendDataToHost(
+          dev,
+          true,
+          String.fromCharCode(
+            0x00,
+            0x12,
+            0x01,
+            0x01,
+            0x00,
+            0x14,
+            0x01,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x14,
+            0xaa,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00
+          ),
+          featureRegister & 1
+        )
       }
     }
     return 0
   }
 
   // Handle GET_CONFIGURATION command (0x46)
-  handleGetConfiguration (dev: number, cdb: string, featureRegister): number {
-    const sendall = (cdb.charCodeAt(1) !== 2)
+  handleGetConfiguration(dev: number, cdb: string, featureRegister): number {
+    const sendall = cdb.charCodeAt(1) !== 2
     const firstcode = TypeConverter.ReadShort(cdb, 2)
     const buflen = TypeConverter.ReadShort(cdb, 7)
 
     console.debug('SCSI: GET_CONFIGURATION', dev, sendall, firstcode, buflen)
 
     if (buflen === 0) {
-      this.ider.sendDataToHost(dev, true, TypeConverter.IntToStr(0x003c) + TypeConverter.IntToStr(0x0008), featureRegister & 1)
+      this.ider.sendDataToHost(
+        dev,
+        true,
+        TypeConverter.IntToStr(0x003c) + TypeConverter.IntToStr(0x0008),
+        featureRegister & 1
+      )
       return -1
     }
     // Set the header
@@ -519,25 +628,25 @@ export class IDERDataProcessor {
     if (firstcode === 0) {
       r += IDECDConfigArray.ProfileList()
     }
-    if ((firstcode === 0x1) || (sendall && (firstcode < 0x1))) {
+    if (firstcode === 0x1 || (sendall && firstcode < 0x1)) {
       r += IDECDConfigArray.Core()
     }
-    if ((firstcode === 0x2) || (sendall && (firstcode < 0x2))) {
+    if (firstcode === 0x2 || (sendall && firstcode < 0x2)) {
       r += IDECD.Morphing()
     }
-    if ((firstcode === 0x3) || (sendall && (firstcode < 0x3))) {
+    if (firstcode === 0x3 || (sendall && firstcode < 0x3)) {
       r += IDECDConfigArray.Removable()
     }
-    if ((firstcode === 0x10) || (sendall && (firstcode < 0x10))) {
+    if (firstcode === 0x10 || (sendall && firstcode < 0x10)) {
       r += IDECDConfigArray.Random()
     }
-    if ((firstcode === 0x1E) || (sendall && (firstcode < 0x1E))) {
+    if (firstcode === 0x1e || (sendall && firstcode < 0x1e)) {
       r += IDECD.Read()
     }
-    if ((firstcode === 0x100) || (sendall && (firstcode < 0x100))) {
+    if (firstcode === 0x100 || (sendall && firstcode < 0x100)) {
       r += IDECD.PowerManagement()
     }
-    if ((firstcode === 0x105) || (sendall && (firstcode < 0x105))) {
+    if (firstcode === 0x105 || (sendall && firstcode < 0x105)) {
       r += IDECD.Timeout()
     }
     // Set the length
@@ -551,91 +660,96 @@ export class IDERDataProcessor {
   }
 
   // Handle GET_EVENT_STATUS_NOTIFICATION command (0x4a)
-  handleGetEventStatusNotification (dev: number, cdb: string, featureRegister: number): void {
+  handleGetEventStatusNotification(dev: number, cdb: string, featureRegister: number): void {
     console.debug('SCSI: GET_EVENT_STATUS_NOTIFICATION', dev, cdb.charCodeAt(1), cdb.charCodeAt(4), cdb.charCodeAt(9))
-    if ((cdb.charCodeAt(1) !== 0x01) && (cdb.charCodeAt(4) !== 0x10)) {
+    if (cdb.charCodeAt(1) !== 0x01 && cdb.charCodeAt(4) !== 0x10) {
       console.error('SCSI ERROR')
       this.ider.sendCommandEndResponse(true, 0x05, dev, 0x26, 0x01)
       return
     }
     let present = 0x00
-    if ((dev === 0xA0) && (this.ider.floppy != null)) {
+    if (dev === 0xa0 && this.ider.floppy != null) {
       present = 0x02
-    } else if ((dev === 0xB0) && (this.ider.cdrom != null)) {
+    } else if (dev === 0xb0 && this.ider.cdrom != null) {
       present = 0x02
     }
     this.ider.sendDataToHost(dev, true, String.fromCharCode(0x00, present, 0x80, 0x00), featureRegister & 1) // This is the original version, 4 bytes long
   }
 
   // Handle READ_DISC_INFO command (0x51)
-  handleReadDiscInfo (dev: number): number {
+  handleReadDiscInfo(dev: number): number {
     console.debug('SCSI READ_DISC_INFO', dev)
     this.ider.sendCommandEndResponse(false, 0x05, dev, 0x20, 0x00) // Correct
     return -1
   }
 
   // Handle MODE_SELECT_10 command (0x55)
-  handleModeSelect10 (dev: number): number {
+  handleModeSelect10(dev: number): number {
     console.debug('SCSI ERROR: MODE_SELECT_10', dev)
     this.ider.sendCommandEndResponse(true, 0x05, dev, 0x20, 0x00)
     return -1
   }
 
   // Handle MODE_SENSE_10 command (0x5a)
-  handleModeSense10 (dev: number, cdb: string, featureRegister: number): number {
+  handleModeSense10(dev: number, cdb: string, featureRegister: number): number {
     console.debug('SCSI: MODE_SENSE_10', dev, cdb.charCodeAt(2) & 0x3f)
     const buflen = TypeConverter.ReadShort(cdb, 7)
     let r: string | null = null
 
     if (buflen === 0) {
-      this.ider.sendDataToHost(dev, true, TypeConverter.IntToStr(0x003c) + TypeConverter.IntToStr(0x0008), featureRegister & 1)
+      this.ider.sendDataToHost(
+        dev,
+        true,
+        TypeConverter.IntToStr(0x003c) + TypeConverter.IntToStr(0x0008),
+        featureRegister & 1
+      )
       return -1
     }
 
     // 1.44 mb floppy or LS120 (sectorCount == 0x3c300)
     let sectorCount = 0
-    if (dev === 0xA0) {
+    if (dev === 0xa0) {
       if (this.ider.floppy != null) {
-        sectorCount = (this.ider.floppy.size >> 9)
+        sectorCount = this.ider.floppy.size >> 9
       }
     } else {
       if (this.ider.cdrom != null) {
-        sectorCount = (this.ider.cdrom.size >> 11)
+        sectorCount = this.ider.cdrom.size >> 11
       }
     }
     console.debug('cdb.charCodeAt(2) & 0x3f : ', cdb.charCodeAt(2) & 0x3f)
     switch (cdb.charCodeAt(2) & 0x3f) {
       case 0x01: // Case 1
-        if (dev === 0xA0) {
-          r = (sectorCount <= 0xb40) ? IDEModeSenceRecoveryArray.FloppyError() : IDEModeSenceRecoveryArray.Ls120Error()
+        if (dev === 0xa0) {
+          r = sectorCount <= 0xb40 ? IDEModeSenceRecoveryArray.FloppyError() : IDEModeSenceRecoveryArray.Ls120Error()
         } else {
           r = IDEModeSenceRecoveryArray.CDError()
         }
         break
       case 0x05: // Case 5
-        if (dev === 0xA0) {
-          r = (sectorCount <= 0xb40) ? IDEModeSenceArray.MSFloppyDiskPage() : IDEModeSenceArray.MSLS120DiskPage()
+        if (dev === 0xa0) {
+          r = sectorCount <= 0xb40 ? IDEModeSenceArray.MSFloppyDiskPage() : IDEModeSenceArray.MSLS120DiskPage()
         }
         break
       case 0x3f: // Case 63
-        if (dev === 0xA0) {
-          r = (sectorCount <= 0xb40) ? IDEModeSenceArray.MS3FFloppy() : IDEModeSenceArray.MS3FLS120()
+        if (dev === 0xa0) {
+          r = sectorCount <= 0xb40 ? IDEModeSenceArray.MS3FFloppy() : IDEModeSenceArray.MS3FLS120()
         } else {
           r = IDEModeSenceArray.MS3FCD()
         }
         break
-      case 0x1A: // Case 26
-        if (dev === 0xB0) {
+      case 0x1a: // Case 26
+        if (dev === 0xb0) {
           r = IDEModeSenceArray.MSCD1A()
         }
         break
-      case 0x1D: // Case 29
-        if (dev === 0xB0) {
+      case 0x1d: // Case 29
+        if (dev === 0xb0) {
           r = IDEModeSenceArray.MSCD1D()
         }
         break
-      case 0x2A: // Case 42
-        if (dev === 0xB0) {
+      case 0x2a: // Case 42
+        if (dev === 0xb0) {
           r = IDEModeSenceArray.MSCD2A()
         }
         break

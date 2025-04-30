@@ -1,7 +1,7 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 import { AMTDesktop } from '../core/AMTDesktop'
 import { createCanvas } from 'canvas'
@@ -16,10 +16,10 @@ describe('Test AMTDesktop', () => {
   let desktop: AMTDesktop
 
   beforeEach(() => {
-     // create objects
-     canvas = createCanvas(200, 200)
-     canvasCtx = canvas.getContext('2d')
-     desktop = new AMTDesktop(canvasCtx)
+    // create objects
+    canvas = createCanvas(200, 200)
+    canvasCtx = canvas.getContext('2d')
+    desktop = new AMTDesktop(canvasCtx)
   })
   it('Test start function in AMTDesktop', () => {
     // test start function

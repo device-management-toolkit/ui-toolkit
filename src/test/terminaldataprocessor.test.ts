@@ -1,17 +1,17 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 import { TerminalDataProcessor } from '../core/TerminalDataProcessor'
 import { AmtTerminal } from '../core/AMTTerminal'
 import { AmtTerminal2 } from './helper/amtTerminal2'
 
 describe('Test TerminalDataProcessor class', () => {
-  let result: string = ''
+  let result = ''
   it('Test TerminalDataProcessor for processData', () => {
     // callback function for Unit testing
-    function callback (value: string): void {
+    function callback(value: string): void {
       result = value
     }
 
@@ -21,7 +21,7 @@ describe('Test TerminalDataProcessor class', () => {
     tdataprocessor.processDataToXterm = callback
 
     // Test input
-    const s: string = 'abcD123?!=*“€'
+    const s = 'abcD123?!=*“€'
 
     // call processdata
     tdataprocessor.processData(s)
@@ -32,7 +32,7 @@ describe('Test TerminalDataProcessor class', () => {
 
   it('Test TerminalDataProcessor for processData', () => {
     // callback function for Unit testing
-    function callback (value: string): void {
+    function callback(value: string): void {
       result = value
     }
 
@@ -42,7 +42,7 @@ describe('Test TerminalDataProcessor class', () => {
     tdataprocessor.processDataToXterm = callback
 
     // Test input
-    const s: string = "123Z?“€'"
+    const s = "123Z?“€'"
 
     // call processdata
     tdataprocessor.processData(s)

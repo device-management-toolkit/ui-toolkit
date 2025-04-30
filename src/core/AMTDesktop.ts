@@ -55,13 +55,13 @@ export class AMTDesktop extends Desktop {
   setDeskFocus: (el: string, focusmode: number) => void
   getDeskFocus: (el: string) => any
 
-  protocol: number = 2
+  protocol = 2
 
   /**
    * Constructs the AMT Desktop
    * @param ctx Canvas Context to draw images
    */
-  constructor (ctx: any) {
+  constructor(ctx: any) {
     super()
     this.inflate = ZLIB.inflateInit(15)
     this.bpp = 1
@@ -73,24 +73,20 @@ export class AMTDesktop extends Desktop {
     this.sparecache = {}
     this.buttonmask = 0
     this.canvasControl = this.canvasCtx.canvas
-    this.lastMouseMoveTime = (new Date()).getTime()
-    this.setDeskFocus = (el, mode) => {
-
-    }
-    this.getDeskFocus = (el) => {
-
-    }
+    this.lastMouseMoveTime = new Date().getTime()
+    this.setDeskFocus = (el, mode) => {}
+    this.getDeskFocus = (el) => {}
   }
 
   /**
    * Called when
    * @param data data to forward to DataProcessor
    */
-  processData (data: string): void {
+  processData(data: string): void {
     this.onProcessData(data)
   }
 
-  onStateChange (state: number): void {
+  onStateChange(state: number): void {
     console.log(`state change in AMTDesktop: ${state}`)
     if (state === 0) {
       // Clear Canvas
@@ -99,7 +95,7 @@ export class AMTDesktop extends Desktop {
     }
   }
 
-  start (): void {
+  start(): void {
     console.log('Starting desktop here')
     this.state = 0
     this.inflate.inflateReset()
@@ -111,14 +107,18 @@ export class AMTDesktop extends Desktop {
     this.onKvmDataAck = -1
     this.kvmDataSupported = false
     // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
-    for (const i in this.sparecache) { delete this.sparecache[i] }
+    for (const i in this.sparecache) {
+      delete this.sparecache[i]
+    }
   }
 
-  onSendKvmData (data: string): void {
+  onSendKvmData(data: string): void {
     if (this.onKvmDataAck !== true) {
       this.onKvmDataPending.push(data)
     } else {
-      if (isTruthy(this.urlvars) && isTruthy(this.urlvars.kvmdatatrace)) { console.debug(`KVM-Send (${data.length}) data`) }
+      if (isTruthy(this.urlvars) && isTruthy(this.urlvars.kvmdatatrace)) {
+        console.debug(`KVM-Send (${data.length}) data`)
+      }
       data = '\0KvmDataChannel\0' + data
       this.onSend(String.fromCharCode(6, 0, 0, 0) + TypeConverter.IntToStr(data.length) + data)
       this.onKvmDataAck = false

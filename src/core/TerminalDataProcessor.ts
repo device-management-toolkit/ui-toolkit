@@ -9,7 +9,7 @@ import { type IDataProcessor } from './Interfaces'
 /** class to process serial over lan data **/
 export class TerminalDataProcessor implements IDataProcessor {
   terminal: AmtTerminal
-  constructor (terminal) {
+  constructor(terminal) {
     this.terminal = terminal
   }
 
@@ -19,7 +19,7 @@ export class TerminalDataProcessor implements IDataProcessor {
   /** processing data received from serial port**/
   processData = (str: string): any => {
     if (this.terminal.capture != null) this.terminal.capture = String(this.terminal.capture) + str
-    let c: string = ''
+    let c = ''
     for (let i = 0; i < str.length; i++) {
       const ch = str.charCodeAt(i)
       if (str[i] === 'J') {

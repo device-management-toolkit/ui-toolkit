@@ -1,7 +1,7 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 class TestEvent implements Event {
   bubbles: boolean
@@ -22,21 +22,19 @@ class TestEvent implements Event {
   preventDefaultVar: boolean
   stopPropagationVar: boolean
 
-  composedPath (): any {
+  composedPath(): any {
     return null
   }
 
-  initEvent (type: string, bubbles?: boolean, cancelable?: boolean): void {
-  }
+  initEvent(type: string, bubbles?: boolean, cancelable?: boolean): void {}
 
-  preventDefault (): void {
+  preventDefault(): void {
     this.preventDefaultVar = true
   }
 
-  stopImmediatePropagation (): void {
-  }
+  stopImmediatePropagation(): void {}
 
-  stopPropagation (): void {
+  stopPropagation(): void {
     this.stopPropagationVar = true
   }
 

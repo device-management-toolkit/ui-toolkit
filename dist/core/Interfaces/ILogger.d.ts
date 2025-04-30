@@ -4,17 +4,17 @@
  * Author : Ramu Bachala
  **********************************************************************/
 interface ILogger {
-    debug: (log: string) => void;
-    info: (log: string) => void;
-    error: (log: string) => void;
-    warn: (log: string) => void;
-    verbose: (log: string) => void;
+  debug: (log: string) => void
+  info: (log: string) => void
+  error: (log: string) => void
+  warn: (log: string) => void
+  verbose: (log: string) => void
 }
 declare enum LogLevel {
-    VERBOSE = 5,
-    INFO = 4,
-    DEBUG = 3,
-    WARNING = 2,
-    ERROR = 1
+  VERBOSE = 5,
+  INFO = 4,
+  DEBUG = 3,
+  WARNING = 2,
+  ERROR = 1
 }
-export { type ILogger, LogLevel };
+export { type ILogger, LogLevel }

@@ -1,11 +1,11 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 // simulate zlib
 class ZLib {
-  inflate (s: string): string {
+  inflate(s: string): string {
     return s
   }
 }

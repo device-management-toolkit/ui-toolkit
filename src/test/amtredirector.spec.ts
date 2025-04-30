@@ -1,7 +1,7 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 import { AMTRedirector, type RedirectorConfig } from '../core/AMTRedirector'
 
@@ -10,7 +10,7 @@ describe('Test AMT redirector class', () => {
   let redirector: AMTRedirector
 
   beforeEach(() => {
-     config = {
+    config = {
       mode: 'kvm',
       protocol: 1,
       fr: new FileReader(),

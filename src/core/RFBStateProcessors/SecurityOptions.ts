@@ -13,12 +13,13 @@ class SecurityOptions implements IStateProcessor {
   wsSocket: ICommunicator
   next: IStateProcessor
   updateRFBState: any
-  constructor (comm: ICommunicator, updateRFBState: (state: number) => void) {
+  constructor(comm: ICommunicator, updateRFBState: (state: number) => void) {
     this.wsSocket = comm
     this.updateRFBState = updateRFBState
   }
 
-  processState (acc: string): number { // acc is the accumulated byte encoded string so far
+  processState(acc: string): number {
+    // acc is the accumulated byte encoded string so far
     let cmdSize = 0
     if (acc.length >= 1) {
       // Getting security options

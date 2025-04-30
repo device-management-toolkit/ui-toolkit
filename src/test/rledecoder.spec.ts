@@ -3,9 +3,9 @@
  */
 
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 import { RLEDecoder } from '../core/ImageData/RLEDecoder'
 import { createCanvas, ImageData } from 'canvas'
@@ -24,9 +24,8 @@ describe('Test Decode function in RLEDecoder', () => {
     const strarray = RleVariables.inputtoDecode1.split(',')
     // Convert Input string into Unicode
     let input = ''
-    for (let i = 0; i < strarray.length; ++i) {
-      const substring1 = strarray[i]
-      const substringtonum = +substring1
+    for (const element of strarray) {
+      const substringtonum = +element
       input += String.fromCodePoint(substringtonum)
     }
 
@@ -61,9 +60,8 @@ describe('Test Decode function in RLEDecoder', () => {
     const strarray = RleVariables.inputtoDecode2.split(',')
     // Convert Input string into Unicode
     let input = ''
-    for (let i = 0; i < strarray.length; ++i) {
-      const substring1 = strarray[i]
-      const substringtonum = +substring1
+    for (const element of strarray) {
+      const substringtonum = +element
       input += String.fromCodePoint(substringtonum)
     }
 
@@ -99,9 +97,8 @@ describe('Test Decode function in RLEDecoder', () => {
     const strarray = RleVariables.inputtoDecode3.split(',')
     // Convert Input string into Unicode
     let input = ''
-    for (let i = 0; i < strarray.length; ++i) {
-      const substring1 = strarray[i]
-      const substringtonum = +substring1
+    for (const element of strarray) {
+      const substringtonum = +element
       input += String.fromCodePoint(substringtonum)
     }
 
@@ -136,9 +133,8 @@ describe('Test Decode function in RLEDecoder', () => {
     const strarray = RleVariables.inputtoDecode4.split(',')
     // Convert Input string into Unicode
     let input = ''
-    for (let i = 0; i < strarray.length; ++i) {
-      const substring1 = strarray[i]
-      const substringtonum = +substring1
+    for (const element of strarray) {
+      const substringtonum = +element
       input += String.fromCodePoint(substringtonum)
     }
 
@@ -173,9 +169,8 @@ describe('Test Decode function in RLEDecoder', () => {
     const strarray = RleVariables.inputtoDecode5.split(',')
     // Convert Input string into Unicode
     let input = ''
-    for (let i = 0; i < strarray.length; ++i) {
-      const substring1 = strarray[i]
-      const substringtonum = +substring1
+    for (const element of strarray) {
+      const substringtonum = +element
       input += String.fromCodePoint(substringtonum)
     }
 

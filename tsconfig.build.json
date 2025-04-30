@@ -1,10 +1,10 @@
 {
-    "extends": "./tsconfig.json",
-    "compilerOptions": {
-        "rootDir": "src"
-    },
-    "exclude": [
-        "./src/test/**/*",
-        "jest.setup.ts"
-    ]
-  }
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "rootDir": "src"
+  },
+  "exclude": [
+    "./src/test/**/*",
+    "jest.setup.ts"
+  ]
+}

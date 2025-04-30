@@ -1,12 +1,10 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 class TestMouseEvent implements MouseEvent {
-  initUIEvent (): any {
-
-  }
+  initUIEvent(): any {}
 
   altKey: boolean
   button: number
@@ -22,16 +20,32 @@ class TestMouseEvent implements MouseEvent {
   pageX: number
   pageY: number
   relatedTarget: EventTarget
-  screenX: number = 0
-  screenY: number = 0
+  screenX = 0
+  screenY = 0
   shiftKey: boolean
   x: number
   y: number
-  getModifierState (keyArg: string): boolean {
+  getModifierState(keyArg: string): boolean {
     throw new Error('Method not implemented.')
   }
 
-  initMouseEvent (typeArg: string, canBubbleArg: boolean, cancelableArg: boolean, viewArg: Window, detailArg: number, screenXArg: number, screenYArg: number, clientXArg: number, clientYArg: number, ctrlKeyArg: boolean, altKeyArg: boolean, shiftKeyArg: boolean, metaKeyArg: boolean, buttonArg: number, relatedTargetArg: EventTarget): void {
+  initMouseEvent(
+    typeArg: string,
+    canBubbleArg: boolean,
+    cancelableArg: boolean,
+    viewArg: Window,
+    detailArg: number,
+    screenXArg: number,
+    screenYArg: number,
+    clientXArg: number,
+    clientYArg: number,
+    ctrlKeyArg: boolean,
+    altKeyArg: boolean,
+    shiftKeyArg: boolean,
+    metaKeyArg: boolean,
+    buttonArg: number,
+    relatedTargetArg: EventTarget
+  ): void {
     throw new Error('Method not implemented.')
   }
 
@@ -51,21 +65,19 @@ class TestMouseEvent implements MouseEvent {
   target: EventTarget
   timeStamp: number
   type: string
-  composedPath (): any {
+  composedPath(): any {
     return null
   }
 
-  initEvent (type: string, bubbles?: boolean, cancelable?: boolean): void {
-  }
+  initEvent(type: string, bubbles?: boolean, cancelable?: boolean): void {}
 
-  preventDefault (): void {
+  preventDefault(): void {
     TestMouseEvent.preventDefaultvar++
   }
 
-  stopImmediatePropagation (): void {
-  }
+  stopImmediatePropagation(): void {}
 
-  stopPropagation (): void {
+  stopPropagation(): void {
     TestMouseEvent.stopPropagationvar++
   }
 

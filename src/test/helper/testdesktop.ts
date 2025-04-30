@@ -1,7 +1,7 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 import { Desktop } from '../../core'
 import { ZLib } from '../helper/testzlib'
 
@@ -51,9 +51,9 @@ class AmtDesktop extends Desktop {
   setDeskFocus: (el: string, focusmode: number) => void
   getDeskFocus: (el: string) => any
 
-  protocol: number = 2
+  protocol = 2
 
-  constructor () {
+  constructor() {
     super()
     this.inflate = new ZLib()
     this.bpp = 1
@@ -66,8 +66,10 @@ class AmtDesktop extends Desktop {
         return { top: 5, left: 5 }
       }
     }
-    this.setDeskFocus = () => { }
-    this.getDeskFocus = () => { return { left: 0, top: 0, width: 1, height: 1 } }
+    this.setDeskFocus = () => {}
+    this.getDeskFocus = () => {
+      return { left: 0, top: 0, width: 1, height: 1 }
+    }
     this.canvasCtx = {
       canvas: {
         width: 0,
@@ -91,20 +93,19 @@ class AmtDesktop extends Desktop {
     this.sparecache = {}
   }
 
-  processData (data: string): any {
+  processData(data: string): any {
     this.onProcessData(data)
   }
 
-  onStateChange (state: number): void {
+  onStateChange(state: number): void {
     console.log('state change', state)
   }
 
-  start (): void {
+  start(): void {
     console.log('Starting desktop here')
   }
 
-  onSendKvmData (data: string): void {
-  }
+  onSendKvmData(data: string): void {}
 
   onSend: (data: string) => void
 }

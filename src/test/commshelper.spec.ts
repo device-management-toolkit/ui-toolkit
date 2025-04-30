@@ -1,7 +1,7 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 import { Communicator } from './helper/testcommunicator'
 import { AmtDesktop } from './helper/testdesktop'
 import { CommsHelper } from '../core/Utilities/CommsHelper'
@@ -113,7 +113,10 @@ describe('Test CommsHelper', () => {
     // Input
     const comm = new Communicator()
     Communicator.sentData = ''
-    const k = [[30, 40], [50, 60]]
+    const k = [
+      [30, 40],
+      [50, 60]
+    ]
     const d = 50
 
     // Test sendKey
@@ -217,8 +220,8 @@ describe('Test CommsHelper', () => {
     expect(Communicator.sentData.charCodeAt(3)).toBe(0)
     expect(Communicator.sentData.charCodeAt(4)).toBe(0)
     expect(Communicator.sentData.charCodeAt(5)).toBe(0)
-    expect(Communicator.sentData.charCodeAt(6)).toBe(0xFF)
-    expect(Communicator.sentData.charCodeAt(7)).toBe(0xE3)
+    expect(Communicator.sentData.charCodeAt(6)).toBe(0xff)
+    expect(Communicator.sentData.charCodeAt(7)).toBe(0xe3)
 
     expect(Communicator.sentData.charCodeAt(8)).toBe(4)
     expect(Communicator.sentData.charCodeAt(9)).toBe(1)
@@ -226,8 +229,8 @@ describe('Test CommsHelper', () => {
     expect(Communicator.sentData.charCodeAt(11)).toBe(0)
     expect(Communicator.sentData.charCodeAt(12)).toBe(0)
     expect(Communicator.sentData.charCodeAt(13)).toBe(0)
-    expect(Communicator.sentData.charCodeAt(14)).toBe(0xFF)
-    expect(Communicator.sentData.charCodeAt(15)).toBe(0xE9)
+    expect(Communicator.sentData.charCodeAt(14)).toBe(0xff)
+    expect(Communicator.sentData.charCodeAt(15)).toBe(0xe9)
 
     expect(Communicator.sentData.charCodeAt(16)).toBe(4)
     expect(Communicator.sentData.charCodeAt(17)).toBe(1)
@@ -235,8 +238,8 @@ describe('Test CommsHelper', () => {
     expect(Communicator.sentData.charCodeAt(19)).toBe(0)
     expect(Communicator.sentData.charCodeAt(20)).toBe(0)
     expect(Communicator.sentData.charCodeAt(21)).toBe(0)
-    expect(Communicator.sentData.charCodeAt(22)).toBe(0xFF)
-    expect(Communicator.sentData.charCodeAt(23)).toBe(0xFF)
+    expect(Communicator.sentData.charCodeAt(22)).toBe(0xff)
+    expect(Communicator.sentData.charCodeAt(23)).toBe(0xff)
 
     expect(Communicator.sentData.charCodeAt(24)).toBe(4)
     expect(Communicator.sentData.charCodeAt(25)).toBe(0)
@@ -244,8 +247,8 @@ describe('Test CommsHelper', () => {
     expect(Communicator.sentData.charCodeAt(27)).toBe(0)
     expect(Communicator.sentData.charCodeAt(28)).toBe(0)
     expect(Communicator.sentData.charCodeAt(29)).toBe(0)
-    expect(Communicator.sentData.charCodeAt(30)).toBe(0xFF)
-    expect(Communicator.sentData.charCodeAt(31)).toBe(0xFF)
+    expect(Communicator.sentData.charCodeAt(30)).toBe(0xff)
+    expect(Communicator.sentData.charCodeAt(31)).toBe(0xff)
 
     expect(Communicator.sentData.charCodeAt(32)).toBe(4)
     expect(Communicator.sentData.charCodeAt(33)).toBe(0)
@@ -253,8 +256,8 @@ describe('Test CommsHelper', () => {
     expect(Communicator.sentData.charCodeAt(35)).toBe(0)
     expect(Communicator.sentData.charCodeAt(36)).toBe(0)
     expect(Communicator.sentData.charCodeAt(37)).toBe(0)
-    expect(Communicator.sentData.charCodeAt(38)).toBe(0xFF)
-    expect(Communicator.sentData.charCodeAt(39)).toBe(0xE9)
+    expect(Communicator.sentData.charCodeAt(38)).toBe(0xff)
+    expect(Communicator.sentData.charCodeAt(39)).toBe(0xe9)
 
     expect(Communicator.sentData.charCodeAt(40)).toBe(4)
     expect(Communicator.sentData.charCodeAt(41)).toBe(0)
@@ -262,8 +265,8 @@ describe('Test CommsHelper', () => {
     expect(Communicator.sentData.charCodeAt(43)).toBe(0)
     expect(Communicator.sentData.charCodeAt(44)).toBe(0)
     expect(Communicator.sentData.charCodeAt(45)).toBe(0)
-    expect(Communicator.sentData.charCodeAt(46)).toBe(0xFF)
-    expect(Communicator.sentData.charCodeAt(47)).toBe(0xE3)
+    expect(Communicator.sentData.charCodeAt(46)).toBe(0xff)
+    expect(Communicator.sentData.charCodeAt(47)).toBe(0xe3)
   })
 
   it('Test sendCad', () => {
@@ -281,8 +284,8 @@ describe('Test CommsHelper', () => {
     expect(Communicator.sentData.charCodeAt(3)).toBe(0)
     expect(Communicator.sentData.charCodeAt(4)).toBe(0)
     expect(Communicator.sentData.charCodeAt(5)).toBe(0)
-    expect(Communicator.sentData.charCodeAt(6)).toBe(0xFF)
-    expect(Communicator.sentData.charCodeAt(7)).toBe(0xE3)
+    expect(Communicator.sentData.charCodeAt(6)).toBe(0xff)
+    expect(Communicator.sentData.charCodeAt(7)).toBe(0xe3)
 
     expect(Communicator.sentData.charCodeAt(8)).toBe(4)
     expect(Communicator.sentData.charCodeAt(9)).toBe(1)
@@ -290,8 +293,8 @@ describe('Test CommsHelper', () => {
     expect(Communicator.sentData.charCodeAt(11)).toBe(0)
     expect(Communicator.sentData.charCodeAt(12)).toBe(0)
     expect(Communicator.sentData.charCodeAt(13)).toBe(0)
-    expect(Communicator.sentData.charCodeAt(14)).toBe(0xFF)
-    expect(Communicator.sentData.charCodeAt(15)).toBe(0xE9)
+    expect(Communicator.sentData.charCodeAt(14)).toBe(0xff)
+    expect(Communicator.sentData.charCodeAt(15)).toBe(0xe9)
 
     expect(Communicator.sentData.charCodeAt(16)).toBe(4)
     expect(Communicator.sentData.charCodeAt(17)).toBe(1)
@@ -299,8 +302,8 @@ describe('Test CommsHelper', () => {
     expect(Communicator.sentData.charCodeAt(19)).toBe(0)
     expect(Communicator.sentData.charCodeAt(20)).toBe(0)
     expect(Communicator.sentData.charCodeAt(21)).toBe(0)
-    expect(Communicator.sentData.charCodeAt(22)).toBe(0xFF)
-    expect(Communicator.sentData.charCodeAt(23)).toBe(0xFF)
+    expect(Communicator.sentData.charCodeAt(22)).toBe(0xff)
+    expect(Communicator.sentData.charCodeAt(23)).toBe(0xff)
 
     expect(Communicator.sentData.charCodeAt(24)).toBe(4)
     expect(Communicator.sentData.charCodeAt(25)).toBe(0)
@@ -308,8 +311,8 @@ describe('Test CommsHelper', () => {
     expect(Communicator.sentData.charCodeAt(27)).toBe(0)
     expect(Communicator.sentData.charCodeAt(28)).toBe(0)
     expect(Communicator.sentData.charCodeAt(29)).toBe(0)
-    expect(Communicator.sentData.charCodeAt(30)).toBe(0xFF)
-    expect(Communicator.sentData.charCodeAt(31)).toBe(0xFF)
+    expect(Communicator.sentData.charCodeAt(30)).toBe(0xff)
+    expect(Communicator.sentData.charCodeAt(31)).toBe(0xff)
 
     expect(Communicator.sentData.charCodeAt(32)).toBe(4)
     expect(Communicator.sentData.charCodeAt(33)).toBe(0)
@@ -317,8 +320,8 @@ describe('Test CommsHelper', () => {
     expect(Communicator.sentData.charCodeAt(35)).toBe(0)
     expect(Communicator.sentData.charCodeAt(36)).toBe(0)
     expect(Communicator.sentData.charCodeAt(37)).toBe(0)
-    expect(Communicator.sentData.charCodeAt(38)).toBe(0xFF)
-    expect(Communicator.sentData.charCodeAt(39)).toBe(0xE9)
+    expect(Communicator.sentData.charCodeAt(38)).toBe(0xff)
+    expect(Communicator.sentData.charCodeAt(39)).toBe(0xe9)
 
     expect(Communicator.sentData.charCodeAt(40)).toBe(4)
     expect(Communicator.sentData.charCodeAt(41)).toBe(0)
@@ -326,7 +329,7 @@ describe('Test CommsHelper', () => {
     expect(Communicator.sentData.charCodeAt(43)).toBe(0)
     expect(Communicator.sentData.charCodeAt(44)).toBe(0)
     expect(Communicator.sentData.charCodeAt(45)).toBe(0)
-    expect(Communicator.sentData.charCodeAt(46)).toBe(0xFF)
-    expect(Communicator.sentData.charCodeAt(47)).toBe(0xE3)
+    expect(Communicator.sentData.charCodeAt(46)).toBe(0xff)
+    expect(Communicator.sentData.charCodeAt(47)).toBe(0xe3)
   })
 })

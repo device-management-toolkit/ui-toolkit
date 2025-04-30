@@ -32,82 +32,82 @@
   (zlib format), rfc1951 (deflate format) and rfc1952 (gzip format).
 */
 
-var ZLIB = ( ZLIB || {} ); // ZLIB namespace initialization
+var ZLIB = ZLIB || {} // ZLIB namespace initialization
 
 // common definitions
-if(typeof ZLIB.common_initialized === 'undefined') {
-    ZLIB.Z_NO_FLUSH      = 0;
-    ZLIB.Z_PARTIAL_FLUSH = 1;
-    ZLIB.Z_SYNC_FLUSH    = 2;
-    ZLIB.Z_FULL_FLUSH    = 3;
-    ZLIB.Z_FINISH        = 4;
-    ZLIB.Z_BLOCK         = 5;
-    ZLIB.Z_TREES         = 6;
-    /* Allowed flush values; see deflate() and inflate() below for details */
+if (typeof ZLIB.common_initialized === 'undefined') {
+  ZLIB.Z_NO_FLUSH = 0
+  ZLIB.Z_PARTIAL_FLUSH = 1
+  ZLIB.Z_SYNC_FLUSH = 2
+  ZLIB.Z_FULL_FLUSH = 3
+  ZLIB.Z_FINISH = 4
+  ZLIB.Z_BLOCK = 5
+  ZLIB.Z_TREES = 6
+  /* Allowed flush values; see deflate() and inflate() below for details */
 
-    ZLIB.Z_OK           =  0;
-    ZLIB.Z_STREAM_END   =  1;
-    ZLIB.Z_NEED_DICT    =  2;
-    ZLIB.Z_ERRNO        = (-1);
-    ZLIB.Z_STREAM_ERROR = (-2);
-    ZLIB.Z_DATA_ERROR   = (-3);
-    ZLIB.Z_MEM_ERROR    = (-4);
-    ZLIB.Z_BUF_ERROR    = (-5);
-    ZLIB.Z_VERSION_ERROR = (-6);
-    /* Return codes for the compression/decompression functions. Negative values
-     * are errors, positive values are used for special but normal events.
-     */
+  ZLIB.Z_OK = 0
+  ZLIB.Z_STREAM_END = 1
+  ZLIB.Z_NEED_DICT = 2
+  ZLIB.Z_ERRNO = -1
+  ZLIB.Z_STREAM_ERROR = -2
+  ZLIB.Z_DATA_ERROR = -3
+  ZLIB.Z_MEM_ERROR = -4
+  ZLIB.Z_BUF_ERROR = -5
+  ZLIB.Z_VERSION_ERROR = -6
+  /* Return codes for the compression/decompression functions. Negative values
+   * are errors, positive values are used for special but normal events.
+   */
 
-    ZLIB.Z_DEFLATED = 8; /* The deflate compression method (the only one supported in this version) */
+  ZLIB.Z_DEFLATED = 8 /* The deflate compression method (the only one supported in this version) */
 
-    /**
-	 * z_stream constructor
-	 * @constructor
-	 */
-	ZLIB.z_stream = function() {
-			this.next_in = 0;        /* next input byte */
-			this.avail_in = 0;       /* number of bytes available in input_data */
-			this.total_in = 0;       /* total number of input bytes read so far */
+  /**
+   * z_stream constructor
+   * @constructor
+   */
+  ZLIB.z_stream = function () {
+    this.next_in = 0 /* next input byte */
+    this.avail_in = 0 /* number of bytes available in input_data */
+    this.total_in = 0 /* total number of input bytes read so far */
 
-			this.next_out = 0;       /* next output byte */
-			this.avail_out = 0;      /* remaining free space at next_out */
-			this.total_out = 0;      /* total number of bytes output so far */
+    this.next_out = 0 /* next output byte */
+    this.avail_out = 0 /* remaining free space at next_out */
+    this.total_out = 0 /* total number of bytes output so far */
 
-			this.msg = null;         /* last error message, null if no error */
-			this.state = null;       /* not visible by applications */
+    this.msg = null /* last error message, null if no error */
+    this.state = null /* not visible by applications */
 
-			this.data_type = 0;      /* best guess about the data type: binary or text */
-			this.adler = 0;          /* TODO: adler32 value of the uncompressed data */
+    this.data_type = 0 /* best guess about the data type: binary or text */
+    this.adler = 0 /* TODO: adler32 value of the uncompressed data */
 
-			// zlib.js
-			this.input_data = '';    /* input data */
-			this.output_data = '';   /* output data */
-			this.error = 0;          /* error code */
-			this.checksum_function = null; /* crc32(for gzip) or adler32(for zlib) */
-	};
+    // zlib.js
+    this.input_data = '' /* input data */
+    this.output_data = '' /* output data */
+    this.error = 0 /* error code */
+    this.checksum_function = null /* crc32(for gzip) or adler32(for zlib) */
+  }
 
-    /**
-	 * TODO
-	 * @constructor
-	 */
-	ZLIB.gz_header = function() {
-		this.text = 0;      /* true if compressed data believed to be text */
-	    this.time = 0;      /* modification time */
-		this.xflags = 0;    /* extra flags (not used when writing a gzip file) */
-		this.os = 0xff;     /* operating system */
-		this.extra = null;  /* extra field string or null if none */
-		this.extra_len = 0; /* this.extra.length (only when reading header) */
-		this.extra_max = 0; /* space at extra (only when reading header) */
-		this.name = null;   /* file name string or null if none */
-		this.name_max = 0;  /* space at name (only when reading header) */
-		this.comment = null; /* comment string or null if none */
-		this.comm_max = 0;  /* space at comment (only when reading header) */
-		this.hcrc = 0;      /* true if there was or will be a header crc */
-		this.done = 0;      /* true when done reading gzip header (not used
+  /**
+   * TODO
+   * @constructor
+   */
+  ZLIB.gz_header = function () {
+    this.text = 0 /* true if compressed data believed to be text */
+    this.time = 0 /* modification time */
+    this.xflags = 0 /* extra flags (not used when writing a gzip file) */
+    this.os = 0xff /* operating system */
+    this.extra = null /* extra field string or null if none */
+    this.extra_len = 0 /* this.extra.length (only when reading header) */
+    this.extra_max = 0 /* space at extra (only when reading header) */
+    this.name = null /* file name string or null if none */
+    this.name_max = 0 /* space at name (only when reading header) */
+    this.comment = null /* comment string or null if none */
+    this.comm_max = 0 /* space at comment (only when reading header) */
+    this.hcrc = 0 /* true if there was or will be a header crc */
+    this.done = 0 /* true when done reading gzip header (not used
 							   when writing a gzip file) */
-	};
+  }
 
-	ZLIB.common_initialized = true;
+  ZLIB.common_initialized = true
 } // common definitions
 /* zlib-inflate.js -- JavaScript implementation for the zlib inflate.
   Version: 0.2.0
@@ -182,54 +182,53 @@ Usage: z_stream.inflateReset();
 
 */
 
-if( typeof ZLIB === 'undefined' ) {
-    alert('ZLIB is not defined.  SRC zlib.js before zlib-inflate.js')
+if (typeof ZLIB === 'undefined') {
+  alert('ZLIB is not defined.  SRC zlib.js before zlib-inflate.js')
 }
 
-(function() {
+;(function () {
+  /* inflate.c -- zlib decompression
+   * Copyright (C) 1995-2011 Mark Adler
+   * For conditions of distribution and use, see copyright notice in zlib.h
+   */
 
-/* inflate.c -- zlib decompression
- * Copyright (C) 1995-2011 Mark Adler
- * For conditions of distribution and use, see copyright notice in zlib.h
- */
+  var DEF_WBITS = 15
 
-var DEF_WBITS = 15;
+  // inflate_mode
+  var HEAD = 0 /* i: waiting for magic header */
+  var FLAGS = 1 /* i: waiting for method and flags (gzip) */
+  var TIME = 2 /* i: waiting for modification time (gzip) */
+  var OS = 3 /* i: waiting for extra flags and operating system (gzip) */
+  var EXLEN = 4 /* i: waiting for extra length (gzip) */
+  var EXTRA = 5 /* i: waiting for extra bytes (gzip) */
+  var NAME = 6 /* i: waiting for end of file name (gzip) */
+  var COMMENT = 7 /* i: waiting for end of comment (gzip) */
+  var HCRC = 8 /* i: waiting for header crc (gzip) */
+  var DICTID = 9 /* i: waiting for dictionary check value */
+  var DICT = 10 /* waiting for inflateSetDictionary() call */
+  var TYPE = 11 /* i: waiting for type bits, including last-flag bit */
+  var TYPEDO = 12 /* i: same, but skip check to exit inflate on new block */
+  var STORED = 13 /* i: waiting for stored size (length and complement) */
+  var COPY_ = 14 /* i/o: same as COPY below, but only first time in */
+  var COPY = 15 /* i/o: waiting for input or output to copy stored block */
+  var TABLE = 16 /* i: waiting for dynamic block table lengths */
+  var LENLENS = 17 /* i: waiting for code length code lengths */
+  var CODELENS = 18 /* i: waiting for length/lit and distance code lengths */
+  var LEN_ = 19 /* i: same as LEN below, but only first time in */
+  var LEN = 20 /* i: waiting for length/lit/eob code */
+  var LENEXT = 21 /* i: waiting for length extra bits */
+  var DIST = 22 /* i: waiting for distance code */
+  var DISTEXT = 23 /* i: waiting for distance extra bits */
+  var MATCH = 24 /* o: waiting for output space to copy string */
+  var LIT = 25 /* o: waiting for output space to write literal */
+  var CHECK = 26 /* i: waiting for 32-bit check value */
+  var LENGTH = 27 /* i: waiting for 32-bit length (gzip) */
+  var DONE = 28 /* finished check, done -- remain here until reset */
+  var BAD = 29 /* got a data error -- remain here until reset */
+  var MEM = 30 /* got an inflate() memory error -- remain here until reset */
+  var SYNC = 31 /* looking for synchronization bytes to restart inflate() */
 
-// inflate_mode
-var HEAD     =  0; /* i: waiting for magic header */
-var FLAGS    =  1; /* i: waiting for method and flags (gzip) */
-var TIME     =  2; /* i: waiting for modification time (gzip) */
-var OS       =  3; /* i: waiting for extra flags and operating system (gzip) */
-var EXLEN    =  4; /* i: waiting for extra length (gzip) */
-var EXTRA    =  5; /* i: waiting for extra bytes (gzip) */
-var NAME     =  6; /* i: waiting for end of file name (gzip) */
-var COMMENT  =  7; /* i: waiting for end of comment (gzip) */
-var HCRC     =  8; /* i: waiting for header crc (gzip) */
-var DICTID   =  9; /* i: waiting for dictionary check value */
-var DICT     = 10; /* waiting for inflateSetDictionary() call */
-var TYPE     = 11; /* i: waiting for type bits, including last-flag bit */
-var TYPEDO   = 12; /* i: same, but skip check to exit inflate on new block */
-var STORED   = 13; /* i: waiting for stored size (length and complement) */
-var COPY_    = 14; /* i/o: same as COPY below, but only first time in */
-var COPY     = 15; /* i/o: waiting for input or output to copy stored block */
-var TABLE    = 16; /* i: waiting for dynamic block table lengths */
-var LENLENS  = 17; /* i: waiting for code length code lengths */
-var CODELENS = 18; /* i: waiting for length/lit and distance code lengths */
-var LEN_     = 19; /* i: same as LEN below, but only first time in */
-var LEN      = 20; /* i: waiting for length/lit/eob code */
-var LENEXT   = 21; /* i: waiting for length extra bits */
-var DIST     = 22; /* i: waiting for distance code */
-var DISTEXT  = 23; /* i: waiting for distance extra bits */
-var MATCH    = 24; /* o: waiting for output space to copy string */
-var LIT      = 25; /* o: waiting for output space to write literal */
-var CHECK    = 26; /* i: waiting for 32-bit check value */
-var LENGTH   = 27; /* i: waiting for 32-bit length (gzip) */
-var DONE     = 28; /* finished check, done -- remain here until reset */
-var BAD      = 29; /* got a data error -- remain here until reset */
-var MEM      = 30; /* got an inflate() memory error -- remain here until reset */
-var SYNC     = 31; /* looking for synchronization bytes to restart inflate() */
-
-/* Maximum size of the dynamic table.  The maximum number of code structures is
+  /* Maximum size of the dynamic table.  The maximum number of code structures is
    1444, which is the sum of 852 for literal/length codes and 592 for distance
    codes.  These values were found by exhaustive searches using the program
    examples/enough.c found in the zlib distribtution.  The arguments to that
@@ -240,47 +239,164 @@ var SYNC     = 31; /* looking for synchronization bytes to restart inflate() */
    inflate_table() calls in inflate.c and infback.c.  If the root table size is
    changed, then these maximum sizes would be need to be recalculated and
    updated. */
-var ENOUGH_LENS = 852;
-var ENOUGH_DISTS = 592;
-var ENOUGH = (ENOUGH_LENS + ENOUGH_DISTS);
+  var ENOUGH_LENS = 852
+  var ENOUGH_DISTS = 592
+  var ENOUGH = ENOUGH_LENS + ENOUGH_DISTS
 
-/* Type of code to build for inflate_table() */
-var CODES = 0;
-var LENS = 1;
-var DISTS = 2;
+  /* Type of code to build for inflate_table() */
+  var CODES = 0
+  var LENS = 1
+  var DISTS = 2
 
+  var inflate_table_lbase = [
+    /* Length codes 257..285 base */ 3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    13,
+    15,
+    17,
+    19,
+    23,
+    27,
+    31,
+    35,
+    43,
+    51,
+    59,
+    67,
+    83,
+    99,
+    115,
+    131,
+    163,
+    195,
+    227,
+    258,
+    0,
+    0
+  ]
+  var inflate_table_lext = [
+    /* Length codes 257..285 extra */ 16,
+    16,
+    16,
+    16,
+    16,
+    16,
+    16,
+    16,
+    17,
+    17,
+    17,
+    17,
+    18,
+    18,
+    18,
+    18,
+    19,
+    19,
+    19,
+    19,
+    20,
+    20,
+    20,
+    20,
+    21,
+    21,
+    21,
+    21,
+    16,
+    203,
+    69
+  ]
+  var inflate_table_dbase = [
+    /* Distance codes 0..29 base */ 1,
+    2,
+    3,
+    4,
+    5,
+    7,
+    9,
+    13,
+    17,
+    25,
+    33,
+    49,
+    65,
+    97,
+    129,
+    193,
+    257,
+    385,
+    513,
+    769,
+    1025,
+    1537,
+    2049,
+    3073,
+    4097,
+    6145,
+    8193,
+    12289,
+    16385,
+    24577,
+    0,
+    0
+  ]
+  var inflate_table_dext = [
+    /* Distance codes 0..29 extra */ 16,
+    16,
+    16,
+    16,
+    17,
+    17,
+    18,
+    18,
+    19,
+    19,
+    20,
+    20,
+    21,
+    21,
+    22,
+    22,
+    23,
+    23,
+    24,
+    24,
+    25,
+    25,
+    26,
+    26,
+    27,
+    27,
+    28,
+    28,
+    29,
+    29,
+    64,
+    64
+  ]
 
+  /* inftrees.c -- generate Huffman trees for efficient decoding
+   * Copyright (C) 1995-2012 Mark Adler
+   * For conditions of distribution and use, see copyright notice in zlib.h
+   */
 
-var inflate_table_lbase = [ /* Length codes 257..285 base */
-    3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 15, 17, 19, 23, 27, 31,
-    35, 43, 51, 59, 67, 83, 99, 115, 131, 163, 195, 227, 258, 0, 0];
-var inflate_table_lext = [ /* Length codes 257..285 extra */
-    16, 16, 16, 16, 16, 16, 16, 16, 17, 17, 17, 17, 18, 18, 18, 18,
-    19, 19, 19, 19, 20, 20, 20, 20, 21, 21, 21, 21, 16, 203, 69];
-var inflate_table_dbase = [ /* Distance codes 0..29 base */
-    1, 2, 3, 4, 5, 7, 9, 13, 17, 25, 33, 49, 65, 97, 129, 193,
-    257, 385, 513, 769, 1025, 1537, 2049, 3073, 4097, 6145,
-    8193, 12289, 16385, 24577, 0, 0];
-var inflate_table_dext = [ /* Distance codes 0..29 extra */
-    16, 16, 16, 16, 17, 17, 18, 18, 19, 19, 20, 20, 21, 21, 22, 22,
-    23, 23, 24, 24, 25, 25, 26, 26, 27, 27,
-    28, 28, 29, 29, 64, 64];
-
-/* inftrees.c -- generate Huffman trees for efficient decoding
- * Copyright (C) 1995-2012 Mark Adler
- * For conditions of distribution and use, see copyright notice in zlib.h
- */
-
-ZLIB.inflate_copyright =
-   ' inflate 1.2.6 Copyright 1995-2012 Mark Adler ';
-/*
+  ZLIB.inflate_copyright = ' inflate 1.2.6 Copyright 1995-2012 Mark Adler '
+  /*
   If you use the zlib library in a product, an acknowledgment is welcome
   in the documentation of your product. If for some reason you cannot
   include such an acknowledgment, I would appreciate that you keep this
   copyright string in the executable of your product.
  */
 
-/*
+  /*
   Build a set of tables to decode the provided canonical Huffman code.
   The code lengths are lens[0..codes-1].  The result starts at *table,
   whose indices are 0..2^bits-1.  work is a writable array of at least
@@ -292,45 +408,42 @@ ZLIB.inflate_copyright =
   table index bits.  It will differ if the request is greater than the
   longest code or if it is less than the shortest code.
 */
-function inflate_table(state, type)
-{
-    var MAXBITS = 15;
-    var table = state.next;
-    var bits = (type == DISTS ? state.distbits : state.lenbits);
-    var work = state.work;
-    var lens = state.lens;
-    var lens_offset = (type == DISTS ? state.nlen : 0);
-    var state_codes = state.codes;
-    var codes;
-    if(type == LENS)
-        codes = state.nlen;
-    else if(type == DISTS)
-        codes = state.ndist;
-    else // CODES
-        codes = 19;
+  function inflate_table(state, type) {
+    var MAXBITS = 15
+    var table = state.next
+    var bits = type == DISTS ? state.distbits : state.lenbits
+    var work = state.work
+    var lens = state.lens
+    var lens_offset = type == DISTS ? state.nlen : 0
+    var state_codes = state.codes
+    var codes
+    if (type == LENS) codes = state.nlen
+    else if (type == DISTS)
+      codes = state.ndist // CODES
+    else codes = 19
 
-    var len;               /* a code's length in bits */
-    var sym;               /* index of code symbols */
-    var min, max;          /* minimum and maximum code lengths */
-    var root;              /* number of index bits for root table */
-    var curr;              /* number of index bits for current table */
-    var drop;              /* code bits to drop for sub-table */
-    var left;              /* number of prefix codes available */
-    var used;              /* code entries in table used */
-    var huff;              /* Huffman code */
-    var incr;              /* for incrementing code, index */
-    var fill;              /* index for replicating entries */
-    var low;               /* low bits for current root entry */
-    var mask;              /* mask for low root bits */
-    var here;              /* table entry for duplication */
-    var next;              /* next available space in table */
-    var base;              /* base value table to use */
-    var base_offset;
-    var extra;             /* extra bits table to use */
-    var extra_offset;
-    var end;                    /* use base and extra for symbol > end */
-    var count = new Array(MAXBITS+1);    /* number of codes of each length */
-    var offs = new Array(MAXBITS+1);     /* offsets in table for each length */
+    var len /* a code's length in bits */
+    var sym /* index of code symbols */
+    var min, max /* minimum and maximum code lengths */
+    var root /* number of index bits for root table */
+    var curr /* number of index bits for current table */
+    var drop /* code bits to drop for sub-table */
+    var left /* number of prefix codes available */
+    var used /* code entries in table used */
+    var huff /* Huffman code */
+    var incr /* for incrementing code, index */
+    var fill /* index for replicating entries */
+    var low /* low bits for current root entry */
+    var mask /* mask for low root bits */
+    var here /* table entry for duplication */
+    var next /* next available space in table */
+    var base /* base value table to use */
+    var base_offset
+    var extra /* extra bits table to use */
+    var extra_offset
+    var end /* use base and extra for symbol > end */
+    var count = new Array(MAXBITS + 1) /* number of codes of each length */
+    var offs = new Array(MAXBITS + 1) /* offsets in table for each length */
 
     /*
       Process a set of code lengths to create a canonical Huffman code.  The
@@ -364,51 +477,46 @@ function inflate_table(state, type)
     */
 
     /* accumulate lengths for codes (assumes lens[] all in 0..MAXBITS) */
-    for (len = 0; len <= MAXBITS; len++)
-        count[len] = 0;
-    for (sym = 0; sym < codes; sym++)
-        count[lens[lens_offset + sym]]++;
+    for (len = 0; len <= MAXBITS; len++) count[len] = 0
+    for (sym = 0; sym < codes; sym++) count[lens[lens_offset + sym]]++
 
     /* bound code lengths, force root to be within code lengths */
-    root = bits;
+    root = bits
 
-    for (max = MAXBITS; max >= 1; max--)
-        if (count[max] != 0) break;
-    if (root > max) root = max;
+    for (max = MAXBITS; max >= 1; max--) if (count[max] != 0) break
+    if (root > max) root = max
     if (max == 0) {
-        /* no symbols to code at all */
-        /* invalid code marker */
-        here = {op:64, bits:1, val:0};
-        state_codes[table++] = here; /* make a table to force an error */
-        state_codes[table++] = here;
-        if(type == DISTS) state.distbits = 1; else state.lenbits = 1; // *bits = 1;
-        state.next = table;
-        return 0;     /* no symbols, but wait for decoding to report error */
+      /* no symbols to code at all */
+      /* invalid code marker */
+      here = { op: 64, bits: 1, val: 0 }
+      state_codes[table++] = here /* make a table to force an error */
+      state_codes[table++] = here
+      if (type == DISTS) state.distbits = 1
+      else state.lenbits = 1 // *bits = 1;
+      state.next = table
+      return 0 /* no symbols, but wait for decoding to report error */
     }
-    for (min = 1; min < max; min++)
-        if (count[min] != 0) break;
-    if (root < min) root = min;
+    for (min = 1; min < max; min++) if (count[min] != 0) break
+    if (root < min) root = min
 
     /* check for an over-subscribed or incomplete set of lengths */
-    left = 1;
+    left = 1
     for (len = 1; len <= MAXBITS; len++) {
-        left <<= 1;
-        left -= count[len];
-        if (left < 0) return -1;        /* over-subscribed */
+      left <<= 1
+      left -= count[len]
+      if (left < 0) return -1 /* over-subscribed */
     }
     if (left > 0 && (type == CODES || max != 1)) {
-        state.next = table;
-        return -1;                      /* incomplete set */
+      state.next = table
+      return -1 /* incomplete set */
     }
 
     /* generate offsets into symbol table for each length for sorting */
-    offs[1] = 0;
-    for (len = 1; len < MAXBITS; len++)
-        offs[len + 1] = offs[len] + count[len];
+    offs[1] = 0
+    for (len = 1; len < MAXBITS; len++) offs[len + 1] = offs[len] + count[len]
 
     /* sort symbols by length, by symbol order within each length */
-    for (sym = 0; sym < codes; sym++)
-        if (lens[lens_offset + sym] != 0) work[offs[lens[lens_offset + sym]]++] = sym;
+    for (sym = 0; sym < codes; sym++) if (lens[lens_offset + sym] != 0) work[offs[lens[lens_offset + sym]]++] = sym
 
     /*
       Create and fill in decoding tables.  In this loop, the table being
@@ -443,139 +551,132 @@ function inflate_table(state, type)
 
     /* set up for code type */
     switch (type) {
-    case CODES:
-        base = extra = work;    /* dummy value--not used */
-        base_offset = 0;
-        extra_offset = 0;
-        end = 19;
-        break;
-    case LENS:
-        base = inflate_table_lbase;
-        base_offset = -257; // base -= 257;
-        extra = inflate_table_lext;
-        extra_offset = -257; // extra -= 257;
-        end = 256;
-        break;
-    default:            /* DISTS */
-        base = inflate_table_dbase;
-        extra = inflate_table_dext;
-        base_offset = 0;
-        extra_offset = 0;
-        end = -1;
+      case CODES:
+        base = extra = work /* dummy value--not used */
+        base_offset = 0
+        extra_offset = 0
+        end = 19
+        break
+      case LENS:
+        base = inflate_table_lbase
+        base_offset = -257 // base -= 257;
+        extra = inflate_table_lext
+        extra_offset = -257 // extra -= 257;
+        end = 256
+        break
+      default: /* DISTS */
+        base = inflate_table_dbase
+        extra = inflate_table_dext
+        base_offset = 0
+        extra_offset = 0
+        end = -1
     }
 
     /* initialize state for loop */
-    huff = 0;                   /* starting code */
-    sym = 0;                    /* starting code symbol */
-    len = min;                  /* starting code length */
-    next = table;               /* current table to fill in */
-    curr = root;                /* current table index bits */
-    drop = 0;                   /* current bits to drop from code for index */
-    low = -1;                   /* trigger new sub-table when len > root */
-    used = 1 << root;           /* use root table entries */
-    mask = used - 1;            /* mask for comparing low */
+    huff = 0 /* starting code */
+    sym = 0 /* starting code symbol */
+    len = min /* starting code length */
+    next = table /* current table to fill in */
+    curr = root /* current table index bits */
+    drop = 0 /* current bits to drop from code for index */
+    low = -1 /* trigger new sub-table when len > root */
+    used = 1 << root /* use root table entries */
+    mask = used - 1 /* mask for comparing low */
 
     /* check available table space */
-    if ((type == LENS && used >= ENOUGH_LENS) ||
-        (type == DISTS && used >= ENOUGH_DISTS)) {
-        state.next = table;
-        return 1;
+    if ((type == LENS && used >= ENOUGH_LENS) || (type == DISTS && used >= ENOUGH_DISTS)) {
+      state.next = table
+      return 1
     }
 
     /* process all codes and make table entries */
     for (;;) {
-        /* create table entry */
-        here = {op:0, bits:len - drop, val:0};
-        if (work[sym] < end) {
-            here.val = work[sym];
+      /* create table entry */
+      here = { op: 0, bits: len - drop, val: 0 }
+      if (work[sym] < end) {
+        here.val = work[sym]
+      } else if (work[sym] > end) {
+        here.op = extra[extra_offset + work[sym]]
+        here.val = base[base_offset + work[sym]]
+      } else {
+        here.op = 32 + 64 /* end of block */
+      }
+
+      /* replicate for those indices with low len bits equal to huff */
+      incr = 1 << (len - drop)
+      fill = 1 << curr
+      min = fill /* save offset to next table */
+      do {
+        fill -= incr
+        state_codes[next + (huff >>> drop) + fill] = here
+      } while (fill != 0)
+
+      /* backwards increment the len-bit code huff */
+      incr = 1 << (len - 1)
+      while (huff & incr) incr >>>= 1
+      if (incr != 0) {
+        huff &= incr - 1
+        huff += incr
+      } else huff = 0
+
+      /* go to next symbol, update count, len */
+      sym++
+      if (--count[len] == 0) {
+        if (len == max) break
+        len = lens[lens_offset + work[sym]]
+      }
+
+      /* create new sub-table if needed */
+      if (len > root && (huff & mask) != low) {
+        /* if first time, transition to sub-tables */
+        if (drop == 0) drop = root
+
+        /* increment past last table */
+        next += min /* here min is 1 << curr */
+
+        /* determine length of next table */
+        curr = len - drop
+        left = 1 << curr
+        while (curr + drop < max) {
+          left -= count[curr + drop]
+          if (left <= 0) break
+          curr++
+          left <<= 1
         }
-        else if (work[sym] > end) {
-            here.op = extra[extra_offset + work[sym]];
-            here.val = base[base_offset + work[sym]];
-        }
-        else {
-            here.op = 32 + 64;         /* end of block */
-        }
 
-        /* replicate for those indices with low len bits equal to huff */
-        incr = 1 << (len - drop);
-        fill = 1 << curr;
-        min = fill;                 /* save offset to next table */
-        do {
-            fill -= incr;
-            state_codes[next + (huff >>> drop) + fill] = here;
-        } while (fill != 0);
-
-        /* backwards increment the len-bit code huff */
-        incr = 1 << (len - 1);
-        while (huff & incr)
-            incr >>>= 1;
-        if (incr != 0) {
-            huff &= incr - 1;
-            huff += incr;
-        }
-        else
-            huff = 0;
-
-        /* go to next symbol, update count, len */
-        sym++;
-        if (--(count[len]) == 0) {
-            if (len == max) break;
-            len = lens[lens_offset + work[sym]];
+        /* check for enough space */
+        used += 1 << curr
+        if ((type == LENS && used >= ENOUGH_LENS) || (type == DISTS && used >= ENOUGH_DISTS)) {
+          state.next = table
+          return 1
         }
 
-        /* create new sub-table if needed */
-        if (len > root && (huff & mask) != low) {
-            /* if first time, transition to sub-tables */
-            if (drop == 0)
-                drop = root;
-
-            /* increment past last table */
-            next += min;            /* here min is 1 << curr */
-
-            /* determine length of next table */
-            curr = len - drop;
-            left = (1 << curr);
-            while (curr + drop < max) {
-                left -= count[curr + drop];
-                if (left <= 0) break;
-                curr++;
-                left <<= 1;
-            }
-
-            /* check for enough space */
-            used += 1 << curr;
-            if ((type == LENS && used >= ENOUGH_LENS) ||
-                (type == DISTS && used >= ENOUGH_DISTS)) {
-                state.next = table;
-                return 1;
-            }
-
-            /* point entry in root table to sub-table */
-            low = huff & mask;
-            state_codes[table + low] = {op:curr, bits:root, val:next - table};
-        }
+        /* point entry in root table to sub-table */
+        low = huff & mask
+        state_codes[table + low] = { op: curr, bits: root, val: next - table }
+      }
     }
 
     /* fill in remaining table entry if code is incomplete (guaranteed to have
        at most one remaining entry, since if the code is incomplete, the
        maximum code length that was allowed to get this far is one bit) */
     if (huff != 0) {
-        state_codes[next + huff] = {op:64, bits:len - drop, val:0};
+      state_codes[next + huff] = { op: 64, bits: len - drop, val: 0 }
     }
 
     /* set return parameters */
-    state.next = table + used;
-    if(type == DISTS) state.distbits = root; else state.lenbits = root; //*bits = root;
-    return 0;
-}
+    state.next = table + used
+    if (type == DISTS) state.distbits = root
+    else state.lenbits = root //*bits = root;
+    return 0
+  }
 
-/* inffast.c -- fast decoding
- * Copyright (C) 1995-2008, 2010 Mark Adler
- * For conditions of distribution and use, see copyright notice in zlib.h
- */
+  /* inffast.c -- fast decoding
+   * Copyright (C) 1995-2008, 2010 Mark Adler
+   * For conditions of distribution and use, see copyright notice in zlib.h
+   */
 
-/*
+  /*
    Decode literal, length, and distance codes and write out the resulting
    literal and match bytes until either not enough input or output is
    available, an end-of-block is encountered, or a data error is encountered.
@@ -610,458 +711,446 @@ function inflate_table(state, type)
       requires strm->avail_out >= 258 for each loop to avoid checking for
       output space.
  */
-function inflate_fast(strm,
-                      start) /* inflate()'s starting value for strm->avail_out */
-{
-    var state;
-    var input_data;      /* local strm->input_data */
-    var next_in;      /* zlib.js: index of input_data */
-    var last;    /* while next_in < last, enough input available */
-    var out;     /* local strm.next_out */
-    var beg;     /* inflate()'s initial strm.next_out */
-    var end;     /* while out < end, enough space available */
-//NOSPRT #ifdef INFLATE_STRICT
-//    unsigned dmax;              /* maximum distance from zlib header */
-//#endif
-    var wsize;             /* window size or zero if not using window */
-    var whave;             /* valid bytes in the window */
-    var wnext;             /* window write index */
-    var window;  /* allocated sliding window, if wsize != 0 */
-    var hold;         /* local strm->hold */
-    var bits;              /* local strm->bits */
-    var codes;             /* zlib.js: local state.codes */
-    var lcode;      /* local strm->lencode */
-    var dcode;      /* local strm->distcode */
-    var lmask;             /* mask for first level of length codes */
-    var dmask;             /* mask for first level of distance codes */
-    var here;                  /* retrieved table entry */
-    var op;                /* code bits, operation, extra bits, or */
+  function inflate_fast(strm, start /* inflate()'s starting value for strm->avail_out */) {
+    var state
+    var input_data /* local strm->input_data */
+    var next_in /* zlib.js: index of input_data */
+    var last /* while next_in < last, enough input available */
+    var out /* local strm.next_out */
+    var beg /* inflate()'s initial strm.next_out */
+    var end /* while out < end, enough space available */
+    //NOSPRT #ifdef INFLATE_STRICT
+    //    unsigned dmax;              /* maximum distance from zlib header */
+    //#endif
+    var wsize /* window size or zero if not using window */
+    var whave /* valid bytes in the window */
+    var wnext /* window write index */
+    var window /* allocated sliding window, if wsize != 0 */
+    var hold /* local strm->hold */
+    var bits /* local strm->bits */
+    var codes /* zlib.js: local state.codes */
+    var lcode /* local strm->lencode */
+    var dcode /* local strm->distcode */
+    var lmask /* mask for first level of length codes */
+    var dmask /* mask for first level of distance codes */
+    var here /* retrieved table entry */
+    var op /* code bits, operation, extra bits, or */
     /*  window position, window bytes to copy */
-    var len;               /* match length, unused bytes */
-    var dist;              /* match distance */
+    var len /* match length, unused bytes */
+    var dist /* match distance */
     //    var from;    /* where to copy match from */
-    var from_window_offset = -1; /* index of window[] */
-    var from_out_offset = -1; /* index of next_out[] */
+    var from_window_offset = -1 /* index of window[] */
+    var from_out_offset = -1 /* index of next_out[] */
 
     /* copy state to local variables */
-    state = strm.state;
-    input_data = strm.input_data;
-    next_in = strm.next_in;
-    last = next_in + strm.avail_in - 5;
-    out = strm.next_out;
-    beg = out - (start - strm.avail_out);
-    end = out + (strm.avail_out - 257);
-//NOSPRT #ifdef INFLATE_STRICT
-//    dmax = state->dmax;
-//#endif
-    wsize = state.wsize;
-    whave = state.whave;
-    wnext = state.wnext;
-    window = state.window;
-    hold = state.hold;
-    bits = state.bits;
-    codes = state.codes;
-    lcode = state.lencode;
-    dcode = state.distcode;
-    lmask = (1 << state.lenbits) - 1;
-    dmask = (1 << state.distbits) - 1;
+    state = strm.state
+    input_data = strm.input_data
+    next_in = strm.next_in
+    last = next_in + strm.avail_in - 5
+    out = strm.next_out
+    beg = out - (start - strm.avail_out)
+    end = out + (strm.avail_out - 257)
+    //NOSPRT #ifdef INFLATE_STRICT
+    //    dmax = state->dmax;
+    //#endif
+    wsize = state.wsize
+    whave = state.whave
+    wnext = state.wnext
+    window = state.window
+    hold = state.hold
+    bits = state.bits
+    codes = state.codes
+    lcode = state.lencode
+    dcode = state.distcode
+    lmask = (1 << state.lenbits) - 1
+    dmask = (1 << state.distbits) - 1
 
     /* decode literals and length/distances until end-of-block or not enough
        input data or output space */
-loop: do {
-        if (bits < 15) {
-            hold += (input_data.charCodeAt(next_in++) & 0xff) << bits;
-            bits += 8;
-            hold += (input_data.charCodeAt(next_in++) & 0xff) << bits;
-            bits += 8;
+    loop: do {
+      if (bits < 15) {
+        hold += (input_data.charCodeAt(next_in++) & 0xff) << bits
+        bits += 8
+        hold += (input_data.charCodeAt(next_in++) & 0xff) << bits
+        bits += 8
+      }
+      here = codes[lcode + (hold & lmask)]
+      dolen: while (true) {
+        op = here.bits
+        hold >>>= op
+        bits -= op
+        op = here.op
+        if (op == 0) {
+          /* literal */
+          //            Tracevv((stderr, here.val >= 0x20 && here.val < 0x7f ?
+          //                    "inflate:         literal '%c'\n" :
+          //                    "inflate:         literal 0x%02x\n", here.val));
+          strm.output_data += String.fromCharCode(here.val)
+          out++
+        } else if (op & 16) {
+          /* length base */
+          len = here.val
+          op &= 15 /* number of extra bits */
+          if (op) {
+            if (bits < op) {
+              hold += (input_data.charCodeAt(next_in++) & 0xff) << bits
+              bits += 8
+            }
+            len += hold & ((1 << op) - 1)
+            hold >>>= op
+            bits -= op
+          }
+          //            Tracevv((stderr, "inflate:         length %u\n", len));
+          if (bits < 15) {
+            hold += (input_data.charCodeAt(next_in++) & 0xff) << bits
+            bits += 8
+            hold += (input_data.charCodeAt(next_in++) & 0xff) << bits
+            bits += 8
+          }
+          here = codes[dcode + (hold & dmask)]
+          dodist: while (true) {
+            op = here.bits
+            hold >>>= op
+            bits -= op
+            op = here.op
+            if (op & 16) {
+              /* distance base */
+              dist = here.val
+              op &= 15 /* number of extra bits */
+              if (bits < op) {
+                hold += (input_data.charCodeAt(next_in++) & 0xff) << bits
+                bits += 8
+                if (bits < op) {
+                  hold += (input_data.charCodeAt(next_in++) & 0xff) << bits
+                  bits += 8
+                }
+              }
+              dist += hold & ((1 << op) - 1)
+              //NOSPRT #ifdef INFLATE_STRICT
+              //                if (dist > dmax) {
+              //                    strm->msg = (char *)"invalid distance too far back";
+              //                    state->mode = BAD;
+              //                    break loop;
+              //                }
+              //#endif
+              hold >>>= op
+              bits -= op
+              //                Tracevv((stderr, "inflate:         distance %u\n", dist));
+              op = out - beg /* max distance in output */
+              if (dist > op) {
+                /* see if copy from window */
+                op = dist - op /* distance back in window */
+                if (op > whave) {
+                  if (state.sane) {
+                    strm.msg = 'invalid distance too far back'
+                    state.mode = BAD
+                    break loop
+                  }
+                  //NOSPRT #ifdef INFLATE_ALLOW_INVALID_DISTANCE_TOOFAR_ARRR
+                  //                        if (len <= op - whave) {
+                  //                            do {
+                  //                                PUP(out) = 0;
+                  //                            } while (--len);
+                  //                            continue;
+                  //                        }
+                  //                        len -= op - whave;
+                  //                        do {
+                  //                            PUP(out) = 0;
+                  //                        } while (--op > whave);
+                  //                        if (op == 0) {
+                  //                            from = out - dist;
+                  //                            do {
+                  //                                PUP(out) = PUP(from);
+                  //                            } while (--len);
+                  //                            continue;
+                  //                        }
+                  //#endif
+                } // if (op > whave)
+
+                from_window_offset = 0
+                from_out_offset = -1
+                if (wnext == 0) {
+                  /* very common case */
+                  from_window_offset += wsize - op
+                  if (op < len) {
+                    /* some from window */
+                    len -= op
+                    strm.output_data += window.substring(from_window_offset, from_window_offset + op)
+                    out += op
+                    op = 0
+                    from_window_offset = -1
+                    from_out_offset = out - dist /* rest from output */
+                  }
+                }
+                //NOTREACHED else if (wnext < op) {      /* wrap around window */
+                //NOTREACHED     from += wsize + wnext - op;
+                //NOTREACHED     op -= wnext;
+                //NOTREACHED     if (op < len) {         /* some from end of window */
+                //NOTREACHED         len -= op;
+                //NOTREACHED         do {
+                //NOTREACHED             PUP(out) = PUP(from);
+                //NOTREACHED         } while (--op);
+                //NOTREACHED         from = window - OFF;
+                //NOTREACHED         if (wnext < len) {  /* some from start of window */
+                //NOTREACHED             op = wnext;
+                //NOTREACHED             len -= op;
+                //NOTREACHED             do {
+                //NOTREACHED                 PUP(out) = PUP(from);
+                //NOTREACHED             } while (--op);
+                //NOTREACHED             from = out - dist;      /* rest from output */
+                //NOTREACHED         }
+                //NOTREACHED     }
+                //NOTREACHED }
+                else {
+                  /* contiguous in window */
+                  from_window_offset += wnext - op
+                  if (op < len) {
+                    /* some from window */
+                    len -= op
+                    strm.output_data += window.substring(from_window_offset, from_window_offset + op)
+                    out += op
+                    from_window_offset = -1
+                    from_out_offset = out - dist /* rest from output */
+                  }
+                }
+              } else {
+                from_window_offset = -1
+                from_out_offset = out - dist /* copy direct from output */
+              }
+
+              if (from_window_offset >= 0) {
+                strm.output_data += window.substring(from_window_offset, from_window_offset + len)
+                out += len
+                from_window_offset += len
+              } else {
+                var len_inner = len
+                if (len_inner > out - from_out_offset) len_inner = out - from_out_offset
+                strm.output_data += strm.output_data.substring(from_out_offset, from_out_offset + len_inner)
+                out += len_inner
+                len -= len_inner
+                from_out_offset += len_inner
+                out += len
+                while (len > 2) {
+                  strm.output_data += strm.output_data.charAt(from_out_offset++)
+                  strm.output_data += strm.output_data.charAt(from_out_offset++)
+                  strm.output_data += strm.output_data.charAt(from_out_offset++)
+                  len -= 3
+                }
+                if (len) {
+                  strm.output_data += strm.output_data.charAt(from_out_offset++)
+                  if (len > 1) strm.output_data += strm.output_data.charAt(from_out_offset++)
+                }
+              }
+            } else if ((op & 64) == 0) {
+              /* 2nd level distance code */
+              here = codes[dcode + (here.val + (hold & ((1 << op) - 1)))]
+              continue dodist // goto dodist
+            } else {
+              strm.msg = 'invalid distance code'
+              state.mode = BAD
+              break loop
+            }
+            break dodist
+          }
+        } else if ((op & 64) == 0) {
+          /* 2nd level length code */
+          here = codes[lcode + (here.val + (hold & ((1 << op) - 1)))]
+          continue dolen // goto dolen;
+        } else if (op & 32) {
+          /* end-of-block */
+          //            Tracevv((stderr, "inflate:         end of block\n"));
+          state.mode = TYPE
+          break loop
+        } else {
+          strm.msg = 'invalid literal/length code'
+          state.mode = BAD
+          break loop
         }
-        here = codes[lcode + (hold & lmask)];
-    dolen: while(true) {
-            op = here.bits;
-            hold >>>= op;
-            bits -= op;
-            op = here.op;
-            if (op == 0) {                          /* literal */
-//            Tracevv((stderr, here.val >= 0x20 && here.val < 0x7f ?
-//                    "inflate:         literal '%c'\n" :
-//                    "inflate:         literal 0x%02x\n", here.val));
-                strm.output_data += String.fromCharCode(here.val);
-                out++;
-            }
-            else if (op & 16) {                     /* length base */
-                len = here.val;
-                op &= 15;                           /* number of extra bits */
-                if (op) {
-                    if (bits < op) {
-                        hold += (input_data.charCodeAt(next_in++) & 0xff) << bits;
-                        bits += 8;
-                    }
-                    len += hold & ((1 << op) - 1);
-                    hold >>>= op;
-                    bits -= op;
-                }
-//            Tracevv((stderr, "inflate:         length %u\n", len));
-                if (bits < 15) {
-                    hold += (input_data.charCodeAt(next_in++) & 0xff) << bits;
-                    bits += 8;
-                    hold += (input_data.charCodeAt(next_in++) & 0xff) << bits;
-                    bits += 8;
-                }
-                here = codes[dcode + (hold & dmask)];
-            dodist: while(true) {
-                    op = here.bits;
-                    hold >>>= op;
-                    bits -= op;
-                    op = here.op;
-                    if (op & 16) {                      /* distance base */
-                        dist = here.val;
-                        op &= 15;                       /* number of extra bits */
-                        if (bits < op) {
-                            hold += (input_data.charCodeAt(next_in++) & 0xff) << bits;
-                            bits += 8;
-                            if (bits < op) {
-                                hold += (input_data.charCodeAt(next_in++) & 0xff) << bits;
-                                bits += 8;
-                            }
-                        }
-                        dist += hold & ((1 << op) - 1);
-//NOSPRT #ifdef INFLATE_STRICT
-//                if (dist > dmax) {
-//                    strm->msg = (char *)"invalid distance too far back";
-//                    state->mode = BAD;
-//                    break loop;
-//                }
-//#endif
-                        hold >>>= op;
-                        bits -= op;
-//                Tracevv((stderr, "inflate:         distance %u\n", dist));
-                        op = out - beg;                 /* max distance in output */
-                        if (dist > op) {                /* see if copy from window */
-                            op = dist - op;             /* distance back in window */
-                            if (op > whave) {
-                                if (state.sane) {
-                                    strm.msg = 'invalid distance too far back';
-                                    state.mode = BAD;
-                                    break loop;
-                                }
-//NOSPRT #ifdef INFLATE_ALLOW_INVALID_DISTANCE_TOOFAR_ARRR
-//                        if (len <= op - whave) {
-//                            do {
-//                                PUP(out) = 0;
-//                            } while (--len);
-//                            continue;
-//                        }
-//                        len -= op - whave;
-//                        do {
-//                            PUP(out) = 0;
-//                        } while (--op > whave);
-//                        if (op == 0) {
-//                            from = out - dist;
-//                            do {
-//                                PUP(out) = PUP(from);
-//                            } while (--len);
-//                            continue;
-//                        }
-//#endif
-                            } // if (op > whave)
-
-                            from_window_offset = 0;
-                            from_out_offset = -1;
-							if (wnext == 0) {           /* very common case */
-								from_window_offset += wsize - op;
-								if (op < len) {         /* some from window */
-									len -= op;
-									strm.output_data += window.substring(from_window_offset, from_window_offset + op);
-									out += op;
-									op = 0;
-									from_window_offset = -1;
-									from_out_offset = out - dist;  /* rest from output */
-								}
-							}
-//NOTREACHED else if (wnext < op) {      /* wrap around window */
-//NOTREACHED     from += wsize + wnext - op;
-//NOTREACHED     op -= wnext;
-//NOTREACHED     if (op < len) {         /* some from end of window */
-//NOTREACHED         len -= op;
-//NOTREACHED         do {
-//NOTREACHED             PUP(out) = PUP(from);
-//NOTREACHED         } while (--op);
-//NOTREACHED         from = window - OFF;
-//NOTREACHED         if (wnext < len) {  /* some from start of window */
-//NOTREACHED             op = wnext;
-//NOTREACHED             len -= op;
-//NOTREACHED             do {
-//NOTREACHED                 PUP(out) = PUP(from);
-//NOTREACHED             } while (--op);
-//NOTREACHED             from = out - dist;      /* rest from output */
-//NOTREACHED         }
-//NOTREACHED     }
-//NOTREACHED }
-							else {                      /* contiguous in window */
-								from_window_offset += wnext - op;
-								if (op < len) {         /* some from window */
-									len -= op;
-									strm.output_data += window.substring(from_window_offset, from_window_offset + op);
-									out += op;
-									from_window_offset = -1;
-									from_out_offset = out - dist;  /* rest from output */
-								}
-							}
-                        }
-                        else {
-                            from_window_offset = -1;
-                            from_out_offset = out - dist;          /* copy direct from output */
-                        }
-
-                        if (from_window_offset >= 0) {
-                            strm.output_data += window.substring(from_window_offset, from_window_offset + len);
-                            out += len;
-                            from_window_offset += len;
-                        } else {
-                            var len_inner = len;
-                            if(len_inner > out - from_out_offset)
-                              len_inner = out - from_out_offset;
-                            strm.output_data += strm.output_data.substring(
-                                from_out_offset, from_out_offset + len_inner);
-                            out += len_inner;
-                            len -= len_inner;
-                            from_out_offset += len_inner;
-                            out += len;
-                            while (len > 2) {
-                                strm.output_data += strm.output_data.charAt(from_out_offset++);
-                                strm.output_data += strm.output_data.charAt(from_out_offset++);
-                                strm.output_data += strm.output_data.charAt(from_out_offset++);
-                                len -= 3;
-                            }
-                            if (len) {
-                                strm.output_data += strm.output_data.charAt(from_out_offset++);
-                                if (len > 1)
-                                    strm.output_data += strm.output_data.charAt(from_out_offset++);
-                            }
-                        }
-                    }
-                    else if ((op & 64) == 0) {          /* 2nd level distance code */
-                        here = codes[dcode + (here.val + (hold & ((1 << op) - 1)))];
-                        continue dodist; // goto dodist
-                    }
-                    else {
-                        strm.msg = 'invalid distance code';
-                        state.mode = BAD;
-                        break loop;
-                    }
-                    break dodist; }
-            }
-            else if ((op & 64) == 0) {              /* 2nd level length code */
-                here = codes[lcode + (here.val + (hold & ((1 << op) - 1)))];
-                continue dolen; // goto dolen;
-            }
-            else if (op & 32) {                     /* end-of-block */
-                //            Tracevv((stderr, "inflate:         end of block\n"));
-                state.mode = TYPE;
-                break loop;
-            }
-            else {
-                strm.msg = 'invalid literal/length code';
-                state.mode = BAD;
-                break loop;
-            }
-            break dolen; }
-    } while (next_in < last && out < end);
+        break dolen
+      }
+    } while (next_in < last && out < end)
 
     /* return unused bytes (on entry, bits < 8, so in won't go too far back) */
-    len = bits >>> 3;
-    next_in -= len;
-    bits -= len << 3;
-    hold &= (1 << bits) - 1;
+    len = bits >>> 3
+    next_in -= len
+    bits -= len << 3
+    hold &= (1 << bits) - 1
 
     /* update state and return */
-    strm.next_in = next_in;
-    strm.next_out = out;
-    strm.avail_in = (next_in < last ? 5 + (last - next_in) : 5 - (next_in - last));
-    strm.avail_out = (out < end ?
-                      257 + (end - out) : 257 - (out - end));
-    state.hold = hold;
-    state.bits = bits;
-}
+    strm.next_in = next_in
+    strm.next_out = out
+    strm.avail_in = next_in < last ? 5 + (last - next_in) : 5 - (next_in - last)
+    strm.avail_out = out < end ? 257 + (end - out) : 257 - (out - end)
+    state.hold = hold
+    state.bits = bits
+  }
 
-function new_array(size)
-{
-    var i;
-    var ary = new Array(size);
-    for(i = 0; i < size; i++)
-        ary[i] = 0;
-    return ary;
-}
+  function new_array(size) {
+    var i
+    var ary = new Array(size)
+    for (i = 0; i < size; i++) ary[i] = 0
+    return ary
+  }
 
-function getarg(opts, name, def_value)
-{
-    return (opts && (name in opts)) ? opts[name] : def_value;
-}
+  function getarg(opts, name, def_value) {
+    return opts && name in opts ? opts[name] : def_value
+  }
 
-function checksum_none()
-{
-	return 0;
-}
+  function checksum_none() {
+    return 0
+  }
 
-/**
- * z_stream constructor
- * @constructor
- */
-function inflate_state()
-{
-    var i;
+  /**
+   * z_stream constructor
+   * @constructor
+   */
+  function inflate_state() {
+    var i
 
-    this.mode = 0;              /* current inflate mode */
-    this.last = 0;              /* true if processing last block */
-    this.wrap = 0;              /* bit 0 true for zlib, bit 1 true for gzip */
-    this.havedict = 0;          /* true if dictionary provided */
-    this.flags = 0;             /* gzip header method and flags (0 if zlib) */
-    this.dmax = 0;              /* zlib header max distance (INFLATE_STRICT) */
-    this.check = 0;             /* protected copy of check value */
-    this.total = 0;             /* protected copy of output count */
-    this.head = null;           /* where to save gzip header information */
+    this.mode = 0 /* current inflate mode */
+    this.last = 0 /* true if processing last block */
+    this.wrap = 0 /* bit 0 true for zlib, bit 1 true for gzip */
+    this.havedict = 0 /* true if dictionary provided */
+    this.flags = 0 /* gzip header method and flags (0 if zlib) */
+    this.dmax = 0 /* zlib header max distance (INFLATE_STRICT) */
+    this.check = 0 /* protected copy of check value */
+    this.total = 0 /* protected copy of output count */
+    this.head = null /* where to save gzip header information */
     /* sliding window */
-    this.wbits = 0;             /* log base 2 of requested window size */
-    this.wsize = 0;             /* window size or zero if not using window */
-    this.whave = 0;             /* valid bytes in the window */
-    this.wnext = 0;             /* window write index (TODO remove) */
-    this.window = null;         /* allocated sliding window, if needed */
+    this.wbits = 0 /* log base 2 of requested window size */
+    this.wsize = 0 /* window size or zero if not using window */
+    this.whave = 0 /* valid bytes in the window */
+    this.wnext = 0 /* window write index (TODO remove) */
+    this.window = null /* allocated sliding window, if needed */
     /* bit accumulator */
-    this.hold = 0;              /* input bit accumulator */
-    this.bits = 0;              /* number of bits in "in" */
+    this.hold = 0 /* input bit accumulator */
+    this.bits = 0 /* number of bits in "in" */
     /* for string and stored block copying */
-    this.length = 0;            /* literal or length of data to copy */
-    this.offset = 0;            /* distance back to copy string from */
+    this.length = 0 /* literal or length of data to copy */
+    this.offset = 0 /* distance back to copy string from */
     /* for table and code decoding */
-    this.extra = 0;             /* extra bits needed */
+    this.extra = 0 /* extra bits needed */
     /* fixed and dynamic code tables */
 
     /* zlib.js: modified implementation: lencode, distcode, next are offset of codes[] */
-    this.lencode = 0;           /* starting table for length/literal codes */
-    this.distcode = 0;          /* starting table for distance codes */
-    this.lenbits = 0;           /* index bits for lencode */
-    this.distbits = 0;          /* index bits for distcode */
+    this.lencode = 0 /* starting table for length/literal codes */
+    this.distcode = 0 /* starting table for distance codes */
+    this.lenbits = 0 /* index bits for lencode */
+    this.distbits = 0 /* index bits for distcode */
     /* dynamic table building */
-    this.ncode = 0;             /* number of code length code lengths */
-    this.nlen = 0;              /* number of length code lengths */
-    this.ndist = 0;             /* number of distance code lengths */
-    this.have = 0;              /* number of code lengths in lens[] */
-    this.next = 0;              /* next available space in codes[] */
-    this.lens = new_array(320); /* temporary storage for code lengths */
-    this.work = new_array(288); /* work area for code table building */
-    this.codes = new Array(ENOUGH);         /* space for code tables */
-    var c = {op:0, bits:0, val:0};
-    for(i = 0; i < ENOUGH; i++)
-        this.codes[i] = c;
-    this.sane = 0;              /* if false, allow invalid distance too far */
-    this.back = 0;              /* bits back of last unprocessed length/lit */
-    this.was = 0;               /* initial length of match */
-}
+    this.ncode = 0 /* number of code length code lengths */
+    this.nlen = 0 /* number of length code lengths */
+    this.ndist = 0 /* number of distance code lengths */
+    this.have = 0 /* number of code lengths in lens[] */
+    this.next = 0 /* next available space in codes[] */
+    this.lens = new_array(320) /* temporary storage for code lengths */
+    this.work = new_array(288) /* work area for code table building */
+    this.codes = new Array(ENOUGH) /* space for code tables */
+    var c = { op: 0, bits: 0, val: 0 }
+    for (i = 0; i < ENOUGH; i++) this.codes[i] = c
+    this.sane = 0 /* if false, allow invalid distance too far */
+    this.back = 0 /* bits back of last unprocessed length/lit */
+    this.was = 0 /* initial length of match */
+  }
 
-ZLIB.inflateResetKeep = function(strm)
-{
-    var state;
+  ZLIB.inflateResetKeep = function (strm) {
+    var state
 
-    if (!strm || !strm.state) return ZLIB.Z_STREAM_ERROR;
-    state = strm.state;
-    strm.total_in = strm.total_out = state.total = 0;
-    strm.msg = null;
-    if (state.wrap) {        /* to support ill-conceived Java test suite */
-        strm.adler = state.wrap & 1;
+    if (!strm || !strm.state) return ZLIB.Z_STREAM_ERROR
+    state = strm.state
+    strm.total_in = strm.total_out = state.total = 0
+    strm.msg = null
+    if (state.wrap) {
+      /* to support ill-conceived Java test suite */
+      strm.adler = state.wrap & 1
     }
 
-    state.mode = HEAD;
-    state.last = 0;
-    state.havedict = 0;
-    state.dmax = 32768;
-    state.head = null;
-    state.hold = 0;
-    state.bits = 0;
-    state.lencode = 0;
-    state.distcode = 0;
-    state.next = 0;
-    state.sane = 1;
-    state.back = -1;
-    return ZLIB.Z_OK;
-};
+    state.mode = HEAD
+    state.last = 0
+    state.havedict = 0
+    state.dmax = 32768
+    state.head = null
+    state.hold = 0
+    state.bits = 0
+    state.lencode = 0
+    state.distcode = 0
+    state.next = 0
+    state.sane = 1
+    state.back = -1
+    return ZLIB.Z_OK
+  }
 
-// Usage: strm = ZLIB.inflateReset(z_stream [, windowBits]);
-ZLIB.inflateReset = function(strm, windowBits)
-{
-    var wrap;
-    var state;
+  // Usage: strm = ZLIB.inflateReset(z_stream [, windowBits]);
+  ZLIB.inflateReset = function (strm, windowBits) {
+    var wrap
+    var state
 
     /* get the state */
-    if (!strm || !strm.state) return ZLIB.Z_STREAM_ERROR;
-    state = strm.state;
+    if (!strm || !strm.state) return ZLIB.Z_STREAM_ERROR
+    state = strm.state
 
-	if(typeof windowBits === "undefined")
-		windowBits = DEF_WBITS;
+    if (typeof windowBits === 'undefined') windowBits = DEF_WBITS
 
     /* extract wrap request from windowBits parameter */
     if (windowBits < 0) {
-        wrap = 0;
-        windowBits = -windowBits;
-    }
-    else {
-        wrap = (windowBits >>> 4) + 1;
-        if (windowBits < 48)
-            windowBits &= 15;
+      wrap = 0
+      windowBits = -windowBits
+    } else {
+      wrap = (windowBits >>> 4) + 1
+      if (windowBits < 48) windowBits &= 15
     }
 
-	if(wrap == 1 && (typeof ZLIB.adler32 === 'function')) {
-		strm.checksum_function = ZLIB.adler32;
-	} else if(wrap == 2 && (typeof ZLIB.crc32 === 'function')) {
-		strm.checksum_function = ZLIB.crc32;
-	} else {
-		strm.checksum_function = checksum_none;
-	}
+    if (wrap == 1 && typeof ZLIB.adler32 === 'function') {
+      strm.checksum_function = ZLIB.adler32
+    } else if (wrap == 2 && typeof ZLIB.crc32 === 'function') {
+      strm.checksum_function = ZLIB.crc32
+    } else {
+      strm.checksum_function = checksum_none
+    }
 
     /* set number of window bits, free window if different */
-    if (windowBits && (windowBits < 8 || windowBits > 15))
-        return ZLIB.Z_STREAM_ERROR;
+    if (windowBits && (windowBits < 8 || windowBits > 15)) return ZLIB.Z_STREAM_ERROR
     if (state.window && state.wbits != windowBits) {
-        state.window = null;
+      state.window = null
     }
 
     /* update state and reset the rest of it */
-    state.wrap = wrap;
-    state.wbits = windowBits;
-    state.wsize = 0;
-    state.whave = 0;
-    state.wnext = 0;
-    return ZLIB.inflateResetKeep(strm);
-};
+    state.wrap = wrap
+    state.wbits = windowBits
+    state.wsize = 0
+    state.whave = 0
+    state.wnext = 0
+    return ZLIB.inflateResetKeep(strm)
+  }
 
-// Usage: strm = ZLIB.inflateInit([windowBits]);
-ZLIB.inflateInit = function(windowBits)
-{
-    var strm = new ZLIB.z_stream();
-    strm.state = new inflate_state();
-    ZLIB.inflateReset(strm, windowBits);
-    return strm;
-};
+  // Usage: strm = ZLIB.inflateInit([windowBits]);
+  ZLIB.inflateInit = function (windowBits) {
+    var strm = new ZLIB.z_stream()
+    strm.state = new inflate_state()
+    ZLIB.inflateReset(strm, windowBits)
+    return strm
+  }
 
-ZLIB.inflatePrime = function(strm, bits, value)
-{
-    var state;
+  ZLIB.inflatePrime = function (strm, bits, value) {
+    var state
 
-    if (!strm || !strm.state) return ZLIB.Z_STREAM_ERROR;
-    state = strm.state;
+    if (!strm || !strm.state) return ZLIB.Z_STREAM_ERROR
+    state = strm.state
     if (bits < 0) {
-        state.hold = 0;
-        state.bits = 0;
-        return ZLIB.Z_OK;
+      state.hold = 0
+      state.bits = 0
+      return ZLIB.Z_OK
     }
-    if (bits > 16 || state.bits + bits > 32) return ZLIB.Z_STREAM_ERROR;
-    value &= (1 << bits) - 1;
-    state.hold += value << state.bits;
-    state.bits += bits;
-    return ZLIB.Z_OK;
-};
+    if (bits > 16 || state.bits + bits > 32) return ZLIB.Z_STREAM_ERROR
+    value &= (1 << bits) - 1
+    state.hold += value << state.bits
+    state.bits += bits
+    return ZLIB.Z_OK
+  }
 
-var lenfix_ary = null;
-var lenfix_def = "([\
+  var lenfix_ary = null
+  var lenfix_def =
+    '([\
     {op:96,bits:7,val:0},{op:0,bits:8,val:80},{op:0,bits:8,val:16},{op:20,bits:8,val:115},{op:18,bits:7,val:31},{op:0,bits:8,val:112},{op:0,bits:8,val:48},\
     {op:0,bits:9,val:192},{op:16,bits:7,val:10},{op:0,bits:8,val:96},{op:0,bits:8,val:32},{op:0,bits:9,val:160},{op:0,bits:8,val:0},{op:0,bits:8,val:128},\
     {op:0,bits:8,val:64},{op:0,bits:9,val:224},{op:16,bits:7,val:6},{op:0,bits:8,val:88},{op:0,bits:8,val:24},{op:0,bits:9,val:144},{op:19,bits:7,val:59},\
@@ -1136,38 +1225,36 @@ var lenfix_def = "([\
     {op:0,bits:8,val:95},{op:0,bits:8,val:31},{op:0,bits:9,val:159},{op:20,bits:7,val:99},{op:0,bits:8,val:127},{op:0,bits:8,val:63},{op:0,bits:9,val:223},\
     {op:18,bits:7,val:27},{op:0,bits:8,val:111},{op:0,bits:8,val:47},{op:0,bits:9,val:191},{op:0,bits:8,val:15},{op:0,bits:8,val:143},{op:0,bits:8,val:79},\
     {op:0,bits:9,val:255}\
-])";
+])'
 
-var distfix_ary = null;
-var distfix_def = "([\
+  var distfix_ary = null
+  var distfix_def =
+    '([\
     {op:16,bits:5,val:1},{op:23,bits:5,val:257},{op:19,bits:5,val:17},{op:27,bits:5,val:4097},{op:17,bits:5,val:5},{op:25,bits:5,val:1025},\
     {op:21,bits:5,val:65},{op:29,bits:5,val:16385},{op:16,bits:5,val:3},{op:24,bits:5,val:513},{op:20,bits:5,val:33},{op:28,bits:5,val:8193},\
     {op:18,bits:5,val:9},{op:26,bits:5,val:2049},{op:22,bits:5,val:129},{op:64,bits:5,val:0},{op:16,bits:5,val:2},{op:23,bits:5,val:385},\
     {op:19,bits:5,val:25},{op:27,bits:5,val:6145},{op:17,bits:5,val:7},{op:25,bits:5,val:1537},{op:21,bits:5,val:97},{op:29,bits:5,val:24577},\
     {op:16,bits:5,val:4},{op:24,bits:5,val:769},{op:20,bits:5,val:49},{op:28,bits:5,val:12289},{op:18,bits:5,val:13},{op:26,bits:5,val:3073},\
     {op:22,bits:5,val:193},{op:64,bits:5,val:0}\
-])";
+])'
 
-function fixedtables(state)
-{
-    var i;
-    if(!lenfix_ary)
-        lenfix_ary = eval(lenfix_def);
-    if(!distfix_ary)
-        distfix_ary = eval(distfix_def);
-    state.lencode = 0;
-    state.distcode = 512;
-    for(i = 0; i < 512; i++) {
-        state.codes[i] = lenfix_ary[i];
+  function fixedtables(state) {
+    var i
+    if (!lenfix_ary) lenfix_ary = eval(lenfix_def)
+    if (!distfix_ary) distfix_ary = eval(distfix_def)
+    state.lencode = 0
+    state.distcode = 512
+    for (i = 0; i < 512; i++) {
+      state.codes[i] = lenfix_ary[i]
     }
-    for(i = 0; i < 32; i++) {
-        state.codes[i + 512] = distfix_ary[i];
+    for (i = 0; i < 32; i++) {
+      state.codes[i + 512] = distfix_ary[i]
     }
-    state.lenbits = 9;
-    state.distbits = 5;
-}
+    state.lenbits = 9
+    state.distbits = 5
+  }
 
-/*
+  /*
   Update the window with the last wsize (normally 32K) bytes written before
   returning.  If window does not exist yet, create it.  This is only called
   when a window is already in use, or when output has been written during this
@@ -1181,141 +1268,126 @@ function fixedtables(state)
   output will fall in the output data, making match copies simpler and faster.
   The advantage may be dependent on the size of the processor's data caches.
 */
-function updatewindow(strm)
-{
-    var state = strm.state;
-	var out = strm.output_data.length;
+  function updatewindow(strm) {
+    var state = strm.state
+    var out = strm.output_data.length
 
     /* if it hasn't been done already, allocate space for the window */
     if (state.window === null) {
-        state.window = '';
-	}
+      state.window = ''
+    }
 
     /* if window not in use yet, initialize */
     if (state.wsize == 0) {
-        state.wsize = 1 << state.wbits;
-	}
+      state.wsize = 1 << state.wbits
+    }
 
     // zlib.js: Sliding window
     if (out >= state.wsize) {
-        state.window = strm.output_data.substring(out - state.wsize);
-	} else {
-		if(state.whave + out < state.wsize) {
-			state.window += strm.output_data;
-		} else {
-			state.window = state.window.substring(state.whave - (state.wsize - out)) + strm.output_data;
-		}
-	}
-    state.whave = state.window.length;
-	if(state.whave < state.wsize) {
-		state.wnext = state.whave;
-	} else {
-		state.wnext = 0;
-	}
-    return 0;
-}
+      state.window = strm.output_data.substring(out - state.wsize)
+    } else {
+      if (state.whave + out < state.wsize) {
+        state.window += strm.output_data
+      } else {
+        state.window = state.window.substring(state.whave - (state.wsize - out)) + strm.output_data
+      }
+    }
+    state.whave = state.window.length
+    if (state.whave < state.wsize) {
+      state.wnext = state.whave
+    } else {
+      state.wnext = 0
+    }
+    return 0
+  }
 
+  // #ifdef GUNZIP
+  function CRC2(strm, word) {
+    var hbuf = [word & 0xff, (word >>> 8) & 0xff]
+    strm.state.check = strm.checksum_function(strm.state.check, hbuf, 0, 2)
+  }
 
-// #ifdef GUNZIP
-function CRC2(strm, word)
-{
-	var hbuf = [word & 0xff, (word >>> 8) & 0xff];
-	strm.state.check = strm.checksum_function(strm.state.check, hbuf, 0, 2);
-}
+  function CRC4(strm, word) {
+    var hbuf = [
+      word & 0xff,
+      (word >>> 8) & 0xff,
+      (word >>> 16) & 0xff,
+      (word >>> 24) & 0xff
+    ]
+    strm.state.check = strm.checksum_function(strm.state.check, hbuf, 0, 4)
+  }
 
-function CRC4(strm, word)
-{
-	var hbuf = [word & 0xff,
-				(word >>> 8) & 0xff,
-				(word >>> 16) & 0xff,
-				(word >>> 24) & 0xff];
-	strm.state.check = strm.checksum_function(strm.state.check, hbuf, 0, 4);
-}
+  /* Load registers with state in inflate() for speed */
+  function LOAD(strm, s) {
+    s.strm = strm /* z_stream */
+    s.left = strm.avail_out /* available output */
+    s.next = strm.next_in /* next input */
+    s.have = strm.avail_in /* available input */
+    s.hold = strm.state.hold /* bit buffer */
+    s.bits = strm.state.bits /* bits in bit buffer */
+    return s
+  }
 
-/* Load registers with state in inflate() for speed */
-function LOAD(strm, s)
-{
-    s.strm = strm;            /* z_stream */
-    s.left = strm.avail_out;  /* available output */
-    s.next = strm.next_in; /* next input */
-    s.have = strm.avail_in;   /* available input */
-    s.hold = strm.state.hold; /* bit buffer */
-    s.bits = strm.state.bits; /* bits in bit buffer */
-    return s;
-}
+  /* Restore state from registers in inflate() */
+  function RESTORE(s) {
+    var strm = s.strm
+    strm.next_in = s.next
+    strm.avail_out = s.left
+    strm.avail_in = s.have
+    strm.state.hold = s.hold
+    strm.state.bits = s.bits
+  }
 
-/* Restore state from registers in inflate() */
-function RESTORE(s)
-{
-    var strm = s.strm;
-    strm.next_in = s.next;
-    strm.avail_out = s.left;
-    strm.avail_in = s.have;
-    strm.state.hold = s.hold;
-    strm.state.bits = s.bits;
-}
+  /* Clear the input bit accumulator */
+  function INITBITS(s) {
+    s.hold = 0
+    s.bits = 0
+  }
 
-/* Clear the input bit accumulator */
-function INITBITS(s)
-{
-    s.hold = 0;
-    s.bits = 0;
-}
-
-/* Get a byte of input into the bit accumulator, or return from inflate()
+  /* Get a byte of input into the bit accumulator, or return from inflate()
    if there is no input available. */
-function PULLBYTE(s)
-{
-    if (s.have == 0) return false;
-    s.have--;
-    s.hold += (s.strm.input_data.charCodeAt(s.next++) & 0xff) << s.bits;
-    s.bits += 8;
-    return true;
-}
+  function PULLBYTE(s) {
+    if (s.have == 0) return false
+    s.have--
+    s.hold += (s.strm.input_data.charCodeAt(s.next++) & 0xff) << s.bits
+    s.bits += 8
+    return true
+  }
 
-/* Assure that there are at least n bits in the bit accumulator.  If there is
+  /* Assure that there are at least n bits in the bit accumulator.  If there is
    not enough available input to do that, then return from inflate(). */
-function NEEDBITS(s, n)
-{
+  function NEEDBITS(s, n) {
     // if(typeof n != 'number') throw 'ERROR';
     while (s.bits < n) {
-        if(!PULLBYTE(s))
-            return false;
+      if (!PULLBYTE(s)) return false
     }
-    return true;
-}
+    return true
+  }
 
-/* Return the low n bits of the bit accumulator (n < 16) */
-function BITS(s, n)
-{
-    return s.hold & ((1 << n) - 1);
-}
+  /* Return the low n bits of the bit accumulator (n < 16) */
+  function BITS(s, n) {
+    return s.hold & ((1 << n) - 1)
+  }
 
-/* Remove n bits from the bit accumulator */
-function DROPBITS(s, n)
-{
+  /* Remove n bits from the bit accumulator */
+  function DROPBITS(s, n) {
     // if(typeof n != 'number') throw 'ERROR';
-    s.hold >>>= n;
-    s.bits -= n;
-}
+    s.hold >>>= n
+    s.bits -= n
+  }
 
-/* Remove zero to seven bits as needed to go to a byte boundary */
-function BYTEBITS(s)
-{
-    s.hold >>>= s.bits & 7;
-    s.bits -= s.bits & 7;
-}
+  /* Remove zero to seven bits as needed to go to a byte boundary */
+  function BYTEBITS(s) {
+    s.hold >>>= s.bits & 7
+    s.bits -= s.bits & 7
+  }
 
-/* Reverse the bytes in a 32-bit value */
-function REVERSE(q)
-{
-    return ((q >>> 24) & 0xff) +
-		((q >>> 8) & 0xff00) +
-		((q & 0xff00) << 8) +
-		((q & 0xff) << 24);
-}
+  /* Reverse the bytes in a 32-bit value */
+  function REVERSE(q) {
+    return ((q >>> 24) & 0xff) + ((q >>> 8) & 0xff00) + ((q & 0xff00) << 8) + ((q & 0xff) << 24)
+  }
 
-/*
+  /*
    inflate() uses a state machine to process as much input data and generate as
    much output data as possible before returning.  The state machine is
    structured roughly as follows:
@@ -1397,683 +1469,687 @@ function REVERSE(q)
    will return Z_BUF_ERROR if it has not reached the end of the stream.
  */
 
-/* permutation of code lengths */
-var inflate_order = [
-    16, 17, 18, 0, 8, 7, 9, 6, 10, 5, 11, 4, 12, 3, 13, 2, 14, 1, 15];
-ZLIB.inflate = function(strm, flush)
-{
-    var state;
-    var s;
-    var _in, out;          /* save starting available input and output */
-    var copy;              /* number of stored or match bytes to copy */
-    var from_window_offset = -1; /* index of window[] */
-    var from_out_offset = -1; /* index of next_out[] */
-    var here;              /* current decoding table entry */
-    var last;              /* parent table entry */
-    var len;               /* length to copy for repeats, bits to drop */
-    var ret;               /* return code */
+  /* permutation of code lengths */
+  var inflate_order = [
+    16,
+    17,
+    18,
+    0,
+    8,
+    7,
+    9,
+    6,
+    10,
+    5,
+    11,
+    4,
+    12,
+    3,
+    13,
+    2,
+    14,
+    1,
+    15
+  ]
+  ZLIB.inflate = function (strm, flush) {
+    var state
+    var s
+    var _in, out /* save starting available input and output */
+    var copy /* number of stored or match bytes to copy */
+    var from_window_offset = -1 /* index of window[] */
+    var from_out_offset = -1 /* index of next_out[] */
+    var here /* current decoding table entry */
+    var last /* parent table entry */
+    var len /* length to copy for repeats, bits to drop */
+    var ret /* return code */
 
-    if (!strm || !strm.state ||
-        (!strm.input_data && strm.avail_in != 0))
-        return ZLIB.Z_STREAM_ERROR;
+    if (!strm || !strm.state || (!strm.input_data && strm.avail_in != 0)) return ZLIB.Z_STREAM_ERROR
 
-    state = strm.state;
-    if (state.mode == TYPE) state.mode = TYPEDO;      /* skip check */
+    state = strm.state
+    if (state.mode == TYPE) state.mode = TYPEDO /* skip check */
 
     // LOAD
-    s = {};
-    LOAD(strm, s);
+    s = {}
+    LOAD(strm, s)
 
-    _in = s.have;
-    out = s.left;
-    ret = ZLIB.Z_OK;
-inf_leave: for (;;) {
-    //console.log("State.mode", state.mode)
-    //console.log(strm.msg)
-        switch (state.mode) {
+    _in = s.have
+    out = s.left
+    ret = ZLIB.Z_OK
+    inf_leave: for (;;) {
+      //console.log("State.mode", state.mode)
+      //console.log(strm.msg)
+      switch (state.mode) {
         case HEAD:
-            if (state.wrap == 0) {
-                state.mode = TYPEDO;
-                break;
-            }
-            if(!NEEDBITS(s, 16)) break inf_leave;
-// #ifdef GUNZIP
-            if ((state.wrap & 2) && s.hold == 0x8b1f) {  /* gzip header */
-                state.check = strm.checksum_function(0, null, 0, 0);
-                CRC2(strm, s.hold);
-                INITBITS(s);
-                state.mode = FLAGS;
-                break;
-            }
-            state.flags = 0;           /* expect zlib header */
-            if (state.head !== null)
-                state.head.done = -1;
-            if (!(state.wrap & 1) ||   /* check if zlib header allowed */
-//#else
-//          if (
-//#endif
-                ((BITS(s, 8) << 8) + (s.hold >>> 8)) % 31) {
-                strm.msg = 'incorrect header check';
-                state.mode = BAD;
-                break;
-            }
-            if (BITS(s, 4) != ZLIB.Z_DEFLATED) {
-                strm.msg = 'unknown compression method';
-                state.mode = BAD;
-                break;
-            }
+          if (state.wrap == 0) {
+            state.mode = TYPEDO
+            break
+          }
+          if (!NEEDBITS(s, 16)) break inf_leave
+          // #ifdef GUNZIP
+          if (state.wrap & 2 && s.hold == 0x8b1f) {
+            /* gzip header */
+            state.check = strm.checksum_function(0, null, 0, 0)
+            CRC2(strm, s.hold)
+            INITBITS(s)
+            state.mode = FLAGS
+            break
+          }
+          state.flags = 0 /* expect zlib header */
+          if (state.head !== null) state.head.done = -1
+          if (
+            !(state.wrap & 1) /* check if zlib header allowed */ ||
+            //#else
+            //          if (
+            //#endif
+            ((BITS(s, 8) << 8) + (s.hold >>> 8)) % 31
+          ) {
+            strm.msg = 'incorrect header check'
+            state.mode = BAD
+            break
+          }
+          if (BITS(s, 4) != ZLIB.Z_DEFLATED) {
+            strm.msg = 'unknown compression method'
+            state.mode = BAD
+            break
+          }
 
-            DROPBITS(s, 4);
-            len = BITS(s, 4) + 8;
-            if (state.wbits == 0)
-                state.wbits = len;
-            else if (len > state.wbits) {
-                strm.msg = 'invalid window size';
-                state.mode = BAD;
-                break;
-            }
-            state.dmax = 1 << len;
-//            Tracev((stderr, "inflate:   zlib header ok\n"));
-			strm.adler = state.check = strm.checksum_function(0, null, 0, 0);
-            state.mode = s.hold & 0x200 ? DICTID : TYPE;
-            INITBITS(s);
-            break;
-// #ifdef GUNZIP
+          DROPBITS(s, 4)
+          len = BITS(s, 4) + 8
+          if (state.wbits == 0) state.wbits = len
+          else if (len > state.wbits) {
+            strm.msg = 'invalid window size'
+            state.mode = BAD
+            break
+          }
+          state.dmax = 1 << len
+          //            Tracev((stderr, "inflate:   zlib header ok\n"));
+          strm.adler = state.check = strm.checksum_function(0, null, 0, 0)
+          state.mode = s.hold & 0x200 ? DICTID : TYPE
+          INITBITS(s)
+          break
+        // #ifdef GUNZIP
         case FLAGS:
-            if(!NEEDBITS(s, 16)) break inf_leave;
-            state.flags = s.hold;
-            if ((state.flags & 0xff) != ZLIB.Z_DEFLATED) {
-                strm.msg = "unknown compression method";
-                state.mode = BAD;
-                break;
-            }
-            if (state.flags & 0xe000) {
-                strm.msg = "unknown header flags set";
-                state.mode = BAD;
-                break;
-            }
-            if (state.head !== null)
-                state.head.text = (s.hold >>> 8) & 1;
-            if (state.flags & 0x0200) {
-				CRC2(strm, s.hold);
-			}
-            INITBITS(s);
-            state.mode = TIME;
+          if (!NEEDBITS(s, 16)) break inf_leave
+          state.flags = s.hold
+          if ((state.flags & 0xff) != ZLIB.Z_DEFLATED) {
+            strm.msg = 'unknown compression method'
+            state.mode = BAD
+            break
+          }
+          if (state.flags & 0xe000) {
+            strm.msg = 'unknown header flags set'
+            state.mode = BAD
+            break
+          }
+          if (state.head !== null) state.head.text = (s.hold >>> 8) & 1
+          if (state.flags & 0x0200) {
+            CRC2(strm, s.hold)
+          }
+          INITBITS(s)
+          state.mode = TIME
         case TIME:
-            if(!NEEDBITS(s, 32)) break inf_leave;
-            if (state.head !== null)
-                state.head.time = s.hold;
-            if (state.flags & 0x0200) {
-				CRC4(strm, s.hold);
-			}
-            INITBITS(s);
-            state.mode = OS;
+          if (!NEEDBITS(s, 32)) break inf_leave
+          if (state.head !== null) state.head.time = s.hold
+          if (state.flags & 0x0200) {
+            CRC4(strm, s.hold)
+          }
+          INITBITS(s)
+          state.mode = OS
         case OS:
-            if(!NEEDBITS(s, 16)) break inf_leave;
+          if (!NEEDBITS(s, 16)) break inf_leave
+          if (state.head !== null) {
+            state.head.xflags = s.hold & 0xff
+            state.head.os = s.hold >>> 8
+          }
+          if (state.flags & 0x0200) {
+            CRC2(strm, s.hold)
+          }
+          INITBITS(s)
+          state.mode = EXLEN
+        case EXLEN:
+          if (state.flags & 0x0400) {
+            if (!NEEDBITS(s, 16)) break inf_leave
+            state.length = s.hold
             if (state.head !== null) {
-                state.head.xflags = s.hold & 0xff;
-                state.head.os = s.hold >>> 8;
+              state.head.extra_len = s.hold
             }
             if (state.flags & 0x0200) {
-				CRC2(strm, s.hold);
-			}
-            INITBITS(s);
-            state.mode = EXLEN;
-        case EXLEN:
-            if (state.flags & 0x0400) {
-                if(!NEEDBITS(s, 16)) break inf_leave;
-                state.length = s.hold;
-                if (state.head !== null) {
-                    state.head.extra_len = s.hold;
-				}
-                if (state.flags & 0x0200) {
-					CRC2(strm, s.hold);
-				}
-                INITBITS(s);
-				state.head.extra = "";
+              CRC2(strm, s.hold)
             }
-            else if (state.head !== null) {
-                state.head.extra = null;
-			}
-            state.mode = EXTRA;
+            INITBITS(s)
+            state.head.extra = ''
+          } else if (state.head !== null) {
+            state.head.extra = null
+          }
+          state.mode = EXTRA
         case EXTRA:
-            if (state.flags & 0x0400) {
-                copy = state.length;
-                if (copy > s.have) copy = s.have;
-                if (copy) {
-                    if (state.head !== null &&
-                        state.head.extra !== null) {
-                        len = state.head.extra_len - state.length;
-/*
+          if (state.flags & 0x0400) {
+            copy = state.length
+            if (copy > s.have) copy = s.have
+            if (copy) {
+              if (state.head !== null && state.head.extra !== null) {
+                len = state.head.extra_len - state.length
+                /*
                         zmemcpy(state->head->extra + len, next,
                                 len + copy > state->head->extra_max ?
                                 state->head->extra_max - len : copy);
 */
-						state.head.extra += strm.input_data.substring(
-							s.next, s.next + (len + copy > state.head.extra_max ?
-											  state.head.extra_max - len : copy));
-
-                    }
-                    if (state.flags & 0x0200)
-                        state.check = strm.checksum_function(state.check, strm.input_data, s.next, copy);
-                    s.have -= copy;
-                    s.next += copy;
-                    state.length -= copy;
-                }
-                if (state.length) break inf_leave;
+                state.head.extra += strm.input_data.substring(
+                  s.next,
+                  s.next + (len + copy > state.head.extra_max ? state.head.extra_max - len : copy)
+                )
+              }
+              if (state.flags & 0x0200) state.check = strm.checksum_function(state.check, strm.input_data, s.next, copy)
+              s.have -= copy
+              s.next += copy
+              state.length -= copy
             }
-            state.length = 0;
-            state.mode = NAME;
+            if (state.length) break inf_leave
+          }
+          state.length = 0
+          state.mode = NAME
         case NAME:
-            if (state.flags & 0x0800) {
-                if (s.have == 0) break inf_leave;
-				if (state.head !== null && state.head.name === null) {
-					state.head.name = "";
-				}
-                copy = 0;
-				// TODO end = strm.input_data.indexOf("\0", s.next);
-				// TODO state.length => state.head.name.length
-                do {
-                    len = strm.input_data.charAt(s.next + copy); copy++;
-					if(len === "\0")
-						break;
-                    if (state.head !== null &&
-						state.length < state.head.name_max) {
-                        state.head.name += len;
-						state.length++;
-					}
-                } while (copy < s.have);
-                if (state.flags & 0x0200) {
-                    state.check = strm.checksum_function(state.check, strm.input_data, s.next, copy);
-				}
-                s.have -= copy;
-                s.next += copy;
-                if (len !== "\0") break inf_leave;
+          if (state.flags & 0x0800) {
+            if (s.have == 0) break inf_leave
+            if (state.head !== null && state.head.name === null) {
+              state.head.name = ''
             }
-            else if (state.head !== null)
-                state.head.name = null;
-            state.length = 0;
-            state.mode = COMMENT;
-        case COMMENT:
-            if (state.flags & 0x1000) {
-                if (s.have == 0) break inf_leave;
-                copy = 0;
-				if (state.head !== null && state.head.comment === null) {
-					state.head.comment = "";
-				}
-				// TODO end = strm.input_data.indexOf("\0", s.next);
-				// TODO state.length => state.head.comment.length
-                do {
-                    len = strm.input_data.charAt(s.next + copy); copy++;
-					if(len === "\0")
-						break;
-                    if (state.head !== null &&
-						state.length < state.head.comm_max) {
-                        state.head.comment += len;
-						state.length++;
-					}
-                } while (copy < s.have);
-                if (state.flags & 0x0200)
-                    state.check = strm.checksum_function(state.check, strm.input_data, s.next, copy);
-                s.have -= copy;
-                s.next += copy;
-                if (len !== "\0") break inf_leave;
-            }
-            else if (state.head !== null)
-                state.head.comment = null;
-            state.mode = HCRC;
-        case HCRC:
+            copy = 0
+            // TODO end = strm.input_data.indexOf("\0", s.next);
+            // TODO state.length => state.head.name.length
+            do {
+              len = strm.input_data.charAt(s.next + copy)
+              copy++
+              if (len === '\0') break
+              if (state.head !== null && state.length < state.head.name_max) {
+                state.head.name += len
+                state.length++
+              }
+            } while (copy < s.have)
             if (state.flags & 0x0200) {
-                if(!NEEDBITS(s, 16)) break inf_leave;
-                if (s.hold != (state.check & 0xffff)) {
-                    strm.msg = "header crc mismatch";
-                    state.mode = BAD;
-                    break;
-                }
-                INITBITS(s);
+              state.check = strm.checksum_function(state.check, strm.input_data, s.next, copy)
             }
-            if (state.head !== null) {
-                state.head.hcrc = (state.flags >>> 9) & 1;
-                state.head.done = 1;
+            s.have -= copy
+            s.next += copy
+            if (len !== '\0') break inf_leave
+          } else if (state.head !== null) state.head.name = null
+          state.length = 0
+          state.mode = COMMENT
+        case COMMENT:
+          if (state.flags & 0x1000) {
+            if (s.have == 0) break inf_leave
+            copy = 0
+            if (state.head !== null && state.head.comment === null) {
+              state.head.comment = ''
             }
-            strm.adler = state.check = strm.checksum_function(0, null, 0, 0);
-            state.mode = TYPE;
-            break;
-//#endif
+            // TODO end = strm.input_data.indexOf("\0", s.next);
+            // TODO state.length => state.head.comment.length
+            do {
+              len = strm.input_data.charAt(s.next + copy)
+              copy++
+              if (len === '\0') break
+              if (state.head !== null && state.length < state.head.comm_max) {
+                state.head.comment += len
+                state.length++
+              }
+            } while (copy < s.have)
+            if (state.flags & 0x0200) state.check = strm.checksum_function(state.check, strm.input_data, s.next, copy)
+            s.have -= copy
+            s.next += copy
+            if (len !== '\0') break inf_leave
+          } else if (state.head !== null) state.head.comment = null
+          state.mode = HCRC
+        case HCRC:
+          if (state.flags & 0x0200) {
+            if (!NEEDBITS(s, 16)) break inf_leave
+            if (s.hold != (state.check & 0xffff)) {
+              strm.msg = 'header crc mismatch'
+              state.mode = BAD
+              break
+            }
+            INITBITS(s)
+          }
+          if (state.head !== null) {
+            state.head.hcrc = (state.flags >>> 9) & 1
+            state.head.done = 1
+          }
+          strm.adler = state.check = strm.checksum_function(0, null, 0, 0)
+          state.mode = TYPE
+          break
+        //#endif
         case DICTID:
-            if(!NEEDBITS(s, 32)) break inf_leave;
-            strm.adler = state.check = REVERSE(s.hold);
-            INITBITS(s);
-            state.mode = DICT;
+          if (!NEEDBITS(s, 32)) break inf_leave
+          strm.adler = state.check = REVERSE(s.hold)
+          INITBITS(s)
+          state.mode = DICT
         case DICT:
-            if (state.havedict == 0) {
-                RESTORE(s);
-                return ZLIB.Z_NEED_DICT;
-            }
-			strm.adler = state.check = strm.checksum_function(0, null, 0, 0);
-            state.mode = TYPE;
+          if (state.havedict == 0) {
+            RESTORE(s)
+            return ZLIB.Z_NEED_DICT
+          }
+          strm.adler = state.check = strm.checksum_function(0, null, 0, 0)
+          state.mode = TYPE
         case TYPE:
-            if (flush == ZLIB.Z_BLOCK || flush == ZLIB.Z_TREES) break inf_leave;
+          if (flush == ZLIB.Z_BLOCK || flush == ZLIB.Z_TREES) break inf_leave
         case TYPEDO:
-            if (state.last) {
-                BYTEBITS(s);
-                state.mode = CHECK;
-                break;
-            }
-            if(!NEEDBITS(s, 3)) break inf_leave;
-            state.last = BITS(s, 1);
-            DROPBITS(s, 1);
-            switch (BITS(s, 2)) {
-            case 0:                             /* stored block */
-//                Tracev((stderr, "inflate:     stored block%s\n",
-//                        state->last ? " (last)" : ""));
-                state.mode = STORED;
-                break;
-            case 1:                             /* fixed block */
-                fixedtables(state);
-//                Tracev((stderr, "inflate:     fixed codes block%s\n",
-//                        state->last ? " (last)" : ""));
-                state.mode = LEN_;             /* decode codes */
-                if (flush == ZLIB.Z_TREES) {
-                    DROPBITS(s, 2);
-                    break inf_leave;
-                }
-                break;
-            case 2:                             /* dynamic block */
-//                Tracev((stderr, "inflate:     dynamic codes block%s\n",
-//                        state->last ? " (last)" : ""));
-                state.mode = TABLE;
-                break;
+          if (state.last) {
+            BYTEBITS(s)
+            state.mode = CHECK
+            break
+          }
+          if (!NEEDBITS(s, 3)) break inf_leave
+          state.last = BITS(s, 1)
+          DROPBITS(s, 1)
+          switch (BITS(s, 2)) {
+            case 0 /* stored block */:
+              //                Tracev((stderr, "inflate:     stored block%s\n",
+              //                        state->last ? " (last)" : ""));
+              state.mode = STORED
+              break
+            case 1 /* fixed block */:
+              fixedtables(state)
+              //                Tracev((stderr, "inflate:     fixed codes block%s\n",
+              //                        state->last ? " (last)" : ""));
+              state.mode = LEN_ /* decode codes */
+              if (flush == ZLIB.Z_TREES) {
+                DROPBITS(s, 2)
+                break inf_leave
+              }
+              break
+            case 2 /* dynamic block */:
+              //                Tracev((stderr, "inflate:     dynamic codes block%s\n",
+              //                        state->last ? " (last)" : ""));
+              state.mode = TABLE
+              break
             case 3:
-                strm.msg = 'invalid block type';
-                state.mode = BAD;
-            }
-            DROPBITS(s, 2);
-            break;
+              strm.msg = 'invalid block type'
+              state.mode = BAD
+          }
+          DROPBITS(s, 2)
+          break
         case STORED:
-            BYTEBITS(s);                         /* go to byte boundary */
-            if(!NEEDBITS(s, 32)) break inf_leave;
-            if ((s.hold & 0xffff) != (((s.hold >>> 16) & 0xffff) ^ 0xffff)) {
-                strm.msg = 'invalid stored block lengths';
-                state.mode = BAD;
-                break;
-            }
-            state.length = s.hold & 0xffff;
-//            Tracev((stderr, "inflate:       stored length %u\n",
-//                    state->length));
-            INITBITS(s);
-            state.mode = COPY_;
-            if (flush == ZLIB.Z_TREES) break inf_leave;
+          BYTEBITS(s) /* go to byte boundary */
+          if (!NEEDBITS(s, 32)) break inf_leave
+          if ((s.hold & 0xffff) != (((s.hold >>> 16) & 0xffff) ^ 0xffff)) {
+            strm.msg = 'invalid stored block lengths'
+            state.mode = BAD
+            break
+          }
+          state.length = s.hold & 0xffff
+          //            Tracev((stderr, "inflate:       stored length %u\n",
+          //                    state->length));
+          INITBITS(s)
+          state.mode = COPY_
+          if (flush == ZLIB.Z_TREES) break inf_leave
         case COPY_:
-            state.mode = COPY;
+          state.mode = COPY
         case COPY:
-            copy = state.length;
-            if (copy) {
-                if (copy > s.have) copy = s.have;
-                if (copy > s.left) copy = s.left;
-                if (copy == 0) break inf_leave;
-                strm.output_data += strm.input_data.substring(s.next, s.next + copy);
-                strm.next_out += copy;
-                s.have -= copy;
-                s.next += copy;
-                s.left -= copy;
-                state.length -= copy;
-                break;
-            }
-//            Tracev((stderr, "inflate:       stored end\n"));
-            state.mode = TYPE;
-            break;
+          copy = state.length
+          if (copy) {
+            if (copy > s.have) copy = s.have
+            if (copy > s.left) copy = s.left
+            if (copy == 0) break inf_leave
+            strm.output_data += strm.input_data.substring(s.next, s.next + copy)
+            strm.next_out += copy
+            s.have -= copy
+            s.next += copy
+            s.left -= copy
+            state.length -= copy
+            break
+          }
+          //            Tracev((stderr, "inflate:       stored end\n"));
+          state.mode = TYPE
+          break
         case TABLE:
-            if(!NEEDBITS(s, 14)) break inf_leave;
-            state.nlen = BITS(s, 5) + 257;
-            DROPBITS(s, 5);
-            state.ndist = BITS(s, 5) + 1;
-            DROPBITS(s, 5);
-            state.ncode = BITS(s, 4) + 4;
-            DROPBITS(s, 4);
-//#ifndef PKZIP_BUG_WORKAROUND
-            if (state.nlen > 286 || state.ndist > 30) {
-                strm.msg = 'too many length or distance symbols';
-                state.mode = BAD;
-                break;
-            }
-//#endif
-//            Tracev((stderr, "inflate:       table sizes ok\n"));
-            state.have = 0;
-            state.mode = LENLENS;
+          if (!NEEDBITS(s, 14)) break inf_leave
+          state.nlen = BITS(s, 5) + 257
+          DROPBITS(s, 5)
+          state.ndist = BITS(s, 5) + 1
+          DROPBITS(s, 5)
+          state.ncode = BITS(s, 4) + 4
+          DROPBITS(s, 4)
+          //#ifndef PKZIP_BUG_WORKAROUND
+          if (state.nlen > 286 || state.ndist > 30) {
+            strm.msg = 'too many length or distance symbols'
+            state.mode = BAD
+            break
+          }
+          //#endif
+          //            Tracev((stderr, "inflate:       table sizes ok\n"));
+          state.have = 0
+          state.mode = LENLENS
         case LENLENS:
-            while (state.have < state.ncode) {
-                if(!NEEDBITS(s, 3)) break inf_leave;
-                var tmp = BITS(s, 3);
-                state.lens[inflate_order[state.have++]] = tmp;
-                DROPBITS(s, 3);
-            }
-            while (state.have < 19)
-                state.lens[inflate_order[state.have++]] = 0;
-            state.next = 0;
-            state.lencode = 0;
-            state.lenbits = 7;
+          while (state.have < state.ncode) {
+            if (!NEEDBITS(s, 3)) break inf_leave
+            var tmp = BITS(s, 3)
+            state.lens[inflate_order[state.have++]] = tmp
+            DROPBITS(s, 3)
+          }
+          while (state.have < 19) state.lens[inflate_order[state.have++]] = 0
+          state.next = 0
+          state.lencode = 0
+          state.lenbits = 7
 
-//            ret = inflate_table(CODES, state->lens, 19, &(state->next),
-//                                &(state->lenbits), state->work);
-            ret = inflate_table(state, CODES);
+          //            ret = inflate_table(CODES, state->lens, 19, &(state->next),
+          //                                &(state->lenbits), state->work);
+          ret = inflate_table(state, CODES)
 
-            if (ret) {
-                strm.msg = 'invalid code lengths set';
-                state.mode = BAD;
-                break;
-            }
-//            Tracev((stderr, "inflate:       code lengths ok\n"));
-            state.have = 0;
-            state.mode = CODELENS;
+          if (ret) {
+            strm.msg = 'invalid code lengths set'
+            state.mode = BAD
+            break
+          }
+          //            Tracev((stderr, "inflate:       code lengths ok\n"));
+          state.have = 0
+          state.mode = CODELENS
         case CODELENS:
-            while (state.have < state.nlen + state.ndist) {
-                for (;;) {
-                    here = state.codes[state.lencode + BITS(s, state.lenbits)];
-                    if (here.bits <= s.bits) break;
-                    if(!PULLBYTE(s)) break inf_leave;
-                }
-                if (here.val < 16) {
-                    DROPBITS(s, here.bits);
-                    state.lens[state.have++] = here.val;
-                }
-                else {
-                    if (here.val == 16) {
-                        if(!NEEDBITS(s, here.bits + 2)) break inf_leave;
-                        DROPBITS(s, here.bits);
-                        if (state.have == 0) {
-                            strm.msg = 'invalid bit length repeat';
-                            state.mode = BAD;
-                            break;
-                        }
-                        len = state.lens[state.have - 1];
-                        copy = 3 + BITS(s, 2);
-                        DROPBITS(s, 2);
-                    }
-                    else if (here.val == 17) {
-                        if(!NEEDBITS(s, here.bits + 3)) break inf_leave;
-                        DROPBITS(s, here.bits);
-                        len = 0;
-                        copy = 3 + BITS(s, 3);
-                        DROPBITS(s, 3);
-                    }
-                    else {
-                        if(!NEEDBITS(s, here.bits + 7)) break inf_leave;
-                        DROPBITS(s, here.bits);
-                        len = 0;
-                        copy = 11 + BITS(s, 7);
-                        DROPBITS(s, 7);
-                    }
-                    if (state.have + copy > state.nlen + state.ndist) {
-                        strm.msg = 'invalid bit length repeat';
-                        state.mode = BAD;
-                        break;
-                    }
-                    while (copy--)
-                        state.lens[state.have++] = len;
-                }
+          while (state.have < state.nlen + state.ndist) {
+            for (;;) {
+              here = state.codes[state.lencode + BITS(s, state.lenbits)]
+              if (here.bits <= s.bits) break
+              if (!PULLBYTE(s)) break inf_leave
             }
-
-            /* handle error breaks in while */
-            if (state.mode == BAD) break;
-
-            /* check for end-of-block code (better have one) */
-            if (state.lens[256] == 0) {
-                strm.msg = 'invalid code -- missing end-of-block';
-                state.mode = BAD;
-                break;
+            if (here.val < 16) {
+              DROPBITS(s, here.bits)
+              state.lens[state.have++] = here.val
+            } else {
+              if (here.val == 16) {
+                if (!NEEDBITS(s, here.bits + 2)) break inf_leave
+                DROPBITS(s, here.bits)
+                if (state.have == 0) {
+                  strm.msg = 'invalid bit length repeat'
+                  state.mode = BAD
+                  break
+                }
+                len = state.lens[state.have - 1]
+                copy = 3 + BITS(s, 2)
+                DROPBITS(s, 2)
+              } else if (here.val == 17) {
+                if (!NEEDBITS(s, here.bits + 3)) break inf_leave
+                DROPBITS(s, here.bits)
+                len = 0
+                copy = 3 + BITS(s, 3)
+                DROPBITS(s, 3)
+              } else {
+                if (!NEEDBITS(s, here.bits + 7)) break inf_leave
+                DROPBITS(s, here.bits)
+                len = 0
+                copy = 11 + BITS(s, 7)
+                DROPBITS(s, 7)
+              }
+              if (state.have + copy > state.nlen + state.ndist) {
+                strm.msg = 'invalid bit length repeat'
+                state.mode = BAD
+                break
+              }
+              while (copy--) state.lens[state.have++] = len
             }
+          }
 
-            /* build code tables -- note: do not change the lenbits or distbits
+          /* handle error breaks in while */
+          if (state.mode == BAD) break
+
+          /* check for end-of-block code (better have one) */
+          if (state.lens[256] == 0) {
+            strm.msg = 'invalid code -- missing end-of-block'
+            state.mode = BAD
+            break
+          }
+
+          /* build code tables -- note: do not change the lenbits or distbits
                values here (9 and 6) without reading the comments in inftrees.h
                concerning the ENOUGH constants, which depend on those values */
-            state.next = 0;
-            state.lencode = state.next;
-            state.lenbits = 9;
-//            ret = inflate_table(LENS, state->lens, state->nlen, &(state->next),
-//                                &(state->lenbits), state->work);
-            ret = inflate_table(state, LENS);
-            if (ret) {
-                strm.msg = 'invalid literal/lengths set';
-                state.mode = BAD;
-                break;
-            }
-            state.distcode = state.next;
-            state.distbits = 6;
-//            ret = inflate_table(DISTS, state->lens + state->nlen, state->ndist, &(state->next),
-//                                                                &(state->distbits), state->work);
-            ret = inflate_table(state, DISTS);
-            if (ret) {
-                strm.msg = 'invalid distances set';
-                state.mode = BAD;
-                break;
-            }
-//            Tracev((stderr, "inflate:       codes ok\n"));
-            state.mode = LEN_;
-            if (flush == ZLIB.Z_TREES) break inf_leave;
+          state.next = 0
+          state.lencode = state.next
+          state.lenbits = 9
+          //            ret = inflate_table(LENS, state->lens, state->nlen, &(state->next),
+          //                                &(state->lenbits), state->work);
+          ret = inflate_table(state, LENS)
+          if (ret) {
+            strm.msg = 'invalid literal/lengths set'
+            state.mode = BAD
+            break
+          }
+          state.distcode = state.next
+          state.distbits = 6
+          //            ret = inflate_table(DISTS, state->lens + state->nlen, state->ndist, &(state->next),
+          //                                                                &(state->distbits), state->work);
+          ret = inflate_table(state, DISTS)
+          if (ret) {
+            strm.msg = 'invalid distances set'
+            state.mode = BAD
+            break
+          }
+          //            Tracev((stderr, "inflate:       codes ok\n"));
+          state.mode = LEN_
+          if (flush == ZLIB.Z_TREES) break inf_leave
         case LEN_:
-            state.mode = LEN;
+          state.mode = LEN
         case LEN:
-            if (s.have >= 6 && s.left >= 258) {
-                RESTORE(s);
-                inflate_fast(strm, out);
-                LOAD(strm, s);
-                if (state.mode == TYPE)
-                    state.back = -1;
-                break;
-            }
-            state.back = 0;
+          if (s.have >= 6 && s.left >= 258) {
+            RESTORE(s)
+            inflate_fast(strm, out)
+            LOAD(strm, s)
+            if (state.mode == TYPE) state.back = -1
+            break
+          }
+          state.back = 0
+          for (;;) {
+            here = state.codes[state.lencode + BITS(s, state.lenbits)]
+            if (here.bits <= s.bits) break
+            if (!PULLBYTE(s)) break inf_leave
+          }
+          if (here.op && (here.op & 0xf0) == 0) {
+            last = here
             for (;;) {
-                here = state.codes[state.lencode + BITS(s, state.lenbits)];
-                if (here.bits <= s.bits) break;
-                if(!PULLBYTE(s)) break inf_leave;
+              here = state.codes[state.lencode + last.val + (BITS(s, last.bits + last.op) >>> last.bits)]
+              if (last.bits + here.bits <= s.bits) break
+              if (!PULLBYTE(s)) break inf_leave
             }
-            if (here.op && (here.op & 0xf0) == 0) {
-                last = here;
-                for (;;) {
-                    here = state.codes[state.lencode + last.val +
-                                       (BITS(s, last.bits + last.op) >>> last.bits)];
-                    if (last.bits + here.bits <= s.bits) break;
-                    if(!PULLBYTE(s)) break inf_leave;
-                }
-                DROPBITS(s, last.bits);
-                state.back += last.bits;
-            }
-            DROPBITS(s, here.bits);
-            state.back += here.bits;
-            state.length = here.val;
-            if (here.op == 0) {
-//              Tracevv((stderr, here.val >= 0x20 && here.val < 0x7f ?
-//                        "inflate:         literal '%c'\n" :
-//                        "inflate:         literal 0x%02x\n", here.val));
-                state.mode = LIT;
-                break;
-            }
-            if (here.op & 32) {
-//                Tracevv((stderr, "inflate:         end of block\n"));
-                state.back = -1;
-                state.mode = TYPE;
-                break;
-            }
-            if (here.op & 64) {
-                strm.msg = 'invalid literal/length code';
-                state.mode = BAD;
-                break;
-            }
-            state.extra = here.op & 15;
-            state.mode = LENEXT;
+            DROPBITS(s, last.bits)
+            state.back += last.bits
+          }
+          DROPBITS(s, here.bits)
+          state.back += here.bits
+          state.length = here.val
+          if (here.op == 0) {
+            //              Tracevv((stderr, here.val >= 0x20 && here.val < 0x7f ?
+            //                        "inflate:         literal '%c'\n" :
+            //                        "inflate:         literal 0x%02x\n", here.val));
+            state.mode = LIT
+            break
+          }
+          if (here.op & 32) {
+            //                Tracevv((stderr, "inflate:         end of block\n"));
+            state.back = -1
+            state.mode = TYPE
+            break
+          }
+          if (here.op & 64) {
+            strm.msg = 'invalid literal/length code'
+            state.mode = BAD
+            break
+          }
+          state.extra = here.op & 15
+          state.mode = LENEXT
         case LENEXT:
-            if (state.extra) {
-                if(!NEEDBITS(s, state.extra)) break inf_leave;
-                state.length += BITS(s, state.extra);
-                DROPBITS(s, state.extra);
-                state.back += state.extra;
-            }
-            //Tracevv((stderr, "inflate:         length %u\n", state->length));
-            state.was = state.length;
-            state.mode = DIST;
+          if (state.extra) {
+            if (!NEEDBITS(s, state.extra)) break inf_leave
+            state.length += BITS(s, state.extra)
+            DROPBITS(s, state.extra)
+            state.back += state.extra
+          }
+          //Tracevv((stderr, "inflate:         length %u\n", state->length));
+          state.was = state.length
+          state.mode = DIST
         case DIST:
+          for (;;) {
+            here = state.codes[state.distcode + BITS(s, state.distbits)]
+            if (here.bits <= s.bits) break
+            if (!PULLBYTE(s)) break inf_leave
+          }
+          if ((here.op & 0xf0) == 0) {
+            last = here
             for (;;) {
-                here = state.codes[state.distcode + BITS(s, state.distbits)];
-                if (here.bits <= s.bits) break;
-                if(!PULLBYTE(s)) break inf_leave;
+              here = state.codes[state.distcode + last.val + (BITS(s, last.bits + last.op) >>> last.bits)]
+              if (last.bits + here.bits <= s.bits) break
+              if (!PULLBYTE(s)) break inf_leave
             }
-            if ((here.op & 0xf0) == 0) {
-                last = here;
-                for (;;) {
-                    here = state.codes[state.distcode + last.val +
-                                       (BITS(s, last.bits + last.op) >>> last.bits)];
-                    if ((last.bits + here.bits) <= s.bits) break;
-                    if(!PULLBYTE(s)) break inf_leave;
-                }
-                DROPBITS(s, last.bits);
-                state.back += last.bits;
-            }
-            DROPBITS(s, here.bits);
-            state.back += here.bits;
-            if (here.op & 64) {
-                strm.msg = 'invalid distance code';
-                state.mode = BAD;
-                break;
-            }
-            state.offset = here.val;
-            state.extra = here.op & 15;
-            state.mode = DISTEXT;
+            DROPBITS(s, last.bits)
+            state.back += last.bits
+          }
+          DROPBITS(s, here.bits)
+          state.back += here.bits
+          if (here.op & 64) {
+            strm.msg = 'invalid distance code'
+            state.mode = BAD
+            break
+          }
+          state.offset = here.val
+          state.extra = here.op & 15
+          state.mode = DISTEXT
         case DISTEXT:
-            if (state.extra) {
-                if(!NEEDBITS(s, state.extra)) break inf_leave;
-                state.offset += BITS(s, state.extra);
-                DROPBITS(s, state.extra);
-                state.back += state.extra;
-            }
-//NOSPRT #ifdef INFLATE_STRICT
-//            if (state->offset > state->dmax) {
-//                strm->msg = (char *)"invalid distance too far back";
-//                state->mode = BAD;
-//                break;
-//            }
-//#endif
-//            Tracevv((stderr, "inflate:         distance %u\n", state->offset));
-            state.mode = MATCH;
+          if (state.extra) {
+            if (!NEEDBITS(s, state.extra)) break inf_leave
+            state.offset += BITS(s, state.extra)
+            DROPBITS(s, state.extra)
+            state.back += state.extra
+          }
+          //NOSPRT #ifdef INFLATE_STRICT
+          //            if (state->offset > state->dmax) {
+          //                strm->msg = (char *)"invalid distance too far back";
+          //                state->mode = BAD;
+          //                break;
+          //            }
+          //#endif
+          //            Tracevv((stderr, "inflate:         distance %u\n", state->offset));
+          state.mode = MATCH
         case MATCH:
-            if (s.left == 0) break inf_leave;
-            copy = out - s.left;
-            if (state.offset > copy) {         /* copy from window */
-                copy = state.offset - copy;
-                if (copy > state.whave) {
-                    if (state.sane) {
-                        strm.msg = 'invalid distance too far back';
-                        state.mode = BAD;
-                        break;
-                    }
-//NOSPRT #ifdef INFLATE_ALLOW_INVALID_DISTANCE_TOOFAR_ARRR
-//                    Trace((stderr, "inflate.c too far\n"));
-//                    copy -= state->whave;
-//                    if (copy > state->length) copy = state->length;
-//                    if (copy > left) copy = left;
-//                    left -= copy;
-//                    state->length -= copy;
-//                    do {
-//                        *put++ = 0;
-//                    } while (--copy);
-//                    if (state->length == 0) state->mode = LEN;
-//                    break;
-//#endif
-                }
-                if (copy > state.wnext) {
-                    copy -= state.wnext;
-                    // from = state->window + (state->wsize - copy);
-                    from_window_offset = state.wsize - copy;
-                    from_out_offset = -1;
-                }
-                else {
-                    // from = state->window + (state->wnext - copy);
-                    from_window_offset = state.wnext - copy;
-                    from_out_offset = -1;
-                }
-                if (copy > state.length) copy = state.length;
+          if (s.left == 0) break inf_leave
+          copy = out - s.left
+          if (state.offset > copy) {
+            /* copy from window */
+            copy = state.offset - copy
+            if (copy > state.whave) {
+              if (state.sane) {
+                strm.msg = 'invalid distance too far back'
+                state.mode = BAD
+                break
+              }
+              //NOSPRT #ifdef INFLATE_ALLOW_INVALID_DISTANCE_TOOFAR_ARRR
+              //                    Trace((stderr, "inflate.c too far\n"));
+              //                    copy -= state->whave;
+              //                    if (copy > state->length) copy = state->length;
+              //                    if (copy > left) copy = left;
+              //                    left -= copy;
+              //                    state->length -= copy;
+              //                    do {
+              //                        *put++ = 0;
+              //                    } while (--copy);
+              //                    if (state->length == 0) state->mode = LEN;
+              //                    break;
+              //#endif
             }
-            else {                              /* copy from output */
-                // from = put - state->offset;
-                from_window_offset = -1;
-                from_out_offset = strm.next_out - state.offset;
-                copy = state.length;
-            }
-            if (copy > s.left) copy = s.left;
-            s.left -= copy;
-            state.length -= copy;
-            if( from_window_offset >= 0 ) {
-                strm.output_data += state.window.substring(from_window_offset, from_window_offset + copy);
-                strm.next_out += copy;
-                copy = 0;
+            if (copy > state.wnext) {
+              copy -= state.wnext
+              // from = state->window + (state->wsize - copy);
+              from_window_offset = state.wsize - copy
+              from_out_offset = -1
             } else {
-                strm.next_out += copy;
-                do {
-                    strm.output_data += strm.output_data.charAt(from_out_offset++);
-                } while (--copy);
+              // from = state->window + (state->wnext - copy);
+              from_window_offset = state.wnext - copy
+              from_out_offset = -1
             }
-            if (state.length == 0) state.mode = LEN;
-            break;
+            if (copy > state.length) copy = state.length
+          } else {
+            /* copy from output */
+            // from = put - state->offset;
+            from_window_offset = -1
+            from_out_offset = strm.next_out - state.offset
+            copy = state.length
+          }
+          if (copy > s.left) copy = s.left
+          s.left -= copy
+          state.length -= copy
+          if (from_window_offset >= 0) {
+            strm.output_data += state.window.substring(from_window_offset, from_window_offset + copy)
+            strm.next_out += copy
+            copy = 0
+          } else {
+            strm.next_out += copy
+            do {
+              strm.output_data += strm.output_data.charAt(from_out_offset++)
+            } while (--copy)
+          }
+          if (state.length == 0) state.mode = LEN
+          break
         case LIT:
-            if (s.left == 0) break inf_leave;
+          if (s.left == 0) break inf_leave
 
-            strm.output_data += String.fromCharCode(state.length);
-            strm.next_out++;
-            //*put++ = (unsigned char)(state->length);
+          strm.output_data += String.fromCharCode(state.length)
+          strm.next_out++
+          //*put++ = (unsigned char)(state->length);
 
-            s.left--;
-            state.mode = LEN;
-            break;
+          s.left--
+          state.mode = LEN
+          break
         case CHECK:
-            if (state.wrap) {
-                if(!NEEDBITS(s, 32)) break inf_leave;
-                out -= s.left;
-                strm.total_out += out;
-                state.total += out;
-                if (out)
-                    strm.adler = state.check =
-                        strm.checksum_function(state.check, strm.output_data, strm.output_data.length - out, out);
-                out = s.left;
-                if ((
-// #ifdef GUNZIP
-                     state.flags ? s.hold :
-//#endif
-                     REVERSE(s.hold)) != state.check) {
-                    strm.msg = "incorrect data check";
-                    state.mode = BAD;
-                    break;
-                }
-                INITBITS(s);
-//debug("## inflate:   check matches trailer\n");
-//                Tracev((stderr, "inflate:   check matches trailer\n"));
+          if (state.wrap) {
+            if (!NEEDBITS(s, 32)) break inf_leave
+            out -= s.left
+            strm.total_out += out
+            state.total += out
+            if (out)
+              strm.adler = state.check = strm.checksum_function(
+                state.check,
+                strm.output_data,
+                strm.output_data.length - out,
+                out
+              )
+            out = s.left
+            if (
+              // #ifdef GUNZIP
+              (state.flags
+                ? s.hold
+                : //#endif
+                  REVERSE(s.hold)) != state.check
+            ) {
+              strm.msg = 'incorrect data check'
+              state.mode = BAD
+              break
             }
-//#ifdef GUNZIP
-            state.mode = LENGTH;
+            INITBITS(s)
+            //debug("## inflate:   check matches trailer\n");
+            //                Tracev((stderr, "inflate:   check matches trailer\n"));
+          }
+          //#ifdef GUNZIP
+          state.mode = LENGTH
         case LENGTH:
-            if (state.wrap && state.flags) {
-                if(!NEEDBITS(s, 32)) break inf_leave;
-                if (s.hold != (state.total & 0xffffffff)) {
-                    strm.msg = 'incorrect length check';
-                    state.mode = BAD;
-                    break;
-                }
-                INITBITS(s);
-                //Tracev((stderr, "inflate:   length matches trailer\n"));
+          if (state.wrap && state.flags) {
+            if (!NEEDBITS(s, 32)) break inf_leave
+            if (s.hold != (state.total & 0xffffffff)) {
+              strm.msg = 'incorrect length check'
+              state.mode = BAD
+              break
             }
-//#endif
-            state.mode = DONE;
+            INITBITS(s)
+            //Tracev((stderr, "inflate:   length matches trailer\n"));
+          }
+          //#endif
+          state.mode = DONE
         case DONE:
-            ret = ZLIB.Z_STREAM_END;
-            break inf_leave;
+          ret = ZLIB.Z_STREAM_END
+          break inf_leave
         case BAD:
-            ret = ZLIB.Z_DATA_ERROR;
-            break inf_leave;
+          ret = ZLIB.Z_DATA_ERROR
+          break inf_leave
         case MEM:
-            return ZLIB.Z_MEM_ERROR;
+          return ZLIB.Z_MEM_ERROR
         case SYNC:
         default:
-            return ZLIB.Z_STREAM_ERROR;
-        } }
+          return ZLIB.Z_STREAM_ERROR
+      }
+    }
 
     /*
       Return from inflate(), updating the total counts and the check value.
@@ -2081,80 +2157,73 @@ inf_leave: for (;;) {
       error.  Call updatewindow() to create and/or update the window state.
       Note: a memory error from inflate() is non-recoverable.
     */
-inf_leave:
-    RESTORE(s);
-    if (state.wsize || (out != strm.avail_out && state.mode < BAD &&
-                        (state.mode < CHECK || flush != ZLIB.Z_FINISH)))
-        if (updatewindow(strm)) {
-            state.mode = MEM;
-            return ZLIB.Z_MEM_ERROR;
-        }
-    _in -= strm.avail_in;
-    out -= strm.avail_out;
-    strm.total_in += _in;
-    strm.total_out += out;
-    state.total += out;
+    inf_leave: RESTORE(s)
+    if (state.wsize || (out != strm.avail_out && state.mode < BAD && (state.mode < CHECK || flush != ZLIB.Z_FINISH)))
+      if (updatewindow(strm)) {
+        state.mode = MEM
+        return ZLIB.Z_MEM_ERROR
+      }
+    _in -= strm.avail_in
+    out -= strm.avail_out
+    strm.total_in += _in
+    strm.total_out += out
+    state.total += out
     if (state.wrap && out)
-	    strm.adler = state.check = strm.checksum_function(state.check, strm.output_data, 0, strm.output_data.length);
-    strm.data_type = state.bits + (state.last ? 64 : 0) +
-	    (state.mode == TYPE ? 128 : 0) +
-	    (state.mode == LEN_ || state.mode == COPY_ ? 256 : 0);
-    if (((_in == 0 && out == 0) || flush == ZLIB.Z_FINISH) && ret == ZLIB.Z_OK)
-        ret = ZLIB.Z_BUF_ERROR;
-    return ret;
-};
+      strm.adler = state.check = strm.checksum_function(state.check, strm.output_data, 0, strm.output_data.length)
+    strm.data_type =
+      state.bits +
+      (state.last ? 64 : 0) +
+      (state.mode == TYPE ? 128 : 0) +
+      (state.mode == LEN_ || state.mode == COPY_ ? 256 : 0)
+    if (((_in == 0 && out == 0) || flush == ZLIB.Z_FINISH) && ret == ZLIB.Z_OK) ret = ZLIB.Z_BUF_ERROR
+    return ret
+  }
 
-ZLIB.inflateEnd = function(strm)
-{
-    var state;
-    if (!strm || !strm.state )
-        return ZLIB.Z_STREAM_ERROR;
-    state = strm.state;
-    state.window = null;
-    strm.state = null;
+  ZLIB.inflateEnd = function (strm) {
+    var state
+    if (!strm || !strm.state) return ZLIB.Z_STREAM_ERROR
+    state = strm.state
+    state.window = null
+    strm.state = null
     //    Tracev((stderr, "inflate: end\n"));
-    return ZLIB.Z_OK;
-};
+    return ZLIB.Z_OK
+  }
 
-ZLIB.z_stream.prototype.inflate = function(input_string, opts)
-{
-    var flush;
-    var avail_out;
-	var DEFAULT_BUFFER_SIZE = 16384;
+  ZLIB.z_stream.prototype.inflate = function (input_string, opts) {
+    var flush
+    var avail_out
+    var DEFAULT_BUFFER_SIZE = 16384
 
-    this.input_data = input_string;
-    this.next_in = getarg(opts, 'next_in', 0);
-    this.avail_in = getarg(opts, 'avail_in', input_string.length - this.next_in);
+    this.input_data = input_string
+    this.next_in = getarg(opts, 'next_in', 0)
+    this.avail_in = getarg(opts, 'avail_in', input_string.length - this.next_in)
 
-    flush = getarg(opts, 'flush', ZLIB.Z_SYNC_FLUSH);
-    avail_out = getarg(opts, 'avail_out', -1);
+    flush = getarg(opts, 'flush', ZLIB.Z_SYNC_FLUSH)
+    avail_out = getarg(opts, 'avail_out', -1)
 
-    var result = '';
+    var result = ''
     do {
-        this.avail_out = (avail_out >= 0 ? avail_out : DEFAULT_BUFFER_SIZE);
-        this.output_data = '';
-        this.next_out = 0;
-        this.error = ZLIB.inflate(this, flush);
-        if(this.error != 0) 
-            console.error("zlib error", this.error)
-        if(avail_out >= 0) {
-            return this.output_data;
-        }
-        result += this.output_data;
-		if(this.avail_out > 0) {
-			break;
-		}
-    } while(this.error == ZLIB.Z_OK);
+      this.avail_out = avail_out >= 0 ? avail_out : DEFAULT_BUFFER_SIZE
+      this.output_data = ''
+      this.next_out = 0
+      this.error = ZLIB.inflate(this, flush)
+      if (this.error != 0) console.error('zlib error', this.error)
+      if (avail_out >= 0) {
+        return this.output_data
+      }
+      result += this.output_data
+      if (this.avail_out > 0) {
+        break
+      }
+    } while (this.error == ZLIB.Z_OK)
 
-    return result;
-};
+    return result
+  }
 
-ZLIB.z_stream.prototype.inflateReset = function(windowBits)
-{
-    return ZLIB.inflateReset(this, windowBits);
-};
-
-}());
+  ZLIB.z_stream.prototype.inflateReset = function (windowBits) {
+    return ZLIB.inflateReset(this, windowBits)
+  }
+})()
 /* zlib-adler32.js -- JavaScript implementation for the zlib adler32.
   Version: 0.2.0
   LastModified: Apr 12 2012
@@ -2191,249 +2260,302 @@ Usage: adler = ZLIB.adler32_combine(adler1, adler2, len2);
    negative, the result has no meaning or utility.
 */
 
-if( typeof ZLIB === 'undefined' ) {
-    alert('ZLIB is not defined.  SRC zlib.js before zlib-adler32.js')
+if (typeof ZLIB === 'undefined') {
+  alert('ZLIB is not defined.  SRC zlib.js before zlib-adler32.js')
 }
 
-(function() {
+;(function () {
+  /* adler32.c -- compute the Adler-32 checksum of a data stream
+   * Copyright (C) 1995-2011 Mark Adler
+   * For conditions of distribution and use, see copyright notice in zlib.h
+   */
 
-/* adler32.c -- compute the Adler-32 checksum of a data stream
- * Copyright (C) 1995-2011 Mark Adler
- * For conditions of distribution and use, see copyright notice in zlib.h
- */
+  var BASE = 65521 /* largest prime smaller than 65536 */
+  var NMAX = 5552
+  /* NMAX is the largest n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1 */
 
-var BASE = 65521;      /* largest prime smaller than 65536 */
-var NMAX =  5552;
-/* NMAX is the largest n such that 255n(n+1)/2 + (n+1)(BASE-1) <= 2^32-1 */
-
-/* ========================================================================= */
-function adler32_string(adler, buf, offset, len)
-{
-    var sum2;
-    var n;
+  /* ========================================================================= */
+  function adler32_string(adler, buf, offset, len) {
+    var sum2
+    var n
 
     /* split Adler-32 into component sums */
-    sum2 = (adler >>> 16) & 0xffff;
-    adler &= 0xffff;
+    sum2 = (adler >>> 16) & 0xffff
+    adler &= 0xffff
 
     /* in case user likes doing a byte at a time, keep it fast */
     if (len == 1) {
-		adler += buf.charCodeAt(offset) & 0xff;
-        if (adler >= BASE)
-            adler -= BASE;
-        sum2 += adler;
-        if (sum2 >= BASE)
-            sum2 -= BASE;
-        return adler | (sum2 << 16);
+      adler += buf.charCodeAt(offset) & 0xff
+      if (adler >= BASE) adler -= BASE
+      sum2 += adler
+      if (sum2 >= BASE) sum2 -= BASE
+      return adler | (sum2 << 16)
     }
 
     /* initial Adler-32 value (deferred check for len == 1 speed) */
-    if (buf === null)
-        return 1;
+    if (buf === null) return 1
 
     /* in case short lengths are provided, keep it somewhat fast */
     if (len < 16) {
-        while (len--) {
-            adler += buf.charCodeAt(offset++) & 0xff;
-            sum2 += adler;
-        }
-        if (adler >= BASE)
-            adler -= BASE;
-		sum2 %= BASE;           /* only added so many BASE's */
-        return adler | (sum2 << 16);
+      while (len--) {
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+      }
+      if (adler >= BASE) adler -= BASE
+      sum2 %= BASE /* only added so many BASE's */
+      return adler | (sum2 << 16)
     }
 
     /* do length NMAX blocks -- requires just one modulo operation */
     while (len >= NMAX) {
-        len -= NMAX;
-        n = NMAX >> 4;          /* NMAX is divisible by 16 */
-        do {
-			/* 16 sums unrolled */
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-        } while (--n);
-        adler %= BASE;
-        sum2 %= BASE;
+      len -= NMAX
+      n = NMAX >> 4 /* NMAX is divisible by 16 */
+      do {
+        /* 16 sums unrolled */
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+      } while (--n)
+      adler %= BASE
+      sum2 %= BASE
     }
 
     /* do remaining bytes (less than NMAX, still just one modulo) */
-    if (len) {                  /* avoid modulos if none remaining */
-        while (len >= 16) {
-            len -= 16;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-        }
-        while (len--) {
-            adler += buf.charCodeAt(offset++) & 0xff; sum2 += adler;
-        }
-        adler %= BASE;
-        sum2 %= BASE;
+    if (len) {
+      /* avoid modulos if none remaining */
+      while (len >= 16) {
+        len -= 16
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+      }
+      while (len--) {
+        adler += buf.charCodeAt(offset++) & 0xff
+        sum2 += adler
+      }
+      adler %= BASE
+      sum2 %= BASE
     }
 
     /* return recombined sums */
-    return adler | (sum2 << 16);
-}
+    return adler | (sum2 << 16)
+  }
 
-/* ========================================================================= */
-function adler32_array(adler, buf, offset, len)
-{
-    var sum2;
-    var n;
+  /* ========================================================================= */
+  function adler32_array(adler, buf, offset, len) {
+    var sum2
+    var n
 
     /* split Adler-32 into component sums */
-    sum2 = (adler >>> 16) & 0xffff;
-    adler &= 0xffff;
+    sum2 = (adler >>> 16) & 0xffff
+    adler &= 0xffff
 
     /* in case user likes doing a byte at a time, keep it fast */
     if (len == 1) {
-		adler += buf[offset];
-        if (adler >= BASE)
-            adler -= BASE;
-        sum2 += adler;
-        if (sum2 >= BASE)
-            sum2 -= BASE;
-        return adler | (sum2 << 16);
+      adler += buf[offset]
+      if (adler >= BASE) adler -= BASE
+      sum2 += adler
+      if (sum2 >= BASE) sum2 -= BASE
+      return adler | (sum2 << 16)
     }
 
     /* initial Adler-32 value (deferred check for len == 1 speed) */
-    if (buf === null)
-        return 1;
+    if (buf === null) return 1
 
     /* in case short lengths are provided, keep it somewhat fast */
     if (len < 16) {
-        while (len--) {
-            adler += buf[offset++];
-            sum2 += adler;
-        }
-        if (adler >= BASE)
-            adler -= BASE;
-		sum2 %= BASE;           /* only added so many BASE's */
-        return adler | (sum2 << 16);
+      while (len--) {
+        adler += buf[offset++]
+        sum2 += adler
+      }
+      if (adler >= BASE) adler -= BASE
+      sum2 %= BASE /* only added so many BASE's */
+      return adler | (sum2 << 16)
     }
 
     /* do length NMAX blocks -- requires just one modulo operation */
     while (len >= NMAX) {
-        len -= NMAX;
-        n = NMAX >> 4;          /* NMAX is divisible by 16 */
-        do {
-			/* 16 sums unrolled */
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-        } while (--n);
-        adler %= BASE;
-        sum2 %= BASE;
+      len -= NMAX
+      n = NMAX >> 4 /* NMAX is divisible by 16 */
+      do {
+        /* 16 sums unrolled */
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+      } while (--n)
+      adler %= BASE
+      sum2 %= BASE
     }
 
     /* do remaining bytes (less than NMAX, still just one modulo) */
-    if (len) {                  /* avoid modulos if none remaining */
-        while (len >= 16) {
-            len -= 16;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-            adler += buf[offset++]; sum2 += adler;
-        }
-        while (len--) {
-            adler += buf[offset++]; sum2 += adler;
-        }
-        adler %= BASE;
-        sum2 %= BASE;
+    if (len) {
+      /* avoid modulos if none remaining */
+      while (len >= 16) {
+        len -= 16
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+        adler += buf[offset++]
+        sum2 += adler
+      }
+      while (len--) {
+        adler += buf[offset++]
+        sum2 += adler
+      }
+      adler %= BASE
+      sum2 %= BASE
     }
 
     /* return recombined sums */
-    return adler | (sum2 << 16);
-}
+    return adler | (sum2 << 16)
+  }
 
-/* ========================================================================= */
-ZLIB.adler32 = function(adler, buf, offset, len)
-{
-	if(typeof buf === 'string') {
-		return adler32_string(adler, buf, offset, len);
-	} else {
-		return adler32_array(adler, buf, offset, len);
-	}
-};
+  /* ========================================================================= */
+  ZLIB.adler32 = function (adler, buf, offset, len) {
+    if (typeof buf === 'string') {
+      return adler32_string(adler, buf, offset, len)
+    } else {
+      return adler32_array(adler, buf, offset, len)
+    }
+  }
 
-ZLIB.adler32_combine = function(adler1, adler2, len2)
-{
-    var sum1;
-    var sum2;
-    var rem;
+  ZLIB.adler32_combine = function (adler1, adler2, len2) {
+    var sum1
+    var sum2
+    var rem
 
     /* for negative len, return invalid adler32 as a clue for debugging */
-    if (len2 < 0)
-        return 0xffffffff;
+    if (len2 < 0) return 0xffffffff
 
     /* the derivation of this formula is left as an exercise for the reader */
-    len2 %= BASE;                /* assumes len2 >= 0 */
-    rem = len2;
-    sum1 = adler1 & 0xffff;
-    sum2 = rem * sum1;
-    sum2 %= BASE;
-    sum1 += (adler2 & 0xffff) + BASE - 1;
-    sum2 += ((adler1 >> 16) & 0xffff) + ((adler2 >> 16) & 0xffff) + BASE - rem;
-    if (sum1 >= BASE) sum1 -= BASE;
-    if (sum1 >= BASE) sum1 -= BASE;
-    if (sum2 >= (BASE << 1)) sum2 -= (BASE << 1);
-    if (sum2 >= BASE) sum2 -= BASE;
-    return sum1 | (sum2 << 16);
-}
-
-}());
+    len2 %= BASE /* assumes len2 >= 0 */
+    rem = len2
+    sum1 = adler1 & 0xffff
+    sum2 = rem * sum1
+    sum2 %= BASE
+    sum1 += (adler2 & 0xffff) + BASE - 1
+    sum2 += ((adler1 >> 16) & 0xffff) + ((adler2 >> 16) & 0xffff) + BASE - rem
+    if (sum1 >= BASE) sum1 -= BASE
+    if (sum1 >= BASE) sum1 -= BASE
+    if (sum2 >= BASE << 1) sum2 -= BASE << 1
+    if (sum2 >= BASE) sum2 -= BASE
+    return sum1 | (sum2 << 16)
+  }
+})()
 /* zlib-adler32.js -- JavaScript implementation for the zlib crc32.
   Version: 0.2.0
   LastModified: Apr 12 2012
@@ -2468,217 +2590,410 @@ Usage: crc = crc32_combine(crc1, crc2, len2);
    len2.
 */
 
-if( typeof ZLIB === 'undefined' ) {
-    alert('ZLIB is not defined.  SRC zlib.js before zlib-crc32.js')
+if (typeof ZLIB === 'undefined') {
+  alert('ZLIB is not defined.  SRC zlib.js before zlib-crc32.js')
 }
 
-(function() {
+;(function () {
+  /* crc32.c -- compute the CRC-32 of a data stream
+   * Copyright (C) 1995-2006, 2010, 2011 Mark Adler
+   * For conditions of distribution and use, see copyright notice in zlib.h
+   *
+   * Thanks to Rodney Brown <rbrown64@csc.com.au> for his contribution of faster
+   * CRC methods: exclusive-oring 32 bits of data at a time, and pre-computing
+   * tables for updating the shift register in one step with three exclusive-ors
+   * instead of four steps with four exclusive-ors.  This results in about a
+   * factor of two increase in speed on a Power PC G4 (PPC7455) using gcc -O3.
+   */
 
-/* crc32.c -- compute the CRC-32 of a data stream
- * Copyright (C) 1995-2006, 2010, 2011 Mark Adler
- * For conditions of distribution and use, see copyright notice in zlib.h
- *
- * Thanks to Rodney Brown <rbrown64@csc.com.au> for his contribution of faster
- * CRC methods: exclusive-oring 32 bits of data at a time, and pre-computing
- * tables for updating the shift register in one step with three exclusive-ors
- * instead of four steps with four exclusive-ors.  This results in about a
- * factor of two increase in speed on a Power PC G4 (PPC7455) using gcc -O3.
- */
+  var crc_table = [
+    0x00000000,
+    0x77073096,
+    0xee0e612c,
+    0x990951ba,
+    0x076dc419,
+    0x706af48f,
+    0xe963a535,
+    0x9e6495a3,
+    0x0edb8832,
+    0x79dcb8a4,
+    0xe0d5e91e,
+    0x97d2d988,
+    0x09b64c2b,
+    0x7eb17cbd,
+    0xe7b82d07,
+    0x90bf1d91,
+    0x1db71064,
+    0x6ab020f2,
+    0xf3b97148,
+    0x84be41de,
+    0x1adad47d,
+    0x6ddde4eb,
+    0xf4d4b551,
+    0x83d385c7,
+    0x136c9856,
+    0x646ba8c0,
+    0xfd62f97a,
+    0x8a65c9ec,
+    0x14015c4f,
+    0x63066cd9,
+    0xfa0f3d63,
+    0x8d080df5,
+    0x3b6e20c8,
+    0x4c69105e,
+    0xd56041e4,
+    0xa2677172,
+    0x3c03e4d1,
+    0x4b04d447,
+    0xd20d85fd,
+    0xa50ab56b,
+    0x35b5a8fa,
+    0x42b2986c,
+    0xdbbbc9d6,
+    0xacbcf940,
+    0x32d86ce3,
+    0x45df5c75,
+    0xdcd60dcf,
+    0xabd13d59,
+    0x26d930ac,
+    0x51de003a,
+    0xc8d75180,
+    0xbfd06116,
+    0x21b4f4b5,
+    0x56b3c423,
+    0xcfba9599,
+    0xb8bda50f,
+    0x2802b89e,
+    0x5f058808,
+    0xc60cd9b2,
+    0xb10be924,
+    0x2f6f7c87,
+    0x58684c11,
+    0xc1611dab,
+    0xb6662d3d,
+    0x76dc4190,
+    0x01db7106,
+    0x98d220bc,
+    0xefd5102a,
+    0x71b18589,
+    0x06b6b51f,
+    0x9fbfe4a5,
+    0xe8b8d433,
+    0x7807c9a2,
+    0x0f00f934,
+    0x9609a88e,
+    0xe10e9818,
+    0x7f6a0dbb,
+    0x086d3d2d,
+    0x91646c97,
+    0xe6635c01,
+    0x6b6b51f4,
+    0x1c6c6162,
+    0x856530d8,
+    0xf262004e,
+    0x6c0695ed,
+    0x1b01a57b,
+    0x8208f4c1,
+    0xf50fc457,
+    0x65b0d9c6,
+    0x12b7e950,
+    0x8bbeb8ea,
+    0xfcb9887c,
+    0x62dd1ddf,
+    0x15da2d49,
+    0x8cd37cf3,
+    0xfbd44c65,
+    0x4db26158,
+    0x3ab551ce,
+    0xa3bc0074,
+    0xd4bb30e2,
+    0x4adfa541,
+    0x3dd895d7,
+    0xa4d1c46d,
+    0xd3d6f4fb,
+    0x4369e96a,
+    0x346ed9fc,
+    0xad678846,
+    0xda60b8d0,
+    0x44042d73,
+    0x33031de5,
+    0xaa0a4c5f,
+    0xdd0d7cc9,
+    0x5005713c,
+    0x270241aa,
+    0xbe0b1010,
+    0xc90c2086,
+    0x5768b525,
+    0x206f85b3,
+    0xb966d409,
+    0xce61e49f,
+    0x5edef90e,
+    0x29d9c998,
+    0xb0d09822,
+    0xc7d7a8b4,
+    0x59b33d17,
+    0x2eb40d81,
+    0xb7bd5c3b,
+    0xc0ba6cad,
+    0xedb88320,
+    0x9abfb3b6,
+    0x03b6e20c,
+    0x74b1d29a,
+    0xead54739,
+    0x9dd277af,
+    0x04db2615,
+    0x73dc1683,
+    0xe3630b12,
+    0x94643b84,
+    0x0d6d6a3e,
+    0x7a6a5aa8,
+    0xe40ecf0b,
+    0x9309ff9d,
+    0x0a00ae27,
+    0x7d079eb1,
+    0xf00f9344,
+    0x8708a3d2,
+    0x1e01f268,
+    0x6906c2fe,
+    0xf762575d,
+    0x806567cb,
+    0x196c3671,
+    0x6e6b06e7,
+    0xfed41b76,
+    0x89d32be0,
+    0x10da7a5a,
+    0x67dd4acc,
+    0xf9b9df6f,
+    0x8ebeeff9,
+    0x17b7be43,
+    0x60b08ed5,
+    0xd6d6a3e8,
+    0xa1d1937e,
+    0x38d8c2c4,
+    0x4fdff252,
+    0xd1bb67f1,
+    0xa6bc5767,
+    0x3fb506dd,
+    0x48b2364b,
+    0xd80d2bda,
+    0xaf0a1b4c,
+    0x36034af6,
+    0x41047a60,
+    0xdf60efc3,
+    0xa867df55,
+    0x316e8eef,
+    0x4669be79,
+    0xcb61b38c,
+    0xbc66831a,
+    0x256fd2a0,
+    0x5268e236,
+    0xcc0c7795,
+    0xbb0b4703,
+    0x220216b9,
+    0x5505262f,
+    0xc5ba3bbe,
+    0xb2bd0b28,
+    0x2bb45a92,
+    0x5cb36a04,
+    0xc2d7ffa7,
+    0xb5d0cf31,
+    0x2cd99e8b,
+    0x5bdeae1d,
+    0x9b64c2b0,
+    0xec63f226,
+    0x756aa39c,
+    0x026d930a,
+    0x9c0906a9,
+    0xeb0e363f,
+    0x72076785,
+    0x05005713,
+    0x95bf4a82,
+    0xe2b87a14,
+    0x7bb12bae,
+    0x0cb61b38,
+    0x92d28e9b,
+    0xe5d5be0d,
+    0x7cdcefb7,
+    0x0bdbdf21,
+    0x86d3d2d4,
+    0xf1d4e242,
+    0x68ddb3f8,
+    0x1fda836e,
+    0x81be16cd,
+    0xf6b9265b,
+    0x6fb077e1,
+    0x18b74777,
+    0x88085ae6,
+    0xff0f6a70,
+    0x66063bca,
+    0x11010b5c,
+    0x8f659eff,
+    0xf862ae69,
+    0x616bffd3,
+    0x166ccf45,
+    0xa00ae278,
+    0xd70dd2ee,
+    0x4e048354,
+    0x3903b3c2,
+    0xa7672661,
+    0xd06016f7,
+    0x4969474d,
+    0x3e6e77db,
+    0xaed16a4a,
+    0xd9d65adc,
+    0x40df0b66,
+    0x37d83bf0,
+    0xa9bcae53,
+    0xdebb9ec5,
+    0x47b2cf7f,
+    0x30b5ffe9,
+    0xbdbdf21c,
+    0xcabac28a,
+    0x53b39330,
+    0x24b4a3a6,
+    0xbad03605,
+    0xcdd70693,
+    0x54de5729,
+    0x23d967bf,
+    0xb3667a2e,
+    0xc4614ab8,
+    0x5d681b02,
+    0x2a6f2b94,
+    0xb40bbe37,
+    0xc30c8ea1,
+    0x5a05df1b,
+    0x2d02ef8d
+  ]
 
-var crc_table = [
-    0x00000000, 0x77073096, 0xee0e612c, 0x990951ba, 0x076dc419,
-    0x706af48f, 0xe963a535, 0x9e6495a3, 0x0edb8832, 0x79dcb8a4,
-    0xe0d5e91e, 0x97d2d988, 0x09b64c2b, 0x7eb17cbd, 0xe7b82d07,
-    0x90bf1d91, 0x1db71064, 0x6ab020f2, 0xf3b97148, 0x84be41de,
-    0x1adad47d, 0x6ddde4eb, 0xf4d4b551, 0x83d385c7, 0x136c9856,
-    0x646ba8c0, 0xfd62f97a, 0x8a65c9ec, 0x14015c4f, 0x63066cd9,
-    0xfa0f3d63, 0x8d080df5, 0x3b6e20c8, 0x4c69105e, 0xd56041e4,
-    0xa2677172, 0x3c03e4d1, 0x4b04d447, 0xd20d85fd, 0xa50ab56b,
-    0x35b5a8fa, 0x42b2986c, 0xdbbbc9d6, 0xacbcf940, 0x32d86ce3,
-    0x45df5c75, 0xdcd60dcf, 0xabd13d59, 0x26d930ac, 0x51de003a,
-    0xc8d75180, 0xbfd06116, 0x21b4f4b5, 0x56b3c423, 0xcfba9599,
-    0xb8bda50f, 0x2802b89e, 0x5f058808, 0xc60cd9b2, 0xb10be924,
-    0x2f6f7c87, 0x58684c11, 0xc1611dab, 0xb6662d3d, 0x76dc4190,
-    0x01db7106, 0x98d220bc, 0xefd5102a, 0x71b18589, 0x06b6b51f,
-    0x9fbfe4a5, 0xe8b8d433, 0x7807c9a2, 0x0f00f934, 0x9609a88e,
-    0xe10e9818, 0x7f6a0dbb, 0x086d3d2d, 0x91646c97, 0xe6635c01,
-    0x6b6b51f4, 0x1c6c6162, 0x856530d8, 0xf262004e, 0x6c0695ed,
-    0x1b01a57b, 0x8208f4c1, 0xf50fc457, 0x65b0d9c6, 0x12b7e950,
-    0x8bbeb8ea, 0xfcb9887c, 0x62dd1ddf, 0x15da2d49, 0x8cd37cf3,
-    0xfbd44c65, 0x4db26158, 0x3ab551ce, 0xa3bc0074, 0xd4bb30e2,
-    0x4adfa541, 0x3dd895d7, 0xa4d1c46d, 0xd3d6f4fb, 0x4369e96a,
-    0x346ed9fc, 0xad678846, 0xda60b8d0, 0x44042d73, 0x33031de5,
-    0xaa0a4c5f, 0xdd0d7cc9, 0x5005713c, 0x270241aa, 0xbe0b1010,
-    0xc90c2086, 0x5768b525, 0x206f85b3, 0xb966d409, 0xce61e49f,
-    0x5edef90e, 0x29d9c998, 0xb0d09822, 0xc7d7a8b4, 0x59b33d17,
-    0x2eb40d81, 0xb7bd5c3b, 0xc0ba6cad, 0xedb88320, 0x9abfb3b6,
-    0x03b6e20c, 0x74b1d29a, 0xead54739, 0x9dd277af, 0x04db2615,
-    0x73dc1683, 0xe3630b12, 0x94643b84, 0x0d6d6a3e, 0x7a6a5aa8,
-    0xe40ecf0b, 0x9309ff9d, 0x0a00ae27, 0x7d079eb1, 0xf00f9344,
-    0x8708a3d2, 0x1e01f268, 0x6906c2fe, 0xf762575d, 0x806567cb,
-    0x196c3671, 0x6e6b06e7, 0xfed41b76, 0x89d32be0, 0x10da7a5a,
-    0x67dd4acc, 0xf9b9df6f, 0x8ebeeff9, 0x17b7be43, 0x60b08ed5,
-    0xd6d6a3e8, 0xa1d1937e, 0x38d8c2c4, 0x4fdff252, 0xd1bb67f1,
-    0xa6bc5767, 0x3fb506dd, 0x48b2364b, 0xd80d2bda, 0xaf0a1b4c,
-    0x36034af6, 0x41047a60, 0xdf60efc3, 0xa867df55, 0x316e8eef,
-    0x4669be79, 0xcb61b38c, 0xbc66831a, 0x256fd2a0, 0x5268e236,
-    0xcc0c7795, 0xbb0b4703, 0x220216b9, 0x5505262f, 0xc5ba3bbe,
-    0xb2bd0b28, 0x2bb45a92, 0x5cb36a04, 0xc2d7ffa7, 0xb5d0cf31,
-    0x2cd99e8b, 0x5bdeae1d, 0x9b64c2b0, 0xec63f226, 0x756aa39c,
-    0x026d930a, 0x9c0906a9, 0xeb0e363f, 0x72076785, 0x05005713,
-    0x95bf4a82, 0xe2b87a14, 0x7bb12bae, 0x0cb61b38, 0x92d28e9b,
-    0xe5d5be0d, 0x7cdcefb7, 0x0bdbdf21, 0x86d3d2d4, 0xf1d4e242,
-    0x68ddb3f8, 0x1fda836e, 0x81be16cd, 0xf6b9265b, 0x6fb077e1,
-    0x18b74777, 0x88085ae6, 0xff0f6a70, 0x66063bca, 0x11010b5c,
-    0x8f659eff, 0xf862ae69, 0x616bffd3, 0x166ccf45, 0xa00ae278,
-    0xd70dd2ee, 0x4e048354, 0x3903b3c2, 0xa7672661, 0xd06016f7,
-    0x4969474d, 0x3e6e77db, 0xaed16a4a, 0xd9d65adc, 0x40df0b66,
-    0x37d83bf0, 0xa9bcae53, 0xdebb9ec5, 0x47b2cf7f, 0x30b5ffe9,
-    0xbdbdf21c, 0xcabac28a, 0x53b39330, 0x24b4a3a6, 0xbad03605,
-    0xcdd70693, 0x54de5729, 0x23d967bf, 0xb3667a2e, 0xc4614ab8,
-    0x5d681b02, 0x2a6f2b94, 0xb40bbe37, 0xc30c8ea1, 0x5a05df1b,
-    0x2d02ef8d ];
+  /* ========================================================================= */
+  function crc32_string(crc, buf, offset, len) {
+    if (buf == null) return 0
 
-/* ========================================================================= */
-function crc32_string(crc, buf, offset, len)
-{
-	if (buf == null) return 0;
-
-    crc = crc ^ 0xffffffff;
+    crc = crc ^ 0xffffffff
     while (len >= 8) {
-		crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
-		crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
-		crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
-		crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
-		crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
-		crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
-		crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
-		crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
-        len -= 8;
+      crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
+      crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
+      crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
+      crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
+      crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
+      crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
+      crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
+      crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
+      len -= 8
     }
-    if (len) do {
-		crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
-    } while (--len);
-    return crc ^ 0xffffffff;
-}
+    if (len)
+      do {
+        crc = crc_table[(crc ^ buf.charCodeAt(offset++)) & 0xff] ^ (crc >>> 8)
+      } while (--len)
+    return crc ^ 0xffffffff
+  }
 
-/* ========================================================================= */
-function crc32_array(crc, buf, offset, len)
-{
-	if (buf == null) return 0;
+  /* ========================================================================= */
+  function crc32_array(crc, buf, offset, len) {
+    if (buf == null) return 0
 
-    crc = crc ^ 0xffffffff;
+    crc = crc ^ 0xffffffff
     while (len >= 8) {
-		crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
-		crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
-		crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
-		crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
-		crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
-		crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
-		crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
-		crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
-        len -= 8;
+      crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
+      crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
+      crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
+      crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
+      crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
+      crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
+      crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
+      crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
+      len -= 8
     }
-    if (len) do {
-		crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
-    } while (--len);
-    return crc ^ 0xffffffff;
-}
+    if (len)
+      do {
+        crc = crc_table[(crc ^ buf[offset++]) & 0xff] ^ (crc >>> 8)
+      } while (--len)
+    return crc ^ 0xffffffff
+  }
 
-/* ========================================================================= */
-ZLIB.crc32 = function(crc, buf, offset, len)
-{
-	if(typeof buf === 'string') {
-		return crc32_string(crc, buf, offset, len);
-	} else {
-		return crc32_array(crc, buf, offset, len);
-	}
-};
+  /* ========================================================================= */
+  ZLIB.crc32 = function (crc, buf, offset, len) {
+    if (typeof buf === 'string') {
+      return crc32_string(crc, buf, offset, len)
+    } else {
+      return crc32_array(crc, buf, offset, len)
+    }
+  }
 
-/* ========================================================================= */
-var GF2_DIM = 32; /* dimension of GF(2) vectors (length of CRC) */
+  /* ========================================================================= */
+  var GF2_DIM = 32 /* dimension of GF(2) vectors (length of CRC) */
 
-/* ========================================================================= */
-function gf2_matrix_times(mat, vec)
-{
-    var sum;
-	var mat_i = 0;
+  /* ========================================================================= */
+  function gf2_matrix_times(mat, vec) {
+    var sum
+    var mat_i = 0
 
-    sum = 0;
+    sum = 0
     while (vec) {
-        if (vec & 1)
-            sum ^= mat[mat_i];
-        vec >>= 1;
-        mat_i++;
+      if (vec & 1) sum ^= mat[mat_i]
+      vec >>= 1
+      mat_i++
     }
-    return sum;
-}
+    return sum
+  }
 
-/* ========================================================================= */
-function gf2_matrix_square(square, mat)
-{
-    var n;
+  /* ========================================================================= */
+  function gf2_matrix_square(square, mat) {
+    var n
 
-    for (n = 0; n < GF2_DIM; n++)
-        square[n] = gf2_matrix_times(mat, mat[n]);
-}
+    for (n = 0; n < GF2_DIM; n++) square[n] = gf2_matrix_times(mat, mat[n])
+  }
 
-/* ========================================================================= */
-ZLIB.crc32_combine = function(crc1, crc2, len2)
-{
-    var n;
-    var row;
-    var even;    /* even-power-of-two zeros operator */
-    var odd;     /* odd-power-of-two zeros operator */
+  /* ========================================================================= */
+  ZLIB.crc32_combine = function (crc1, crc2, len2) {
+    var n
+    var row
+    var even /* even-power-of-two zeros operator */
+    var odd /* odd-power-of-two zeros operator */
 
     /* degenerate case (also disallow negative lengths) */
-    if (len2 <= 0)
-        return crc1;
+    if (len2 <= 0) return crc1
 
-    even = new Array(GF2_DIM);
-    odd = new Array(GF2_DIM);
+    even = new Array(GF2_DIM)
+    odd = new Array(GF2_DIM)
 
     /* put operator for one zero bit in odd */
-    odd[0] = 0xedb88320;          /* CRC-32 polynomial */
-    row = 1;
+    odd[0] = 0xedb88320 /* CRC-32 polynomial */
+    row = 1
     for (n = 1; n < GF2_DIM; n++) {
-        odd[n] = row;
-        row <<= 1;
+      odd[n] = row
+      row <<= 1
     }
 
     /* put operator for two zero bits in even */
-    gf2_matrix_square(even, odd);
+    gf2_matrix_square(even, odd)
 
     /* put operator for four zero bits in odd */
-    gf2_matrix_square(odd, even);
+    gf2_matrix_square(odd, even)
 
     /* apply len2 zeros to crc1 (first square will put the operator for one
        zero byte, eight zero bits, in even) */
     do {
-        /* apply zeros operator for this bit of len2 */
-        gf2_matrix_square(even, odd);
-        if (len2 & 1)
-            crc1 = gf2_matrix_times(even, crc1);
-        len2 >>= 1;
+      /* apply zeros operator for this bit of len2 */
+      gf2_matrix_square(even, odd)
+      if (len2 & 1) crc1 = gf2_matrix_times(even, crc1)
+      len2 >>= 1
 
-        /* if no more bits set, then done */
-        if (len2 == 0)
-            break;
+      /* if no more bits set, then done */
+      if (len2 == 0) break
 
-        /* another iteration of the loop with odd and even swapped */
-        gf2_matrix_square(odd, even);
-        if (len2 & 1)
-            crc1 = gf2_matrix_times(odd, crc1);
-        len2 >>= 1;
+      /* another iteration of the loop with odd and even swapped */
+      gf2_matrix_square(odd, even)
+      if (len2 & 1) crc1 = gf2_matrix_times(odd, crc1)
+      len2 >>= 1
 
-        /* if no more bits set, then done */
-    } while (len2 != 0);
+      /* if no more bits set, then done */
+    } while (len2 != 0)
 
     /* return combined crc */
-    crc1 ^= crc2;
-    return crc1;
-};
-
-}());
+    crc1 ^= crc2
+    return crc1
+  }
+})()
 
 module.exports = ZLIB

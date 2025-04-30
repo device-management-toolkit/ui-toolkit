@@ -7,7 +7,7 @@
  * Interface for RFB state processors.
  */
 interface IStateProcessor {
-    next: IStateProcessor;
-    processState: (acc: string) => number;
+  next: IStateProcessor
+  processState: (acc: string) => number
 }
-export type { IStateProcessor };
+export type { IStateProcessor }

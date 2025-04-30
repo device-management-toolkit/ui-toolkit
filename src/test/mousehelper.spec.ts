@@ -1,7 +1,7 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2019
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2019
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 import { MouseHelper } from '../core/Utilities/MouseHelper'
 
@@ -112,7 +112,7 @@ describe('Test MouseHelper', () => {
     const desktop = new AmtDesktop()
     const mousehelper = new MouseHelper(desktop, comm, 0)
     const e = new TestMouseEvent()
-    
+
     // Test mousedown
     mousehelper.mousedown(e)
 
@@ -125,7 +125,7 @@ describe('Test MouseHelper', () => {
     const desktop = new AmtDesktop()
     const mousehelper = new MouseHelper(desktop, comm, 0)
     const e = new TestMouseEvent()
-    
+
     // Test mousedown
     mousehelper.mouseup(e)
 
@@ -138,9 +138,9 @@ describe('Test MouseHelper', () => {
     const desktop = new AmtDesktop()
     const mousehelper = new MouseHelper(desktop, comm, 0)
     const e = new TestMouseEvent()
-    
+
     desktop.state = 4
-    
+
     // Test mousemove
     mousehelper.mousemove(e)
 
@@ -153,10 +153,10 @@ describe('Test MouseHelper', () => {
     const desktop = new AmtDesktop()
     const mousehelper = new MouseHelper(desktop, comm, 0)
     const e = new TestMouseEvent()
-    
+
     desktop.state = 4
     mousehelper.topposition = -1
-    
+
     // Test mousemove
     mousehelper.mousemove(e)
 
@@ -169,10 +169,10 @@ describe('Test MouseHelper', () => {
     const desktop = new AmtDesktop()
     const mousehelper = new MouseHelper(desktop, comm, 0)
     const e = new TestMouseEvent()
-    
+
     desktop.state = 4
     mousehelper.leftposition = -1
-    
+
     // Test mousemove
     mousehelper.mousemove(e)
 
@@ -185,10 +185,10 @@ describe('Test MouseHelper', () => {
     const desktop = new AmtDesktop()
     const mousehelper = new MouseHelper(desktop, comm, 0)
     const e = new TestMouseEvent()
-    
+
     desktop.state = 4
     desktop.focusMode = 1
-    
+
     // Test mousemove
     mousehelper.mousemove(e)
 
@@ -200,7 +200,7 @@ describe('Test MouseHelper', () => {
     const comm = new Communicator()
     const desktop = new AmtDesktop()
     const mousehelper = new MouseHelper(desktop, comm, 0)
-    
+
     // Test resetOffsets
     mousehelper.resetOffsets()
 

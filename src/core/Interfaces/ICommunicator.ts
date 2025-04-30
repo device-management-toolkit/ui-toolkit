@@ -17,7 +17,6 @@ interface ICommunicator {
   socketSend: (data: string) => void
   send: (data: string) => void
   stop: () => void
-
 }
 
 /**

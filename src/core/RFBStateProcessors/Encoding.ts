@@ -19,14 +19,15 @@ class Encoding implements IStateProcessor {
   parent: Desktop
   rleDecoder: IRLEDecoder
   updateRFBState: any
-  constructor (comm: ICommunicator, parent: Desktop, rleDecoder: IRLEDecoder, updateRFBState: (state: number) => void) {
+  constructor(comm: ICommunicator, parent: Desktop, rleDecoder: IRLEDecoder, updateRFBState: (state: number) => void) {
     this.wsSocket = comm
     this.parent = parent
     this.rleDecoder = rleDecoder
     this.updateRFBState = updateRFBState
   }
 
-  processState (acc: string): number { // acc is the accumulated byte encoded string so far
+  processState(acc: string): number {
+    // acc is the accumulated byte encoded string so far
     // console.log(TypeConverter.rstr2hex(acc))
     let cmdSize = 0
     if (acc.length >= 12) {
@@ -56,18 +57,29 @@ class Encoding implements IStateProcessor {
           this.parent.spare = this.parent.sparecache[xspacecachename]
           // console.log(this.parent.spare)
           if (!isTruthy(this.parent.spare)) {
-            this.parent.sparecache[xspacecachename] = this.parent.spare = this.parent.canvasCtx.createImageData(this.parent.sparew2, this.parent.spareh2)
+            this.parent.sparecache[xspacecachename] = this.parent.spare = this.parent.canvasCtx.createImageData(
+              this.parent.sparew2,
+              this.parent.spareh2
+            )
           }
           // console.log(this.parent.sparecache[xspacecachename])
         }
       }
 
-      if (encoding === 0xFFFFFF21) {
+      if (encoding === 0xffffff21) {
         // Desktop Size (0xFFFFFF21, -223)
         console.log('Desktop size')
         this.parent.canvasCtx.canvas.width = this.parent.ScreenWidth = this.parent.rwidth = this.parent.width = width
-        this.parent.canvasCtx.canvas.height = this.parent.ScreenHeight = this.parent.rheight = this.parent.height = height
-        this.wsSocket.send(String.fromCharCode(3, 0, 0, 0, 0, 0) + TypeConverter.ShortToStr(this.parent.width) + TypeConverter.ShortToStr(this.parent.height)) // FramebufferUpdateRequest
+        this.parent.canvasCtx.canvas.height =
+          this.parent.ScreenHeight =
+          this.parent.rheight =
+          this.parent.height =
+            height
+        this.wsSocket.send(
+          String.fromCharCode(3, 0, 0, 0, 0, 0) +
+            TypeConverter.ShortToStr(this.parent.width) +
+            TypeConverter.ShortToStr(this.parent.height)
+        ) // FramebufferUpdateRequest
         cmdSize = 12
         if (this.parent.onScreenSizeChange != null) {
           this.parent.onScreenSizeChange(this.parent.ScreenWidth, this.parent.ScreenHeight)
@@ -76,7 +88,8 @@ class Encoding implements IStateProcessor {
       } else if (encoding === 0) {
         // RAW encoding
 
-        let ptr = 12; const cs = 12 + (s * this.parent.bpp)
+        let ptr = 12
+        const cs = 12 + s * this.parent.bpp
         // console.log('RAW encoding ', acc.length, cs)
         if (acc.length < cs) return 0 // Check we have all the data needed and we can only draw 64x64 tiles.
         cmdSize = cs
@@ -84,22 +97,28 @@ class Encoding implements IStateProcessor {
 
         // CRITICAL LOOP, optimize this as much as possible
         for (let i = 0; i < s; i++) {
-          ImageHelper.setPixel(this.parent, acc.charCodeAt(ptr++) + ((this.parent.bpp === 2) ? (acc.charCodeAt(ptr++) << 8) : 0), i)
+          ImageHelper.setPixel(
+            this.parent,
+            acc.charCodeAt(ptr++) + (this.parent.bpp === 2 ? acc.charCodeAt(ptr++) << 8 : 0),
+            i
+          )
         }
         ImageHelper.putImage(this.parent, x, y)
       } else if (encoding === 16) {
         // ZRLE encoding
         if (acc.length < 16) return 0
         const datalen = TypeConverter.ReadInt(acc, 12)
-        if (acc.length < (16 + datalen)) return 0
+        if (acc.length < 16 + datalen) return 0
         // console.debug("RECT ZRLE (" + x + "," + y + "," + width + "," + height + ") LEN = " + datalen);
         // console.debug("RECT ZRLE LEN: " + TypeConverter.ReadShortX(acc, 17) + ", DATA: " + TypeConverter.rstr2hex(acc.substring(16)));
 
         // Process the ZLib header if this is the first block
-        const ptr = 16; const delta = 5; const dx = 0
+        const ptr = 16
+        const delta = 5
+        const dx = 0
         // console.log(TypeConverter.rstr2hex(acc))
         // 0000000000400040000000100000000A789C626400000000FFFF00400000004000400000001000000008626400000000FFFF
-        if (datalen > 5 && acc.charCodeAt(ptr) === 0 && TypeConverter.ReadShortX(acc, ptr + 1) === (datalen - delta)) {
+        if (datalen > 5 && acc.charCodeAt(ptr) === 0 && TypeConverter.ReadShortX(acc, ptr + 1) === datalen - delta) {
           // This is an uncompressed ZLib data block
           this.rleDecoder.Decode(acc, ptr + 5, x, y, width, height, s, datalen)
         } else {
@@ -126,7 +145,9 @@ class Encoding implements IStateProcessor {
       if (--this.parent.state === 100) {
         console.debug('Frame completed. Update state and request new frame')
         this.updateRFBState(4)
-        const sendRefreshCallback = (): any => { CommsHelper.sendRefresh(this.parent, this.wsSocket) }
+        const sendRefreshCallback = (): any => {
+          CommsHelper.sendRefresh(this.parent, this.wsSocket)
+        }
         if (this.parent.frameRateDelay === 0) {
           CommsHelper.sendRefresh(this.parent, this.wsSocket) // Ask for new frame
         } else {

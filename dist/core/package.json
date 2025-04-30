@@ -1,9 +1,9 @@
 {
-    "name": "ui-toolkit/core",
-    "main": "../bundles/core.bundle.js",
-    "typings": "./index.d.ts",
-    "module": "../bundles/core.bundle.js",
-    "es2015": "../bundles/core.bundle.js",
-    "fesm2015": "../bundles/core.bundle.js",
-    "esm2015": "../bundles/core.bundle.js"
+  "name": "ui-toolkit/core",
+  "main": "../bundles/core.bundle.js",
+  "typings": "./index.d.ts",
+  "module": "../bundles/core.bundle.js",
+  "es2015": "../bundles/core.bundle.js",
+  "fesm2015": "../bundles/core.bundle.js",
+  "esm2015": "../bundles/core.bundle.js"
 }

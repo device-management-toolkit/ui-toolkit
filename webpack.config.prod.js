@@ -1,7 +1,7 @@
 /*********************************************************************
-* Copyright (c) Intel Corporation 2020
-* SPDX-License-Identifier: Apache-2.0
-**********************************************************************/
+ * Copyright (c) Intel Corporation 2020
+ * SPDX-License-Identifier: Apache-2.0
+ **********************************************************************/
 
 const path = require('path') // No ES6 in webpack config
 const webpack = require('webpack')
@@ -31,7 +31,7 @@ module.exports = {
           {
             loader: 'babel-loader',
             options: {
-              plugins: [ ["transform-remove-console", { "exclude": [ "error", "warn"] }] ]
+              plugins: [['transform-remove-console', { exclude: ['error', 'warn'] }]]
             }
           },
           {
@@ -41,11 +41,15 @@ module.exports = {
             }
           }
         ],
-        exclude: /node_modules/,
-      },
+        exclude: /node_modules/
+      }
     ]
   },
   resolve: {
-    extensions: ['.tsx', '.ts', '.js']
+    extensions: [
+      '.tsx',
+      '.ts',
+      '.js'
+    ]
   }
 }

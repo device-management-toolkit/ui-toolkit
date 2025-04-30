@@ -1,2 +1,2 @@
-export = ZLIB;
-declare var ZLIB: any;
+export = ZLIB
+declare let ZLIB: any
