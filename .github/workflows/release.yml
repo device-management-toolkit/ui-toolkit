@@ -33,15 +33,28 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: '22.x'
+          registry-url: 'https://registry.npmjs.org'
       - run: npm ci
       - run: npm run build-ext --if-present
       - run: rsync -a package.json README.md ./dist/
       - name: Semantic Release
+        id: semantic
         uses: cycjimmy/semantic-release-action@0a51e81a6baff2acad3ee88f4121c589c73d0f0e # v4.2.0
         with:
           semantic_version:
-            19.0.5 # It is recommended to specify specifying version range
+            24.2.4 # It is recommended to specify specifying version range
             # for semantic-release.
         env:
           GITHUB_TOKEN: ${{ secrets.ROSIE_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Publish to @device-management-toolkit
+        if: steps.semantic.outputs.new_release_published == 'true'
+        run: |
+          echo "Publishing @device-management-toolkit/ui-toolkit@${{ steps.semantic.outputs.new_release_version }}"
+          
+          sed -i 's/"@open-amt-cloud-toolkit\/ui-toolkit"/"@device-management-toolkit\/ui-toolkit"/' dist/package.json
+          sed -i 's/"version": "[^"]*"/"version": "${{ steps.semantic.outputs.new_release_version }}"/' dist/package.json
+          cd dist
+          npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
