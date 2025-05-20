@@ -8,11 +8,14 @@
 
 > Disclaimer: Production viable releases are tagged and listed under 'Releases'. All other check-ins should be considered 'in-development' and should not be used in production
 
+> IMPORTANT: For now, we are continuing to publish both @device-management-toolkit/ui-toolkit and @open-amt-cloud-toolkit/ui-toolkit npm packages to avoid a breaking change. Please update your package.json at your earliest convenience for when we cease to publish @open-amt-cloud-toolkit/ui-toolkit. This is in effort to support the renaming of the toolkit.
+
 The UI Toolkit is a framework agnostic implementation of remote management features like Keyboard, Video, Mouse (KVM) or Serial-over-LAN (SOL). The provided core components simplify the task of adding these complex manageability controls into a management console UI.
 
 The UI Toolkit can be used with your front-end framework of choice such as ReactJS, Angular, or many others. See the [ui-toolkit-react](https://github.com/device-management-toolkit/ui-toolkit-react) and [ui-toolkit-angular](https://github.com/device-management-toolkit/ui-toolkit-angular) repos for framework-specific, pre-built example UI Toolkit implementations.
 
 <br>
+
 
 ## Additional Resources
 
