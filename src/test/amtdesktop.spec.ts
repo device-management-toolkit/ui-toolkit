@@ -4,11 +4,25 @@
  **********************************************************************/
 
 import { AMTDesktop } from '../core/AMTDesktop'
-import { createCanvas } from 'canvas'
 
 // classes defined for Unit testing
 import { Communicator } from '../test/helper/testcommunicator'
 import { TestDataProcessor } from '../test/helper/testDataProcessor'
+
+// Mock ImageData if needed
+if (typeof ImageData === 'undefined') {
+  global.ImageData = class MockImageData {
+    data: Uint8ClampedArray
+    width: number
+    height: number
+
+    constructor(data: Uint8ClampedArray | number[], width: number, height: number) {
+      this.data = data instanceof Uint8ClampedArray ? data : new Uint8ClampedArray(data)
+      this.width = width
+      this.height = height
+    }
+  } as any
+}
 
 describe('Test AMTDesktop', () => {
   let canvas
@@ -17,8 +31,16 @@ describe('Test AMTDesktop', () => {
 
   beforeEach(() => {
     // create objects
-    canvas = createCanvas(200, 200)
-    canvasCtx = canvas.getContext('2d')
+    canvas = {
+      width: 800,
+      height: 600
+    }
+    canvasCtx = {
+      canvas: canvas,
+      fillStyle: '',
+      fillRect: jest.fn()
+    }
+
     desktop = new AMTDesktop(canvasCtx)
   })
   it('Test start function in AMTDesktop', () => {

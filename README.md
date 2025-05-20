@@ -16,7 +16,6 @@ The UI Toolkit can be used with your front-end framework of choice such as React
 
 <br>
 
-
 ## Additional Resources
 
 - For detailed documentation and Getting Started, [visit the docs site](https://device-management-toolkit.github.io/docs).
