@@ -8,7 +8,23 @@
  **********************************************************************/
 
 import { RLEDecoder } from '../core/ImageData/RLEDecoder'
-import { createCanvas, ImageData } from 'canvas'
+
+// Mock for ImageData
+class MockImageData {
+  data: Uint8ClampedArray
+  width: number
+  height: number
+
+  constructor(data: Uint8ClampedArray | number[], width: number, height: number) {
+    // Handle both Uint8ClampedArray and regular array inputs
+    this.data = data instanceof Uint8ClampedArray ? data : new Uint8ClampedArray(data)
+    this.width = width
+    this.height = height
+  }
+}
+
+// Replace global ImageData with our mock in tests
+global.ImageData = MockImageData as any
 
 // classes defined for Unit testing
 import { AmtDesktop } from '../test/helper/testdesktop'
@@ -39,8 +55,17 @@ describe('Test Decode function in RLEDecoder', () => {
     const datalen = input.length
 
     // Create canvas and populate image data
-    const canvas = createCanvas(200, 200)
-    parent.canvasCtx = canvas.getContext('2d')
+    const canvas = {
+      width: 800,
+      height: 600
+    }
+    parent.canvasCtx = {
+      canvas: canvas,
+      fillStyle: '',
+      fillRect: jest.fn(),
+      putImageData: jest.fn(),
+      getImageData: jest.fn().mockReturnValue(new MockImageData(RleVariables.spare1, width, height))
+    }
     parent.spare = new ImageData(RleVariables.spare1, height, width)
 
     // Test processState
@@ -75,9 +100,18 @@ describe('Test Decode function in RLEDecoder', () => {
     const datalen = input.length
 
     // Create canvas and populate image data
-    const canvas = createCanvas(200, 200)
-    parent.canvasCtx = canvas.getContext('2d')
-    parent.spare = new ImageData(RleVariables.spare2, height, width)
+    const canvas = {
+      width: 800,
+      height: 600
+    }
+    parent.canvasCtx = {
+      canvas: canvas,
+      fillStyle: '',
+      fillRect: jest.fn(),
+      putImageData: jest.fn(),
+      getImageData: jest.fn().mockReturnValue(new MockImageData(RleVariables.spare2, height, width))
+    }
+    parent.spare = new MockImageData(RleVariables.spare2, height, width)
     parent.bpp = 2
 
     // Test processState
@@ -112,9 +146,18 @@ describe('Test Decode function in RLEDecoder', () => {
     const datalen = input.length
 
     // Create canvas and populate image data
-    const canvas = createCanvas(200, 200)
-    parent.canvasCtx = canvas.getContext('2d')
-    parent.spare = new ImageData(RleVariables.spare3, height, width)
+    const canvas = {
+      width: 800,
+      height: 600
+    }
+    parent.canvasCtx = {
+      canvas: canvas,
+      fillStyle: '',
+      fillRect: jest.fn(),
+      putImageData: jest.fn(),
+      getImageData: jest.fn().mockReturnValue(new MockImageData(RleVariables.spare3, height, width))
+    }
+    parent.spare = new MockImageData(RleVariables.spare3, height, width)
 
     // Test processState
     rledecoder.Decode(input, ptr, x, y, width, height, s, datalen)
@@ -148,9 +191,18 @@ describe('Test Decode function in RLEDecoder', () => {
     const datalen = input.length
 
     // Create canvas and populate image data
-    const canvas = createCanvas(200, 200)
-    parent.canvasCtx = canvas.getContext('2d')
-    parent.spare = new ImageData(RleVariables.spare4, height, width)
+    const canvas = {
+      width: 800,
+      height: 600
+    }
+    parent.canvasCtx = {
+      canvas: canvas,
+      fillStyle: '',
+      fillRect: jest.fn(),
+      putImageData: jest.fn(),
+      getImageData: jest.fn().mockReturnValue(new MockImageData(RleVariables.spare4, height, width))
+    }
+    parent.spare = new MockImageData(RleVariables.spare4, height, width)
 
     // Test processState
     rledecoder.Decode(input, ptr, x, y, width, height, s, datalen)
@@ -184,9 +236,18 @@ describe('Test Decode function in RLEDecoder', () => {
     const datalen = input.length
 
     // Create canvas and populate image data
-    const canvas = createCanvas(200, 200)
-    parent.canvasCtx = canvas.getContext('2d')
-    parent.spare = new ImageData(RleVariables.spare5, height, width)
+    const canvas = {
+      width: 800,
+      height: 600
+    }
+    parent.canvasCtx = {
+      canvas: canvas,
+      fillStyle: '',
+      fillRect: jest.fn(),
+      putImageData: jest.fn(),
+      getImageData: jest.fn().mockReturnValue(new MockImageData(RleVariables.spare1, width, height))
+    }
+    parent.spare = new MockImageData(RleVariables.spare5, height, width)
 
     // Test processState
     rledecoder.Decode(input, ptr, x, y, width, height, s, datalen)

@@ -8,11 +8,27 @@
  **********************************************************************/
 
 import { ImageHelper } from '../core/Utilities/ImageHelper'
-import { createCanvas, ImageData } from 'canvas'
 
 // classes defined for Unit testing
 import { AmtDesktop } from '../test/helper/testdesktop'
 import RleVariables from '../test/helper/rledecodervariables'
+
+// Mock for ImageData
+class MockImageData {
+  data: Uint8ClampedArray
+  width: number
+  height: number
+
+  constructor(data: Uint8ClampedArray | number[], width: number, height: number) {
+    // Handle both Uint8ClampedArray and regular array inputs
+    this.data = data instanceof Uint8ClampedArray ? data : new Uint8ClampedArray(data)
+    this.width = width
+    this.height = height
+  }
+}
+
+// Replace global ImageData with our mock in tests
+global.ImageData = MockImageData as any
 
 describe('Test ImageHelper', () => {
   it('Test arotX function in ImageHelper with parent.rotation == 0', () => {
@@ -429,9 +445,18 @@ describe('Test ImageHelper', () => {
     const height = 64
 
     // Create canvas and populate image data
-    const canvas = createCanvas(200, 200)
-    parent.canvasCtx = canvas.getContext('2d')
-    parent.spare = new ImageData(RleVariables.spare1, height, width)
+    const canvas = {
+      width: 800,
+      height: 600
+    }
+    parent.canvasCtx = {
+      canvas: canvas,
+      fillStyle: '',
+      fillRect: jest.fn(),
+      putImageData: jest.fn(),
+      getImageData: jest.fn().mockReturnValue(new MockImageData(RleVariables.spare1, width, height))
+    }
+    parent.spare = new MockImageData(RleVariables.spare1, height, width)
 
     // test putImage function
     const ret = ImageHelper.putImage(parent, x, y)
@@ -452,7 +477,7 @@ describe('Test ImageHelper', () => {
     const height = 64
     const ptr = 0
     const value = 207
-    parent.spare = new ImageData(RleVariables.spare1, height, width)
+    parent.spare = new MockImageData(RleVariables.spare1, height, width)
     parent.rotation = 0
     parent.bpp = 1
 
@@ -476,7 +501,7 @@ describe('Test ImageHelper', () => {
     const height = 64
     const ptr = 19
     const value = 207
-    parent.spare = new ImageData(RleVariables.spare1, height, width)
+    parent.spare = new MockImageData(RleVariables.spare1, height, width)
     parent.rotation = 1
     parent.bpp = 1
     parent.sparew = 4
@@ -502,7 +527,7 @@ describe('Test ImageHelper', () => {
     const height = 64
     const ptr = 19
     const value = 207
-    parent.spare = new ImageData(RleVariables.spare1, height, width)
+    parent.spare = new MockImageData(RleVariables.spare1, height, width)
     parent.rotation = 2
     parent.bpp = 1
     parent.sparew = 4
@@ -528,7 +553,7 @@ describe('Test ImageHelper', () => {
     const height = 64
     const ptr = 19
     const value = 9999
-    parent.spare = new ImageData(RleVariables.spare1, height, width)
+    parent.spare = new MockImageData(RleVariables.spare1, height, width)
     parent.rotation = 3
     parent.bpp = 0
     parent.sparew = 4
