@@ -1,3 +1,10 @@
+## [3.3.2](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.1...v3.3.2) (2025-05-21)
+
+
+### Bug Fixes
+
+* remove unnecessary node-canvas dependency ([#1356](https://github.com/device-management-toolkit/ui-toolkit/issues/1356)) ([889dd7a](https://github.com/device-management-toolkit/ui-toolkit/commit/889dd7af86529ee17ae863c9467e353d4aa8e66c))
+
 ## [3.3.1](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.0...v3.3.1) (2025-03-10)
 
 # [3.3.0](https://github.com/open-amt-cloud-toolkit/ui-toolkit/compare/v3.2.9...v3.3.0) (2025-01-13)
