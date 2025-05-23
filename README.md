@@ -14,8 +14,6 @@ The UI Toolkit is a framework agnostic implementation of remote management featu
 
 The UI Toolkit can be used with your front-end framework of choice such as ReactJS, Angular, or many others. See the [ui-toolkit-react](https://github.com/device-management-toolkit/ui-toolkit-react) and [ui-toolkit-angular](https://github.com/device-management-toolkit/ui-toolkit-angular) repos for framework-specific, pre-built example UI Toolkit implementations.
 
-<br>
-
 ## Additional Resources
 
 - For detailed documentation and Getting Started, [visit the docs site](https://device-management-toolkit.github.io/docs).
@@ -27,8 +25,6 @@ The UI Toolkit can be used with your front-end framework of choice such as React
 - Need additional support or want to get the latest news and events about Open AMT? Connect with the team directly through Discord.
 
   [![Discord Banner 1](https://discordapp.com/api/guilds/1063200098680582154/widget.png?style=banner2)](https://discord.gg/DKHeUNEWVH)
-
-<br>
 
 ## License Note
 
