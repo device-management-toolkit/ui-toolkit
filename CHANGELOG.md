@@ -1,3 +1,5 @@
+## [3.3.3](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.2...v3.3.3) (2025-05-23)
+
 ## [3.3.2](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.1...v3.3.2) (2025-05-21)
 
 
