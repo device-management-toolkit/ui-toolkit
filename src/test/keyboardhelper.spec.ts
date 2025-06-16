@@ -100,7 +100,7 @@ describe('Test KeyBoardHelper', () => {
     const comm = new Communicator()
     const desktop = new AmtDesktop()
     const keyboardhelper = new KeyBoardHelper(desktop, comm)
-    const e = new TestEvent()
+    const e = new TestEvent('keypress')
     e.preventDefaultVar = false
     e.stopPropagationVar = false
 
@@ -118,7 +118,7 @@ describe('Test KeyBoardHelper', () => {
     const comm = new Communicator()
     const desktop = new AmtDesktop()
     const keyboardhelper = new KeyBoardHelper(desktop, comm)
-    const e = new TestEvent()
+    const e = new TestEvent('keypress')
     e.preventDefaultVar = false
     e.stopPropagationVar = false
 
@@ -136,7 +136,7 @@ describe('Test KeyBoardHelper', () => {
     const comm = new Communicator()
     const desktop = new AmtDesktop()
     const keyboardhelper = new KeyBoardHelper(desktop, comm)
-    const e = new TestKeyBoardEvent()
+    const e = new TestKeyBoardEvent('keydown')
     e.keyCode = 186 // ';'
     e.code = ''
     e.preventDefaultVar = false
@@ -159,7 +159,7 @@ describe('Test KeyBoardHelper', () => {
     const comm = new Communicator()
     const desktop = new AmtDesktop()
     const keyboardhelper = new KeyBoardHelper(desktop, comm)
-    const e = new TestKeyBoardEvent()
+    const e = new TestKeyBoardEvent('keydown')
     e.keyCode = 187 // '='
     e.code = ''
     e.preventDefaultVar = false
@@ -182,7 +182,7 @@ describe('Test KeyBoardHelper', () => {
     const comm = new Communicator()
     const desktop = new AmtDesktop()
     const keyboardhelper = new KeyBoardHelper(desktop, comm)
-    const e = new TestKeyBoardEvent()
+    const e = new TestKeyBoardEvent('keydown')
     e.code = 'Key' + String.fromCharCode(0x05)
     e.preventDefaultVar = false
     e.stopPropagationVar = false
@@ -197,7 +197,7 @@ describe('Test KeyBoardHelper', () => {
     expect(e.stopPropagationVar).toBe(true)
 
     expect(Communicator.sentData[1].charCodeAt(0)).toBe(1)
-    expect(Communicator.sentData.substr(7, 1).charCodeAt(0)).toBe(5)
+    expect(Communicator.sentData.substr(7, 1).charCodeAt(0)).toBe(37)
   })
 
   it('Test keyEvent: e.code empty for ,', () => {
@@ -205,7 +205,7 @@ describe('Test KeyBoardHelper', () => {
     const comm = new Communicator()
     const desktop = new AmtDesktop()
     const keyboardhelper = new KeyBoardHelper(desktop, comm)
-    const e = new TestKeyBoardEvent()
+    const e = new TestKeyBoardEvent('keydown')
     e.keyCode = 188 // ,
     e.code = ''
     e.preventDefaultVar = false
