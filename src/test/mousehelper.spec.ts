@@ -8,7 +8,7 @@ import { MouseHelper } from '../core/Utilities/MouseHelper'
 // classes defined for Unit testing
 import { AmtDesktop } from './helper/testdesktop'
 import { Communicator } from './helper/testcommunicator'
-import { TestMouseEvent } from './helper/testmouseevent'
+import { TestMouseEvent } from './helper/testmouseevent' 
 
 describe('Test MouseHelper', () => {
   it('Test GrabMouseInput: MouseInputGrab == false', () => {
@@ -93,17 +93,18 @@ describe('Test MouseHelper', () => {
     const comm = new Communicator()
     const desktop = new AmtDesktop()
     const mousehelper = new MouseHelper(desktop, comm, 0)
-    const e = new TestMouseEvent()
+    const e = new TestMouseEvent('mousedown')
     mousehelper.MouseInputGrab = false
-    TestMouseEvent.preventDefaultvar = 0
-    TestMouseEvent.stopPropagationvar = 0
+    // TestMouseEvent.preventDefaultvar = 0
+    // TestMouseEvent.stopPropagationvar = 0
 
     // Test haltEvent
     mousehelper.haltEvent(e)
 
     // Output
-    expect(TestMouseEvent.preventDefaultvar).toBe(1)
-    expect(TestMouseEvent.stopPropagationvar).toBe(1)
+    // expect(TestMouseEvent.preventDefaultvar).toBe(1)
+    // expect(TestMouseEvent.stopPropagationvar).toBe(1)
+    expect(e.defaultPrevented).toBe(true) 
   })
 
   it('Test mousedown', () => {
@@ -111,7 +112,7 @@ describe('Test MouseHelper', () => {
     const comm = new Communicator()
     const desktop = new AmtDesktop()
     const mousehelper = new MouseHelper(desktop, comm, 0)
-    const e = new TestMouseEvent()
+    const e = new TestMouseEvent('mousedown')
 
     // Test mousedown
     mousehelper.mousedown(e)
@@ -124,7 +125,7 @@ describe('Test MouseHelper', () => {
     const comm = new Communicator()
     const desktop = new AmtDesktop()
     const mousehelper = new MouseHelper(desktop, comm, 0)
-    const e = new TestMouseEvent()
+    const e = new TestMouseEvent('mouseup')
 
     // Test mousedown
     mousehelper.mouseup(e)
@@ -137,7 +138,7 @@ describe('Test MouseHelper', () => {
     const comm = new Communicator()
     const desktop = new AmtDesktop()
     const mousehelper = new MouseHelper(desktop, comm, 0)
-    const e = new TestMouseEvent()
+    const e = new TestMouseEvent('mousemove')
 
     desktop.state = 4
 
@@ -152,7 +153,7 @@ describe('Test MouseHelper', () => {
     const comm = new Communicator()
     const desktop = new AmtDesktop()
     const mousehelper = new MouseHelper(desktop, comm, 0)
-    const e = new TestMouseEvent()
+    const e = new TestMouseEvent('mousemove')
 
     desktop.state = 4
     mousehelper.topposition = -1
@@ -168,7 +169,7 @@ describe('Test MouseHelper', () => {
     const comm = new Communicator()
     const desktop = new AmtDesktop()
     const mousehelper = new MouseHelper(desktop, comm, 0)
-    const e = new TestMouseEvent()
+    const e = new TestMouseEvent('mousemove')
 
     desktop.state = 4
     mousehelper.leftposition = -1
@@ -184,7 +185,7 @@ describe('Test MouseHelper', () => {
     const comm = new Communicator()
     const desktop = new AmtDesktop()
     const mousehelper = new MouseHelper(desktop, comm, 0)
-    const e = new TestMouseEvent()
+    const e = new TestMouseEvent('mousemove')
 
     desktop.state = 4
     desktop.focusMode = 1

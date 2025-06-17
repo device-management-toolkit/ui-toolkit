@@ -3,45 +3,58 @@
  * SPDX-License-Identifier: Apache-2.0
  **********************************************************************/
 
-class TestEvent implements Event {
-  bubbles: boolean
-  cancelBubble: boolean
-  cancelable: boolean
-  composed: boolean
-  currentTarget: EventTarget
-  defaultPrevented: boolean
-  eventPhase: number
-  isTrusted: boolean
-  returnValue: boolean
-  srcElement: EventTarget
-  target: EventTarget
-  timeStamp: number
-  type: string
-  code: string
-  shiftKey: boolean
-  preventDefaultVar: boolean
-  stopPropagationVar: boolean
+export class TestEvent implements Event {
+  readonly AT_TARGET = 2 as const  
+  readonly BUBBLING_PHASE = 3 as const  
+  readonly CAPTURING_PHASE = 1 as const  
+  readonly NONE = 0 as const  
 
-  composedPath(): any {
-    return null
+  bubbles = false  
+  cancelBubble = false  
+  cancelable = false  
+  composed = false  
+  currentTarget: EventTarget | null = null
+  defaultPrevented = false  
+  eventPhase = 0  
+  isTrusted = false  
+  returnValue = true  
+  srcElement: EventTarget | null = null
+  target: EventTarget | null = null
+  timeStamp = Date.now()  
+  type = ''  
+  preventDefaultVar = false  
+  stopPropagationVar = false  
+
+  constructor(type: string, eventInitDict?: EventInit) {
+    this.type = type
+    if (eventInitDict) {
+      this.bubbles = eventInitDict.bubbles || false
+      this.cancelable = eventInitDict.cancelable || false
+      this.composed = eventInitDict.composed || false
+    }
   }
 
-  initEvent(type: string, bubbles?: boolean, cancelable?: boolean): void {}
+  composedPath(): EventTarget[] {
+    return []
+  }
+
+  initEvent(type: string, bubbles?: boolean, cancelable?: boolean): void {
+    this.type = type
+    this.bubbles = bubbles || false
+    this.cancelable = cancelable || false
+  }
 
   preventDefault(): void {
-    this.preventDefaultVar = true
+    this.defaultPrevented = true
+    this.preventDefaultVar = true  
   }
 
-  stopImmediatePropagation(): void {}
+  stopImmediatePropagation(): void {
+    // Implementation
+  }
 
   stopPropagation(): void {
+    this.cancelBubble = true  
     this.stopPropagationVar = true
   }
-
-  AT_TARGET: number
-  BUBBLING_PHASE: number
-  CAPTURING_PHASE: number
-  NONE: number
 }
-
-export { TestEvent }

@@ -3,69 +3,68 @@
  * SPDX-License-Identifier: Apache-2.0
  **********************************************************************/
 
-class TestKeyBoardEvent implements KeyboardEvent {
-  initKeyboardEvent(): any {}
+import { TestEvent } from "./testEvent"
 
-  initUIEvent(): any {}
+class TestKeyBoardEvent extends TestEvent implements KeyboardEvent {
+  readonly DOM_KEY_LOCATION_STANDARD = 0 as const
+  readonly DOM_KEY_LOCATION_LEFT = 1 as const
+  readonly DOM_KEY_LOCATION_RIGHT = 2 as const
+  readonly DOM_KEY_LOCATION_NUMPAD = 3 as const
 
-  altKey: boolean
-  char: string
-  charCode: number
-  code: string
-  ctrlKey: boolean
-  isComposing: boolean
-  key: string
-  keyCode: number
-  location: number
-  metaKey: boolean
-  repeat: boolean
-  shiftKey: boolean
-  getModifierState(keyArg: string): boolean {
+  altKey = false
+  charCode = 0
+  code = ''
+  ctrlKey = false
+  detail = 0
+  isComposing = false
+  key = ''
+  keyCode = 0
+  location = 0
+  metaKey = false
+  repeat = false
+  shiftKey = false
+  view: Window | null = null
+  which = 0
+
+  preventDefaultVar = false
+  stopPropagationVar = false
+
+  constructor(type: string, eventInitDict?: KeyboardEventInit) {
+    super(type, eventInitDict)
+    if (eventInitDict) {
+      this.altKey = eventInitDict.altKey || false
+      this.ctrlKey = eventInitDict.ctrlKey || false
+      this.metaKey = eventInitDict.metaKey || false
+      this.shiftKey = eventInitDict.shiftKey || false
+      this.code = eventInitDict.code || ''
+      this.key = eventInitDict.key || ''
+      this.location = eventInitDict.location || 0
+      this.repeat = eventInitDict.repeat || false
+      this.isComposing = eventInitDict.isComposing || false
+    }
+  }
+
+  initKeyboardEvent(typeArg: string, bubblesArg?: boolean, cancelableArg?: boolean, viewArg?: Window | null, keyArg?: string, locationArg?: number, ctrlKey?: boolean, altKey?: boolean, shiftKey?: boolean, metaKey?: boolean): void {
+    throw new Error("Method not implemented.")
+  }
+
+  initUIEvent(typeArg: string, bubblesArg?: boolean, cancelableArg?: boolean, viewArg?: Window | null, detailArg?: number): void {
+    throw new Error("Method not implemented.")
+  }
+
+  getModifierState(key: string): boolean {
     return false
   }
 
-  DOM_KEY_LOCATION_LEFT: number
-  DOM_KEY_LOCATION_NUMPAD: number
-  DOM_KEY_LOCATION_RIGHT: number
-  DOM_KEY_LOCATION_STANDARD: number
-  detail: number
-  view: Window
-  which: number
-  bubbles: boolean
-  cancelBubble: boolean
-  cancelable: boolean
-  composed: boolean
-  currentTarget: EventTarget
-  defaultPrevented: boolean
-  eventPhase: number
-  isTrusted: boolean
-  returnValue: boolean
-  srcElement: EventTarget
-  target: EventTarget
-  timeStamp: number
-  type: string
-  preventDefaultVar: boolean
-  stopPropagationVar: boolean
-  composedPath(): any {
-    return null
-  }
-
-  initEvent(type: string, bubbles?: boolean, cancelable?: boolean): void {}
-
   preventDefault(): void {
+    super.preventDefault()
     this.preventDefaultVar = true
   }
 
-  stopImmediatePropagation(): void {}
-
   stopPropagation(): void {
+    super.stopPropagation()
     this.stopPropagationVar = true
   }
-
-  AT_TARGET: number
-  BUBBLING_PHASE: number
-  CAPTURING_PHASE: number
-  NONE: number
 }
 
 export { TestKeyBoardEvent }

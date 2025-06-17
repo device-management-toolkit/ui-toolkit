@@ -6,12 +6,12 @@
 import { AMTKeyCodeConverter } from '../core/Utilities/AMTKeyCodeConverter'
 
 // classes defined for Unit testing
-import { TestEvent } from './helper/testEvent'
+import { TestKeyBoardEvent } from './helper/testKeyboard'
 
 describe('Test convertAMTKeyCode function in AMTKeyCodeConverter', () => {
   it('Test convertAMTKeyCode: startsWith Key, length == 4 and shiftKey is false', () => {
     // Input
-    const input = new TestEvent()
+    const input = new TestKeyBoardEvent('keydown')
     input.code = 'Key' + String.fromCharCode(0x05)
     input.shiftKey = false
 
@@ -22,7 +22,7 @@ describe('Test convertAMTKeyCode function in AMTKeyCodeConverter', () => {
 
   it('Test convertAMTKeyCode: startsWith Key, length == 4 and shiftKey is true', () => {
     // Input
-    const input = new TestEvent()
+    const input = new TestKeyBoardEvent('keydown')
     input.code = 'Key' + String.fromCharCode(0x08)
     input.shiftKey = true
 
@@ -33,7 +33,7 @@ describe('Test convertAMTKeyCode function in AMTKeyCodeConverter', () => {
 
   it('Test convertAMTKeyCode: startsWith Digit and length == 6', () => {
     // Input
-    const input = new TestEvent()
+    const input = new TestKeyBoardEvent('keydown')
     input.code = 'Digit' + String.fromCharCode(0x04)
     input.shiftKey = false
 
@@ -44,7 +44,7 @@ describe('Test convertAMTKeyCode function in AMTKeyCodeConverter', () => {
 
   it('Test convertAMTKeyCode: startsWith Numpad and length == 7', () => {
     // Input
-    const input = new TestEvent()
+    const input = new TestKeyBoardEvent('keydown')
     input.code = 'Numpad' + String.fromCharCode(0x08)
     input.shiftKey = true
 
@@ -55,7 +55,7 @@ describe('Test convertAMTKeyCode function in AMTKeyCodeConverter', () => {
 
   it('Test convertAMTKeyCode negative test case: startsWith Key and length === 3 ', () => {
     // Input
-    const input = new TestEvent()
+    const input = new TestKeyBoardEvent('keydown')
     input.code = 'Key'
     input.shiftKey = true
 
@@ -65,7 +65,7 @@ describe('Test convertAMTKeyCode function in AMTKeyCodeConverter', () => {
   })
   it('Test convertAMTKeyCode negative test case: startsWith Digit and length < 5', () => {
     // Input
-    const input = new TestEvent()
+    const input = new TestKeyBoardEvent('keydown')
     input.code = 'Digit'
     input.shiftKey = true
 
@@ -76,7 +76,7 @@ describe('Test convertAMTKeyCode function in AMTKeyCodeConverter', () => {
 
   it('Test convertAMTKeyCode negative test case: startsWith Numpad and length === 6', () => {
     // Input
-    const input = new TestEvent()
+    const input = new TestKeyBoardEvent('keydown')
     input.code = 'Numpad'
     input.shiftKey = true
 
@@ -87,7 +87,7 @@ describe('Test convertAMTKeyCode function in AMTKeyCodeConverter', () => {
 
   it('Test convertAMTKeyCode negative test case: startsWith Comma', () => {
     // Input
-    const input = new TestEvent()
+    const input = new TestKeyBoardEvent('keydown')
     input.code = 'Comma'
     input.shiftKey = true
 

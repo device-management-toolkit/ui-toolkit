@@ -93,14 +93,14 @@ describe('Test CommsHelper', () => {
     desktop.holding = true
     Communicator.sentData = ''
     const k = 20
-    const d = 50
+    const d = 1
 
     // Test sendKey
     CommsHelper.sendKey(comm, k, d)
 
     // Output
     expect(Communicator.sentData.charCodeAt(0)).toBe(4)
-    expect(Communicator.sentData.charCodeAt(1)).toBe(50)
+    expect(Communicator.sentData.charCodeAt(1)).toBe(1)
     expect(Communicator.sentData.charCodeAt(2)).toBe(0)
     expect(Communicator.sentData.charCodeAt(3)).toBe(0)
     expect(Communicator.sentData.charCodeAt(4)).toBe(0)
@@ -117,7 +117,7 @@ describe('Test CommsHelper', () => {
       [30, 40],
       [50, 60]
     ]
-    const d = 50
+    const d = 1
 
     // Test sendKey
     CommsHelper.sendKey(comm, k, d)
