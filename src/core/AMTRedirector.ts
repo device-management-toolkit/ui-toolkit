@@ -48,7 +48,7 @@ export class AMTRedirector implements ICommunicator {
   protocol: Protocol
   amtAccumulator: string
   amtSequence: number
-  amtKeepAliveTimer: NodeJS.Timeout | null
+  amtKeepAliveTimer: ReturnType<typeof setInterval> | null
 
   fileReader: FileReader
   fileReaderInUse: boolean
