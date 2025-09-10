@@ -1,3 +1,10 @@
+## [3.3.4](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.3...v3.3.4) (2025-08-20)
+
+
+### Bug Fixes
+
+* address type issue with NodeJS.Timer ([e4c8766](https://github.com/device-management-toolkit/ui-toolkit/commit/e4c87661003091db4e1666df321e151a3e4ec86e))
+
 ## [3.3.3](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.2...v3.3.3) (2025-05-23)
 
 ## [3.3.2](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.1...v3.3.2) (2025-05-21)
