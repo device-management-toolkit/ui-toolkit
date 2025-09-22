@@ -136,7 +136,10 @@ export class AMTRedirector implements ICommunicator {
       if (this.fileReaderAcc.length === 0) {
         this.fileReaderInUse = false
       } else {
-        this.fileReader.readAsBinaryString(new Blob([this.fileReaderAcc.shift() as BlobPart]))
+        const nextBlob = this.fileReaderAcc.shift()
+        if (nextBlob) {
+          this.fileReader.readAsBinaryString(nextBlob)
+        }
       }
     }
     const onloadend = (e: ProgressEvent<FileReader>): any => {
@@ -186,7 +189,14 @@ export class AMTRedirector implements ICommunicator {
         if (this.fileReader.readAsBinaryString != null) {
           // Chrome & Firefox (Draft)
           this.fileReaderInUse = true
-          this.fileReader.readAsBinaryString(new Blob([e.data]))
+          let blobData
+          if (e.data instanceof SharedArrayBuffer) {
+            // Convert SharedArrayBuffer to ArrayBuffer
+            blobData = new Uint8Array(e.data).slice().buffer
+          } else {
+            blobData = e.data
+          }
+          this.fileReader.readAsBinaryString(new Blob([blobData]))
         } else if (this.fileReader.readAsArrayBuffer != null) {
           // Chrome & Firefox (Spec)
           this.fileReaderInUse = true
