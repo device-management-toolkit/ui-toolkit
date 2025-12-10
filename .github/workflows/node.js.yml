@@ -38,7 +38,7 @@ jobs:
       - run: npm run test
       - run: npm run build-ext
       - run: npm run coverage
-      - uses: codecov/codecov-action@5a1091511ad55cbe89839c7260b706298ca349f7 # v5.5.1
+      - uses: codecov/codecov-action@671740ac38dd9b0130fbe1cec585b89eea48d3de # v5.5.2
         name: Upload Coverage Results
       - run: mv junit.xml ui-toolkit-unit-${{ matrix.node-version }}.xml
       - name: Upload JEST Results
