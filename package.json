@@ -33,7 +33,7 @@
   "devDependencies": {
     "@types/jest": "^30.0.0",
     "@types/md5": "^2.1.33",
-    "@types/node": "^24.0.10",
+    "@types/node": "^25.0.0",
     "@types/ws": "^8.2.0",
     "babel-loader": "^10.0.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
