@@ -186,7 +186,7 @@ export class AMTRedirector implements ICommunicator {
         if (this.fileReader.readAsBinaryString != null) {
           // Chrome & Firefox (Draft)
           this.fileReaderInUse = true
-          this.fileReader.readAsBinaryString(new Blob([e.data]))
+          this.fileReader.readAsBinaryString(new Blob([e.data as BlobPart]))
         } else if (this.fileReader.readAsArrayBuffer != null) {
           // Chrome & Firefox (Spec)
           this.fileReaderInUse = true
