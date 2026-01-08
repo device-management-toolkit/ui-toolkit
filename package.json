@@ -24,6 +24,10 @@
   "bugs": {
     "url": "https://github.com/device-management-toolkit/ui-toolkit/issues"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/device-management-toolkit/ui-toolkit.git"
+  },
   "homepage": "https://github.com/device-management-toolkit/ui-toolkit#readme",
   "types": "index.d.ts",
   "dependencies": {
