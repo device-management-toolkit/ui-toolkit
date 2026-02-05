@@ -15,23 +15,24 @@ import { TestKeyBoardEvent } from './helper/testKeyboard'
 import { Communicator } from './helper/testcommunicator'
 
 describe('Test KeyBoardHelper', () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   it('Test GrabKeyInput: KeyInputGrab == false', () => {
     // Input
     const comm = new Communicator()
     const desktop = new AmtDesktop()
     const keyboardhelper = new KeyBoardHelper(desktop, comm)
     keyboardhelper.KeyInputGrab = false
-    document.onkeyup = null
-    document.onkeydown = null
-    document.onkeypress = null
+    const addEventListenerSpy = jest.spyOn(document, 'addEventListener')
 
     // Test GrabKeyInput
     keyboardhelper.GrabKeyInput()
 
     // Output
-    expect(document.onkeyup).not.toBe(null)
-    expect(document.onkeydown).not.toBe(null)
-    expect(document.onkeypress).not.toBe(null)
+    expect(addEventListenerSpy).toHaveBeenCalledWith('keyup', keyboardhelper.handleKeyUp)
+    expect(addEventListenerSpy).toHaveBeenCalledWith('keydown', keyboardhelper.handleKeyDown)
     expect(keyboardhelper.KeyInputGrab).toBe(true)
   })
 
@@ -41,17 +42,13 @@ describe('Test KeyBoardHelper', () => {
     const desktop = new AmtDesktop()
     const keyboardhelper = new KeyBoardHelper(desktop, comm)
     keyboardhelper.KeyInputGrab = true
-    document.onkeyup = null
-    document.onkeydown = null
-    document.onkeypress = null
+    const addEventListenerSpy = jest.spyOn(document, 'addEventListener')
 
     // Test GrabKeyInput
     keyboardhelper.GrabKeyInput()
 
     // Output
-    expect(document.onkeyup).toBe(null)
-    expect(document.onkeydown).toBe(null)
-    expect(document.onkeypress).toBe(null)
+    expect(addEventListenerSpy).not.toHaveBeenCalled()
     expect(keyboardhelper.KeyInputGrab).toBe(true)
   })
 
@@ -61,17 +58,14 @@ describe('Test KeyBoardHelper', () => {
     const desktop = new AmtDesktop()
     const keyboardhelper = new KeyBoardHelper(desktop, comm)
     keyboardhelper.KeyInputGrab = true
-    document.onkeyup = keyboardhelper.handleKeyUp
-    document.onkeydown = keyboardhelper.handleKeyDown
-    document.onkeypress = keyboardhelper.handleKeys
+    const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener')
 
     // Test UnGrabKeyInput
     keyboardhelper.UnGrabKeyInput()
 
     // Output
-    expect(document.onkeyup).toBe(null)
-    expect(document.onkeydown).toBe(null)
-    expect(document.onkeypress).toBe(null)
+    expect(removeEventListenerSpy).toHaveBeenCalledWith('keyup', keyboardhelper.handleKeyUp)
+    expect(removeEventListenerSpy).toHaveBeenCalledWith('keydown', keyboardhelper.handleKeyDown)
     expect(keyboardhelper.KeyInputGrab).toBe(false)
   })
 
@@ -81,36 +75,14 @@ describe('Test KeyBoardHelper', () => {
     const desktop = new AmtDesktop()
     const keyboardhelper = new KeyBoardHelper(desktop, comm)
     keyboardhelper.KeyInputGrab = false
-    document.onkeyup = null
-    document.onkeydown = null
-    document.onkeypress = null
+    const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener')
 
     // Test UnGrabKeyInput
     keyboardhelper.UnGrabKeyInput()
 
     // Output
-    expect(document.onkeyup).toBe(null)
-    expect(document.onkeydown).toBe(null)
-    expect(document.onkeypress).toBe(null)
+    expect(removeEventListenerSpy).not.toHaveBeenCalled()
     expect(keyboardhelper.KeyInputGrab).toBe(false)
-  })
-
-  it('Test handleKeys: preventDefault and stopPropagation are defined', () => {
-    // Input
-    const comm = new Communicator()
-    const desktop = new AmtDesktop()
-    const keyboardhelper = new KeyBoardHelper(desktop, comm)
-    const e = new TestEvent('keypress')
-    e.preventDefaultVar = false
-    e.stopPropagationVar = false
-
-    // Test handleKeys
-    const returnvalue = keyboardhelper.handleKeys(e)
-
-    // Output
-    expect(returnvalue).toBe(false)
-    expect(e.preventDefaultVar).toBe(true)
-    expect(e.stopPropagationVar).toBe(true)
   })
 
   it('Test haltEvent: preventDefault and stopPropagation are defined', () => {
