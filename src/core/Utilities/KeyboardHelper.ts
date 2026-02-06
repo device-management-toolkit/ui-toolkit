@@ -23,6 +23,9 @@ export class KeyBoardHelper {
   constructor(parent: Desktop, comms: ICommunicator) {
     this.Comms = comms
     this.parent = parent
+    // Bind handlers in constructor for proper removal with removeEventListener
+    this.handleKeyUp = this.handleKeyUp.bind(this)
+    this.handleKeyDown = this.handleKeyDown.bind(this)
   }
 
   /**
@@ -32,9 +35,8 @@ export class KeyBoardHelper {
     if (this.KeyInputGrab) {
       return
     }
-    document.onkeyup = this.handleKeyUp.bind(this)
-    document.onkeydown = this.handleKeyDown.bind(this)
-    document.onkeypress = this.handleKeys.bind(this)
+    document.addEventListener('keyup', this.handleKeyUp)
+    document.addEventListener('keydown', this.handleKeyDown)
     this.KeyInputGrab = true
   }
 
@@ -45,14 +47,9 @@ export class KeyBoardHelper {
     if (!this.KeyInputGrab) {
       return
     }
-    document.onkeyup = null
-    document.onkeydown = null
-    document.onkeypress = null
+    document.removeEventListener('keyup', this.handleKeyUp)
+    document.removeEventListener('keydown', this.handleKeyDown)
     this.KeyInputGrab = false
-  }
-
-  handleKeys(e: Event): any {
-    return this.haltEvent(e)
   }
 
   /**
