@@ -41,7 +41,7 @@
     "@types/ws": "^8.2.0",
     "babel-loader": "^10.0.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "eslint": "^9.25.1",
+    "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.2",
     "filereader": "^0.10.3",
     "jest": "^30.0.0",
