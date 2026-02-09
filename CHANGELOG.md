@@ -1,3 +1,10 @@
+## [3.3.10](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.9...v3.3.10) (2026-02-09)
+
+
+### Bug Fixes
+
+* KeyboardHelper overrides kb event listener ([#1583](https://github.com/device-management-toolkit/ui-toolkit/issues/1583)) ([15a9157](https://github.com/device-management-toolkit/ui-toolkit/commit/15a9157239a3316085da44e91fbddd1b302c1106))
+
 ## [3.3.9](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.8...v3.3.9) (2026-01-08)
 
 ## [3.3.8](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.7...v3.3.8) (2026-01-08)
