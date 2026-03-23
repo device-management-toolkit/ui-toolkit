@@ -20,7 +20,7 @@ class SecurityOptions implements IStateProcessor {
 
   processState(acc: string): number {
     // acc is the accumulated byte encoded string so far
-    let cmdSize = 0
+    let cmdSize: number
     if (acc.length >= 1) {
       // Getting security options
       cmdSize = acc.charCodeAt(0) + 1

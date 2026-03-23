@@ -368,8 +368,8 @@ export class IDERDataProcessor {
     console.debug('SCSI: MODE_SENSE_6', dev)
 
     if (cdb.charCodeAt(2) === 0x3f && cdb.charCodeAt(3) === 0x00) {
-      let a = 0
-      let b = 0
+      let a: number
+      let b: number
       switch (dev) {
         case 0xa0: // DEV_FLOPPY
           if (this.ider.floppy == null) {

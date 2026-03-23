@@ -79,7 +79,6 @@ export const TypeConverter = {
     let r = ''
     if (x !== 0 && (!isTruthy(x) || x == null)) return '(Null)'
     if (x instanceof Array) {
-      // eslint-disable-next-line @typescript-eslint/no-for-in-array
       for (const i in x) {
         r =
           r + '<br />' + String(this.gap(c)) + 'Item #' + String(i) + ': ' + String(this.ObjectToStringEx(x[i], c + 1))
@@ -101,7 +100,6 @@ export const TypeConverter = {
       return '(Null)'
     }
     if (x instanceof Array) {
-      // eslint-disable-next-line @typescript-eslint/no-for-in-array
       for (const i in x) {
         r =
           r + '\r\n' + String(this.gap2(c)) + 'Item #' + String(i) + ': ' + String(this.ObjectToStringEx2(x[i], c + 1))
@@ -150,8 +148,7 @@ export const TypeConverter = {
   // Convert a raw string to a hex string
   rstr2hex(input: string): string {
     let r = ''
-    let i = 0
-    for (i = 0; i < input.length; i++) {
+    for (let i = 0; i < input.length; i++) {
       r = r + String(this.char2hex(input.charCodeAt(i)))
     }
     return r
