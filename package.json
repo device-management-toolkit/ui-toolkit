@@ -35,13 +35,14 @@
     "ws": "^8.2.1"
   },
   "devDependencies": {
+    "@eslint/js": "^10.0.1",
     "@types/jest": "^30.0.0",
     "@types/md5": "^2.1.33",
     "@types/node": "^25.0.1",
     "@types/ws": "^8.2.0",
     "babel-loader": "^10.0.0",
     "babel-plugin-transform-remove-console": "^6.9.4",
-    "eslint": "^9.25.1",
+    "eslint": "^10.1.0",
     "eslint-config-prettier": "^10.1.2",
     "filereader": "^0.10.3",
     "jest": "^30.0.0",

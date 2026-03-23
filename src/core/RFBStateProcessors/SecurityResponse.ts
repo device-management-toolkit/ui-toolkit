@@ -21,7 +21,7 @@ class SecurityResponse implements IStateProcessor {
 
   processState(acc: string): number {
     // acc is the accumulated byte encoded string so far
-    let cmdSize = 0
+    let cmdSize: number
     if (acc.length >= 4) {
       // Getting security response
       cmdSize = 4

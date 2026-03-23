@@ -29,7 +29,7 @@ class RLEDecoder implements IRLEDecoder {
     let runlengthdecode
     const palette: number[] = []
     let rlecount = 0
-    let runlength = 0
+    let runlength: number
     let i: number
     // this.parent.Debug("RECT RLE (" + (datalen - 5) + ", " + subencoding + "):" + rstr2hex(data.substring(21, 21 + (datalen - 5))));
     if (subencoding === 0) {
@@ -45,7 +45,7 @@ class RLEDecoder implements IRLEDecoder {
       ImageHelper.putImage(this.parent, x, y)
     } else if (subencoding === 1) {
       // Solid color tile
-      v = data.charCodeAt(ptr++) + (this.parent.bpp === 2 ? data.charCodeAt(ptr++) << 8 : 0)
+      v = data.charCodeAt(ptr++) + (this.parent.bpp === 2 ? data.charCodeAt(ptr) << 8 : 0)
       this.parent.canvasCtx.fillStyle =
         'rgb(' +
         (this.parent.bpp === 1
