@@ -21,7 +21,7 @@ class HandshakeState implements IStateProcessor {
 
   processState(acc: string): number {
     // acc is the accumulated byte encoded string so far
-    let cmdSize = 0
+    let cmdSize: number
     if (acc.length >= 12) {
       // Getting handshake & version
       cmdSize = 12
