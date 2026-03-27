@@ -113,7 +113,6 @@ export class AMTIDER {
     this.acc += data
     console.debug(`IDER-ProcessData:  ${this.acc.length}, ${TypeConverter.rstr2hex(this.acc)}`)
     // Process as many commands as possible
-    // eslint-disable-next-line no-constant-condition
     while (true) {
       // checks if the received data contains at least 8 bytes in the header.
       // If not, it returns 0, indicating that there is not enough data to process.
@@ -407,12 +406,10 @@ export class AMTIDER {
     }
     if (fr.readAsBinaryString != null) {
       if (this.g_media != null) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         fr.readAsBinaryString(this.g_media.slice(lba, lba + len))
       }
     } else {
       if (this.g_media != null) {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
         fr.readAsArrayBuffer(this.g_media.slice(lba, lba + len))
       }
     }

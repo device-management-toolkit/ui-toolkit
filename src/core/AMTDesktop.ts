@@ -106,7 +106,6 @@ export class AMTDesktop extends Desktop {
     this.onKvmDataPending = []
     this.onKvmDataAck = -1
     this.kvmDataSupported = false
-    // eslint-disable-next-line @typescript-eslint/no-dynamic-delete
     for (const i in this.sparecache) {
       delete this.sparecache[i]
     }
