@@ -8,7 +8,6 @@ import { type IKvmDataCommunicator } from './Interfaces'
 
 export class AMTKvmDataRedirector extends AMTRedirector implements IKvmDataCommunicator {
   onSendKvmData: (data: string) => void
-  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
   constructor(config: RedirectorConfig) {
     super(config)
   }

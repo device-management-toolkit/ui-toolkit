@@ -10,7 +10,6 @@ import { isTruthy } from './UtilityMethods'
  */
 export const AMTKeyCodeConverter = {
   convertAMTKeyCode(e: any): any {
-    // eslint-disable-next-line @typescript-eslint/restrict-plus-operands
     if (isTruthy(e.code.startsWith('Key')) && e.code.length === 4) {
       return e.code.charCodeAt(3) + (e.shiftKey === false ? 32 : 0)
     }

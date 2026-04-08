@@ -126,7 +126,6 @@ export class AMTRedirector implements ICommunicator {
     // Using this generic signature allows us to pass the WebSocket type from unit tests or in production from a web browser
     this.connectState = 0
     // let ws = new c(this.getWsLocation()) // using create function c invokes the constructor WebSocket()
-    // eslint-disable-next-line new-cap
     this.socket = new c(this.getWsLocation(), this.authToken) // The "p=2" indicates to the relay that this is a REDIRECTION session
     this.socket.onopen = this.onSocketConnected.bind(this)
     this.socket.onmessage = this.onMessage.bind(this)
@@ -342,15 +341,13 @@ export class AMTRedirector implements ICommunicator {
             curptr += noncelen + 1
 
             // QOP
-            let qoplen = 0
             let qop = ''
             const cnonce: string = this.generateRandomNonce(32)
             const snc = '00000002'
             let extra = ''
             if (authType === 4) {
-              qoplen = authDataBuf.charCodeAt(curptr)
+              const qoplen = authDataBuf.charCodeAt(curptr)
               qop = authDataBuf.substring(curptr + 1, curptr + 1 + qoplen)
-              curptr += qoplen + 1
               extra = `${snc}:${cnonce}:${String(qop)} :`
             }
 
@@ -435,7 +432,6 @@ export class AMTRedirector implements ICommunicator {
               TypeConverter.IntToStrX(this.amtSequence++) +
               String.fromCharCode(0x00, 0x00, 0x1b, 0x00, 0x00, 0x00)
           )
-          // eslint-disable-next-line @typescript-eslint/no-implied-eval, @typescript-eslint/no-unsafe-argument
           if (this.protocol === 1) {
             this.amtKeepAliveTimer = setInterval(this.sendAmtKeepAlive.bind(this), 2000)
           }

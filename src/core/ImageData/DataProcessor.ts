@@ -20,7 +20,6 @@ export class DataProcessor implements IDataProcessor {
   parent: Desktop
   constructor(comm: ICommunicator, parent: Desktop) {
     this.acc = ''
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
     this.stateProcessorFac = new StateProcessorFactory(comm, parent, this.updateRFBState.bind(this))
     this.parent = parent
   }
@@ -32,7 +31,7 @@ export class DataProcessor implements IDataProcessor {
   processData(data: string): any {
     if (!isTruthy(data)) return
     this.acc += data
-    let cmdSize = 0
+    let cmdSize: number
     console.debug(`Process Data ACC length:  ${this.acc.length}`)
     while (this.acc.length > 0) {
       const stateProcessor: IStateProcessor = this.stateProcessorFac.getProcessor(this.parent.state)
