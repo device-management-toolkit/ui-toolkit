@@ -20,12 +20,15 @@ export class KeyBoardHelper {
   KeyInputGrab: boolean
   Comms: ICommunicator
   parent: Desktop
+  private readonly pressedKeys = new Set<number>()
   constructor(parent: Desktop, comms: ICommunicator) {
     this.Comms = comms
     this.parent = parent
     // Bind handlers in constructor for proper removal with removeEventListener
     this.handleKeyUp = this.handleKeyUp.bind(this)
     this.handleKeyDown = this.handleKeyDown.bind(this)
+    this.releaseAllKeys = this.releaseAllKeys.bind(this)
+    this.handleVisibilityChange = this.handleVisibilityChange.bind(this)
   }
 
   /**
@@ -37,6 +40,8 @@ export class KeyBoardHelper {
     }
     document.addEventListener('keyup', this.handleKeyUp)
     document.addEventListener('keydown', this.handleKeyDown)
+    window.addEventListener('blur', this.releaseAllKeys)
+    document.addEventListener('visibilitychange', this.handleVisibilityChange)
     this.KeyInputGrab = true
   }
 
@@ -49,7 +54,34 @@ export class KeyBoardHelper {
     }
     document.removeEventListener('keyup', this.handleKeyUp)
     document.removeEventListener('keydown', this.handleKeyDown)
+    window.removeEventListener('blur', this.releaseAllKeys)
+    document.removeEventListener('visibilitychange', this.handleVisibilityChange)
+    this.pressedKeys.clear()
     this.KeyInputGrab = false
+  }
+
+  private handleVisibilityChange(): void {
+    if (document.hidden) {
+      this.releaseAllKeys()
+    }
+  }
+
+  private releaseAllKeys(): void {
+    if (this.pressedKeys.size === 0) return
+    console.debug(`KeyBoardHelper: releasing ${String(this.pressedKeys.size)} held key(s) on focus loss`)
+    for (const k of this.pressedKeys) {
+      CommsHelper.sendKey(this.Comms, k, UpDown.Up)
+    }
+    this.pressedKeys.clear()
+  }
+
+  private trackAndSend(k: number, d: UpDown): void {
+    if (d === UpDown.Down) {
+      this.pressedKeys.add(k)
+    } else {
+      this.pressedKeys.delete(k)
+    }
+    CommsHelper.sendKey(this.Comms, k, d)
   }
 
   /**
@@ -85,7 +117,7 @@ export class KeyBoardHelper {
       const k = AMTKeyCodeConverter.convertAMTKeyCode(e)
       console.debug(`Key ${d} : ${String(k)}`)
       if (k != null) {
-        CommsHelper.sendKey(this.Comms, k, d)
+        this.trackAndSend(k, d)
       }
     } else {
       let k: number = e.keyCode
@@ -129,7 +161,7 @@ export class KeyBoardHelper {
       if (k === 221) kk = 93 // ]t
       if (k === 222) kk = 39 // '
       console.debug(`Key ${d}: ${k}  = ${kk}`)
-      CommsHelper.sendKey(this.Comms, kk, d)
+      this.trackAndSend(kk, d)
     }
     return this.haltEvent(e)
   }
