@@ -1,3 +1,10 @@
+## [3.3.13](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.12...v3.3.13) (2026-05-19)
+
+
+### Bug Fixes
+
+* **kvm:** release held keys on blur ([#1696](https://github.com/device-management-toolkit/ui-toolkit/issues/1696)) ([5629ca1](https://github.com/device-management-toolkit/ui-toolkit/commit/5629ca1e48c66dc3bc6d525492d59b6f68a43dc9))
+
 ## [3.3.12](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.11...v3.3.12) (2026-04-09)
 
 ## [3.3.11](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.10...v3.3.11) (2026-03-11)
