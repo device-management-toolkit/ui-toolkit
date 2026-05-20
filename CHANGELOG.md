@@ -1,3 +1,10 @@
+## [3.3.14](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.13...v3.3.14) (2026-05-19)
+
+
+### Bug Fixes
+
+* **build:** restore dist/core/package.json subpath shim ([218930f](https://github.com/device-management-toolkit/ui-toolkit/commit/218930f2d02904afbe28e878578a1687a505b070))
+
 ## [3.3.13](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.12...v3.3.13) (2026-05-19)
 
 

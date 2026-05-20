@@ -75,3 +75,5 @@ out/
 
 **/*.xml
 dist/**
+!dist/core/
+!dist/core/package.json
