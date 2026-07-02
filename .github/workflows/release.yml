@@ -45,10 +45,12 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.ROSIE_TOKEN }}
       - name: Publish to @device-management-toolkit
         if: steps.semantic.outputs.new_release_published == 'true'
+        env:
+          NEW_RELEASE_VERSION: ${{ steps.semantic.outputs.new_release_version }}
         run: |
-          echo "Publishing @device-management-toolkit/ui-toolkit@${{ steps.semantic.outputs.new_release_version }}"
+          echo "Publishing @device-management-toolkit/ui-toolkit@${NEW_RELEASE_VERSION}"
 
           sed -i 's/"@open-amt-cloud-toolkit\/ui-toolkit"/"@device-management-toolkit\/ui-toolkit"/' dist/package.json
-          sed -i 's/"version": "[^"]*"/"version": "${{ steps.semantic.outputs.new_release_version }}"/' dist/package.json
+          sed -i 's/"version": "[^"]*"/"version": "${NEW_RELEASE_VERSION}"/' dist/package.json
           cd dist
           npm publish
