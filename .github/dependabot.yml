@@ -14,3 +14,8 @@ updates:
       interval: daily
     cooldown:
       default-days: 7
+    # codeql-action's sub-actions release in lockstep; one PR instead of four.
+    groups:
+      codeql-action:
+        patterns:
+          - 'github/codeql-action*'
