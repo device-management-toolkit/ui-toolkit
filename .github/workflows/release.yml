@@ -51,6 +51,6 @@ jobs:
           echo "Publishing @device-management-toolkit/ui-toolkit@${NEW_RELEASE_VERSION}"
 
           sed -i 's/"@open-amt-cloud-toolkit\/ui-toolkit"/"@device-management-toolkit\/ui-toolkit"/' dist/package.json
-          sed -i 's/"version": "[^"]*"/"version": "${NEW_RELEASE_VERSION}"/' dist/package.json
+          sed -i 's/"version": "[^"]*"/"version": "'"$NEW_RELEASE_VERSION"'"/' dist/package.json
           cd dist
           npm publish
