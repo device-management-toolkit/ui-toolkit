@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  **********************************************************************/
 
+import { vi } from 'vitest'
 import { AMTRedirector, type RedirectorConfig } from '../core/AMTRedirector'
 
 describe('Test AMT redirector class', () => {
@@ -34,7 +35,7 @@ describe('Test AMT redirector class', () => {
   })
 
   it('test the socket connected function', () => {
-    redirector.onNewState = jest.fn()
+    redirector.onNewState = vi.fn()
     redirector.urlvars = {
       redirtrace: 'redirector'
     }
@@ -62,8 +63,8 @@ describe('Test AMT redirector class', () => {
 
   it('should send the received settings data to the data processor', () => {
     const event = { data: '!+\t\t\t\t\t)\t\t\t\t\t\v\v\v\v\v\v\t\t\t\t\v\v\v' } as any
-    redirector.onError = jest.fn()
-    redirector.onNewState = jest.fn()
+    redirector.onError = vi.fn()
+    redirector.onNewState = vi.fn()
     redirector.onMessage(event)
     expect(redirector.connectState).toBe(-1)
   })
@@ -71,8 +72,8 @@ describe('Test AMT redirector class', () => {
   it('should send the received redirection data to the data processor', () => {
     const dataStream = `${String.fromCharCode(17)}${String.fromCharCode(0)}\v\v\v\v\v\v\v\v\v\v\v\v`
     const event = { data: dataStream } as any
-    redirector.onError = jest.fn()
-    redirector.onNewState = jest.fn()
+    redirector.onError = vi.fn()
+    redirector.onNewState = vi.fn()
     redirector.onMessage(event)
     expect(redirector.amtAccumulator.length).toEqual(14)
   })
@@ -80,8 +81,8 @@ describe('Test AMT redirector class', () => {
   it('should send the received authentication data to the data processor', () => {
     const dataStream = `${String.fromCharCode(20)}123456789`
     const event = { data: dataStream } as any
-    redirector.onError = jest.fn()
-    redirector.onNewState = jest.fn()
+    redirector.onError = vi.fn()
+    redirector.onNewState = vi.fn()
     redirector.onMessage(event)
 
     expect(redirector.port).toEqual(16994)
@@ -89,41 +90,41 @@ describe('Test AMT redirector class', () => {
 
   it('should send the received serial setting data to the data processor', () => {
     const event = { data: ')\t\t\t\t\t\t\t\t\t\t\t' } as any
-    redirector.onError = jest.fn()
-    redirector.onNewState = jest.fn()
+    redirector.onError = vi.fn()
+    redirector.onNewState = vi.fn()
     redirector.onMessage(event)
     expect(redirector.connectState).toBe(-1)
   })
 
   it('should send the received display data to the data processor', () => {
     const event = { data: '*!@123qwerty' } as any
-    redirector.onError = jest.fn()
-    redirector.onNewState = jest.fn()
+    redirector.onError = vi.fn()
+    redirector.onNewState = vi.fn()
     redirector.onMessage(event)
     expect(redirector.port).toEqual(16994)
   })
 
   it('should send the received KVM data to the data processor', () => {
     const event = { data: 'A\t\t\t\t\t\t\t\t\t\t\t' } as any
-    redirector.onError = jest.fn()
-    redirector.onStart = jest.fn()
-    redirector.onProcessData = jest.fn()
-    redirector.onNewState = jest.fn()
+    redirector.onError = vi.fn()
+    redirector.onStart = vi.fn()
+    redirector.onProcessData = vi.fn()
+    redirector.onNewState = vi.fn()
     redirector.onMessage(event)
     expect(redirector.protocol).toEqual(1)
   })
 
   it('should send the received keepalive message data to the data processor', () => {
     const event = { data: '+\t\t\t\t\t\t\t\t\t\t\t' } as any
-    redirector.onError = jest.fn()
-    redirector.onNewState = jest.fn()
+    redirector.onError = vi.fn()
+    redirector.onNewState = vi.fn()
     redirector.onMessage(event)
     expect(redirector.connectState).toBe(-1)
   })
 
   it('should send the data to the server over websocket', () => {
     redirector.socket = new WebSocket('wss://localhost:3000')
-    redirector.socket.onopen = jest.fn()
+    redirector.socket.onopen = vi.fn()
     redirector.urlvars = {
       redirtrace: 'redirector'
     }
@@ -133,7 +134,7 @@ describe('Test AMT redirector class', () => {
 
   it('should disconnect the socket connection when socket is closed', () => {
     const event: any = {}
-    redirector.onNewState = jest.fn()
+    redirector.onNewState = vi.fn()
     redirector.urlvars = {
       redirtrace: 'redirector'
     }

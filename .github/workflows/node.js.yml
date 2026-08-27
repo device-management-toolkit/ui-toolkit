@@ -31,19 +31,22 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: ${{ matrix.node-version }}
-      - name: Install system dependencies for canvas
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev libpixman-1-dev
       - run: npm ci
       - run: npm run lint
+      - run: npm run typecheck
       - run: npm run test
       - run: npm run build-ext
       - run: npm run coverage
       - uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         name: Upload Coverage Results
-      - run: mv junit.xml ui-toolkit-unit-${{ matrix.node-version }}.xml
-      - name: Upload JEST Results
+      # Non-fatal: the junit reporter is CI-gated in vitest.config.ts, and if
+      # vitest dies before its reporters flush there is no junit.xml — a
+      # failing mv here would mask the real test failure.
+      - name: Rename JUnit Results
+        if: always()
+        continue-on-error: true
+        run: mv junit.xml ui-toolkit-unit-${{ matrix.node-version }}.xml
+      - name: Upload Vitest Results
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: ui-toolkit-unit-${{ matrix.node-version }}

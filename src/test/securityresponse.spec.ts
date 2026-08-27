@@ -9,14 +9,12 @@ import { SecurityResponse } from '../core/RFBStateProcessors/SecurityResponse'
 import { Communicator } from './helper/testcommunicator'
 
 describe('Test processState function in SecurityResponse', () => {
-  it('Test processState: prop size > 4 (positive test case)', (doneCallback) => {
+  it('Test processState: prop size > 4 (positive test case)', () => {
+    expect.assertions(2)
     // create object
     const communicator = new Communicator()
     const securityresponse = new SecurityResponse(communicator, (state) => {
-      new Promise(() => {
-        expect(state).toBe(3)
-        doneCallback()
-      }).catch(() => console.info('error occured'))
+      expect(state).toBe(3)
     })
 
     // Test input (byte 0-3) value === 0
@@ -33,14 +31,12 @@ describe('Test processState function in SecurityResponse', () => {
     expect(returnvalue1).toBe(4)
   })
 
-  it('Test processState: prop size === 4 (positive test case)', (doneCallback) => {
+  it('Test processState: prop size === 4 (positive test case)', () => {
+    expect.assertions(2)
     // create object
     const communicator = new Communicator()
     const securityresponse = new SecurityResponse(communicator, (state) => {
-      new Promise(() => {
-        expect(state).toBe(3)
-        doneCallback()
-      }).catch(() => console.info('error occured'))
+      expect(state).toBe(3)
     })
 
     // Test input (byte 0-3) value === 0

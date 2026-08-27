@@ -9,14 +9,12 @@ import { SecurityOptions } from '../core/RFBStateProcessors/SecurityOptions'
 import { Communicator } from './helper/testcommunicator'
 
 describe('Test processState function in SecurityOptions', () => {
-  it('Test processState: acc string size === 1', (doneCallback) => {
+  it('Test processState: acc string size === 1', () => {
+    expect.assertions(2)
     // create object
     const communicator = new Communicator()
     const securityoptions = new SecurityOptions(communicator, (state) => {
-      new Promise(() => {
-        expect(state).toBe(2)
-        doneCallback()
-      }).catch(() => console.info('error occured'))
+      expect(state).toBe(2)
     })
 
     // Test processState
@@ -24,14 +22,12 @@ describe('Test processState function in SecurityOptions', () => {
     expect(returnvalue1).toBe(4)
   })
 
-  it('Test processState: acc string size > 1', (doneCallback) => {
+  it('Test processState: acc string size > 1', () => {
+    expect.assertions(2)
     // create object
     const communicator = new Communicator()
     const securityoptions = new SecurityOptions(communicator, (state) => {
-      new Promise(() => {
-        expect(state).toBe(2)
-        doneCallback()
-      }).catch(() => console.info('error occured'))
+      expect(state).toBe(2)
     })
 
     // Test processState

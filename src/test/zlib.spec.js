@@ -3,7 +3,9 @@
  * SPDX-License-Identifier: Apache-2.0
  **********************************************************************/
 
-let zlib = require('../core/zlib/zlib')
+import { vi } from 'vitest'
+
+import zlib from '../core/zlib/zlib'
 
 describe('test zlib library', () => {
   it('should call the z stream constructor and set the variables', () => {
@@ -144,7 +146,7 @@ describe('test zlib library', () => {
         flags: 0x0200
       },
       input_data: 'stringdata',
-      checksum_function: jest.fn()
+      checksum_function: vi.fn()
     }
 
     zlib.inflate(stream, 6)
@@ -161,7 +163,7 @@ describe('test zlib library', () => {
         flags: 0x0400
       },
       input_data: 'stringdata',
-      checksum_function: jest.fn()
+      checksum_function: vi.fn()
     }
 
     zlib.inflate(stream, 6)
@@ -178,7 +180,7 @@ describe('test zlib library', () => {
         flags: 0x0400
       },
       input_data: 'stringdata',
-      checksum_function: jest.fn()
+      checksum_function: vi.fn()
     }
 
     zlib.inflate(stream, 6)
@@ -195,7 +197,7 @@ describe('test zlib library', () => {
         flags: 0x0400
       },
       input_data: 'stringdata',
-      checksum_function: jest.fn()
+      checksum_function: vi.fn()
     }
 
     zlib.inflate(stream, 6)
@@ -213,7 +215,7 @@ describe('test zlib library', () => {
         flags: 0x0400
       },
       input_data: 'stringdata',
-      checksum_function: jest.fn()
+      checksum_function: vi.fn()
     }
 
     zlib.inflate(stream, 6)
@@ -231,7 +233,7 @@ describe('test zlib library', () => {
         flags: 0x0400
       },
       input_data: 'stringdata',
-      checksum_function: jest.fn()
+      checksum_function: vi.fn()
     }
 
     expect(zlib.common_initialized).toEqual(true)
@@ -249,7 +251,7 @@ describe('test zlib library', () => {
         flags: 0x0800
       },
       input_data: 'stringdata',
-      checksum_function: jest.fn()
+      checksum_function: vi.fn()
     }
 
     zlib.inflate(stream, 6)
@@ -273,7 +275,7 @@ describe('test zlib library', () => {
         length: 0
       },
       input_data: 'stringdata',
-      checksum_function: jest.fn()
+      checksum_function: vi.fn()
     }
 
     zlib.inflatePrime(stream, 10, 10)
@@ -306,7 +308,7 @@ describe('test zlib library', () => {
       input_data: 'stringdata',
       output_data: 'string',
       next_out: 1,
-      checksum_function: jest.fn()
+      checksum_function: vi.fn()
     }
     //zlib.inflate(stream, 6);
     expect(zlib.common_initialized).toEqual(true)
