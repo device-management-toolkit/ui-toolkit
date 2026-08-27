@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  **********************************************************************/
 
+import { vi } from 'vitest'
 import { AMTDesktop } from '../core/AMTDesktop'
 
 // classes defined for Unit testing
@@ -38,7 +39,7 @@ describe('Test AMTDesktop', () => {
     canvasCtx = {
       canvas: canvas,
       fillStyle: '',
-      fillRect: jest.fn()
+      fillRect: vi.fn()
     }
 
     desktop = new AMTDesktop(canvasCtx)
@@ -109,7 +110,7 @@ describe('Test AMTDesktop', () => {
   it('Test onStateChange', () => {
     // Set Input
     const input = 0
-    const fillRectSpy = jest.spyOn(desktop.canvasCtx, 'fillRect')
+    const fillRectSpy = vi.spyOn(desktop.canvasCtx, 'fillRect')
 
     // test onStateChange function
     desktop.onStateChange(input)

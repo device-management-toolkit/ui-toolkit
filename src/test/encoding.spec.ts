@@ -11,16 +11,14 @@ import { AmtDesktop } from './helper/testdesktop'
 import { Decoder } from './helper/testDecoder'
 
 describe('Test processState function in Encoding', () => {
-  it('Test processState: acc > 12 with encoding === 0', (doneCallback) => {
+  it('Test processState: acc > 12 with encoding === 0', () => {
+    expect.assertions(2)
     // create objects
     const communicator = new Communicator()
     const decoder = new Decoder()
     const desktop = new AmtDesktop()
     const serverinit = new Encoding(communicator, desktop, decoder, (state) => {
-      new Promise(() => {
-        expect(state).toBe(4)
-        doneCallback()
-      }).catch(() => console.info('error occured'))
+      expect(state).toBe(4)
     })
 
     // Test input
@@ -79,16 +77,14 @@ describe('Test processState function in Encoding', () => {
     expect(returnvalue1).toBe(0)
   })
 
-  it('Test processState: acc > 12, encoding === 0XFFFFFF21', (doneCallback) => {
+  it('Test processState: acc > 12, encoding === 0XFFFFFF21', () => {
+    expect.assertions(2)
     // create objects
     const communicator = new Communicator()
     const decoder = new Decoder()
     const desktop = new AmtDesktop()
     const serverinit = new Encoding(communicator, desktop, decoder, (state) => {
-      new Promise(() => {
-        expect(state).toBe(4)
-        doneCallback()
-      }).catch(() => console.info('error occured'))
+      expect(state).toBe(4)
     })
 
     // Test input
@@ -116,16 +112,14 @@ describe('Test processState function in Encoding', () => {
     expect(returnvalue1).toBe(12)
   })
 
-  it('Test processState: encoding === 16 with uncompressed ZLib data block', (doneCallback) => {
+  it('Test processState: encoding === 16 with uncompressed ZLib data block', () => {
+    expect.assertions(2)
     // create objects
     const communicator = new Communicator()
     const decoder = new Decoder()
     const desktop = new AmtDesktop()
     const serverinit = new Encoding(communicator, desktop, decoder, (state) => {
-      new Promise(() => {
-        expect(state).toBe(4)
-        doneCallback()
-      }).catch(() => console.info('error occured'))
+      expect(state).toBe(4)
     })
 
     // Test input
@@ -160,16 +154,14 @@ describe('Test processState function in Encoding', () => {
     expect(returnvalue1).toBe(22)
   })
 
-  it('Test processState: encoding === 16 with compressed ZLib data', (doneCallback) => {
+  it('Test processState: encoding === 16 with compressed ZLib data', () => {
+    expect.assertions(2)
     // create objects
     const communicator = new Communicator()
     const decoder = new Decoder()
     const desktop = new AmtDesktop()
     const serverinit = new Encoding(communicator, desktop, decoder, (state) => {
-      new Promise(() => {
-        expect(state).toBe(4)
-        doneCallback()
-      }).catch(() => console.info('error occured'))
+      expect(state).toBe(4)
     })
 
     // Test input
@@ -204,16 +196,14 @@ describe('Test processState function in Encoding', () => {
     expect(returnvalue1).toBe(22)
   })
 
-  it('Test processState: encoding === 16 with compressed ZLib data', (doneCallback) => {
+  it('Test processState: encoding === 16 with compressed ZLib data', () => {
+    expect.assertions(2)
     // create objects
     const communicator = new Communicator()
     const decoder = new Decoder()
     const desktop = new AmtDesktop()
     const serverinit = new Encoding(communicator, desktop, decoder, (state) => {
-      new Promise(() => {
-        expect(state).toBe(4)
-        doneCallback()
-      }).catch(() => console.info('error occured'))
+      expect(state).toBe(4)
     })
 
     // Test input
@@ -329,16 +319,14 @@ describe('Test processState function in Encoding', () => {
     expect(returnvalue1).toBe(0)
   })
 
-  it('Test processState: encoding === 16 with state = 101 and frameRateDelay = 0', (doneCallback) => {
+  it('Test processState: encoding === 16 with state = 101 and frameRateDelay = 0', () => {
+    expect.assertions(2)
     // create objects
     const communicator = new Communicator()
     const decoder = new Decoder()
     const desktop = new AmtDesktop()
     const serverinit = new Encoding(communicator, desktop, decoder, (state) => {
-      new Promise(() => {
-        expect(state).toBe(4)
-        doneCallback()
-      }).catch(() => console.info('error occured'))
+      expect(state).toBe(4)
     })
 
     // Test input
@@ -372,16 +360,14 @@ describe('Test processState function in Encoding', () => {
     expect(returnvalue1).toBe(21)
   })
 
-  it('Test processState: encoding === 16 with state = 101 and frameRateDelay != 0', (doneCallback) => {
+  it('Test processState: encoding === 16 with state = 101 and frameRateDelay != 0', () => {
+    expect.assertions(2)
     // create objects
     const communicator = new Communicator()
     const decoder = new Decoder()
     const desktop = new AmtDesktop()
     const serverinit = new Encoding(communicator, desktop, decoder, (state) => {
-      new Promise(() => {
-        expect(state).toBe(4)
-        doneCallback()
-      }).catch(() => console.info('error occured'))
+      expect(state).toBe(4)
     })
 
     // Test input

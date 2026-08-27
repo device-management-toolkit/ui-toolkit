@@ -9,14 +9,12 @@ import { HandshakeState } from '../core/RFBStateProcessors/HandshakeState'
 import { Communicator } from './helper/testcommunicator'
 
 describe('Test processState function in HandshakeState', () => {
-  it('Test processState: string size === 12', (doneCallback) => {
+  it('Test processState: string size === 12', () => {
+    expect.assertions(2)
     // create object
     const communicator = new Communicator()
     const handshakestate = new HandshakeState(communicator, (state) => {
-      new Promise(() => {
-        expect(state).toBe(1)
-        doneCallback()
-      }).catch(() => console.info('error occured'))
+      expect(state).toBe(1)
     })
 
     // Test processState
@@ -24,14 +22,12 @@ describe('Test processState function in HandshakeState', () => {
     expect(returnvalue1).toBe(12)
   })
 
-  it('Test processState: string size > 12', (doneCallback) => {
+  it('Test processState: string size > 12', () => {
+    expect.assertions(2)
     // create object
     const communicator = new Communicator()
     const handshakestate = new HandshakeState(communicator, (state) => {
-      new Promise(() => {
-        expect(state).toBe(1)
-        doneCallback()
-      }).catch(() => console.info('error occured'))
+      expect(state).toBe(1)
     })
 
     // Test processState

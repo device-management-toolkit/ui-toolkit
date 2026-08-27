@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  **********************************************************************/
 
+import { vi, type MockInstance } from 'vitest'
 import { AMTIDER, AMTRedirector, Protocol, RedirectorConfig, TypeConverter } from '../core'
 import { RDCD } from '../core/Constants'
 
@@ -44,16 +45,16 @@ describe('IDERDataProcessor', () => {
   })
 
   describe('interpretCommandData', () => {
-    let sendDisableEnableFeaturesSpy: jest.SpyInstance
-    let amtRedirectorStopSpy: jest.SpyInstance
-    let stopSpy: jest.SpyInstance
-    let sendCommandSpy: jest.SpyInstance
+    let sendDisableEnableFeaturesSpy: MockInstance
+    let amtRedirectorStopSpy: MockInstance
+    let stopSpy: MockInstance
+    let sendCommandSpy: MockInstance
 
     beforeEach(() => {
-      sendDisableEnableFeaturesSpy = jest.spyOn(amtIder, 'sendDisableEnableFeatures')
-      amtRedirectorStopSpy = jest.spyOn(amtRedirector, 'stop').mockImplementation()
-      sendCommandSpy = jest.spyOn(amtIder, 'sendCommand')
-      stopSpy = jest.spyOn(amtIder, 'stop')
+      sendDisableEnableFeaturesSpy = vi.spyOn(amtIder, 'sendDisableEnableFeatures')
+      amtRedirectorStopSpy = vi.spyOn(amtRedirector, 'stop').mockImplementation(() => {})
+      sendCommandSpy = vi.spyOn(amtIder, 'sendCommand')
+      stopSpy = vi.spyOn(amtIder, 'stop')
     })
 
     afterEach(() => {
@@ -141,7 +142,7 @@ describe('IDERDataProcessor', () => {
       it('should handle illegal read buffer size and stop', () => {
         amtIder.acc =
           'A\u0000\u0000\u0000\u0000\u0000\u0000\u0000\u0001\u0000\u0010\u0001\u0002\u0001\u0000\u0000\u0000 \u0000 \f\u0000\u0000\u0000\u0000\uFFFF\u0001\u0000\u0000\u0000' // Set read buffer size to 8193
-        jest.spyOn(TypeConverter, 'ReadShortX').mockReturnValue(9000)
+        vi.spyOn(TypeConverter, 'ReadShortX').mockReturnValue(9000)
         const result = amtIder.dataProcessor.interpretCommandData(0x41)
         expect(stopSpy).toHaveBeenCalledTimes(2)
       })
@@ -181,9 +182,9 @@ describe('IDERDataProcessor', () => {
     })
 
     describe('process status data command', () => {
-      let sendDisableEnableFeaturesSpy: jest.SpyInstance
+      let sendDisableEnableFeaturesSpy: MockInstance
       beforeEach(() => {
-        sendDisableEnableFeaturesSpy = jest.spyOn(amtIder, 'sendDisableEnableFeatures')
+        sendDisableEnableFeaturesSpy = vi.spyOn(amtIder, 'sendDisableEnableFeatures')
       })
       afterEach(() => {
         sendDisableEnableFeaturesSpy.mockClear()
@@ -242,10 +243,11 @@ describe('IDERDataProcessor', () => {
       //when type is 3
       it('should log an error for value not equal to 1', () => {
         amtIder.acc = '12345678' + String.fromCharCode(3) + TypeConverter.IntToStrX(2)
-        console.log = jest.fn()
+        const consoleLogSpy = vi.spyOn(console, 'log').mockImplementation(() => {})
         const result = amtIder.dataProcessor.processStatusDataCommand()
         expect(result).toBe(13)
-        expect(console.log).toHaveBeenCalledWith('Register toggle failure')
+        expect(consoleLogSpy).toHaveBeenCalledWith('Register toggle failure')
+        consoleLogSpy.mockRestore()
       })
     })
 
@@ -264,9 +266,9 @@ describe('IDERDataProcessor', () => {
     })
 
     describe('process command written command', () => {
-      let handleSCSISpy: jest.SpyInstance
+      let handleSCSISpy: MockInstance
       beforeEach(() => {
-        handleSCSISpy = jest.spyOn(amtIder.dataProcessor, 'handleSCSI')
+        handleSCSISpy = vi.spyOn(amtIder.dataProcessor, 'handleSCSI')
       })
       afterEach(() => {
         handleSCSISpy.mockClear()
@@ -295,7 +297,7 @@ describe('IDERDataProcessor', () => {
 
       it('should return 0 when ider.acc is 14 in length but len requires more', () => {
         amtIder.acc = '12345678901234'
-        jest.spyOn(TypeConverter, 'ReadShortX').mockReturnValue(10)
+        vi.spyOn(TypeConverter, 'ReadShortX').mockReturnValue(10)
         const result = amtIder.dataProcessor.processDataFromHostCommand()
         expect(result).toBe(0)
       })
@@ -303,8 +305,8 @@ describe('IDERDataProcessor', () => {
       it('should invoke sendCommand and return 14 + len when ider.acc.length is sufficient', () => {
         const len = 5
         amtIder.acc = '12345678901234' + '56789'
-        jest.spyOn(TypeConverter, 'ReadShortX').mockReturnValue(len)
-        const sendCommandSpy = jest.spyOn(amtIder, 'sendCommand')
+        vi.spyOn(TypeConverter, 'ReadShortX').mockReturnValue(len)
+        const sendCommandSpy = vi.spyOn(amtIder, 'sendCommand')
         const result = amtIder.dataProcessor.processDataFromHostCommand()
         expect(sendCommandSpy).toHaveBeenCalledWith(
           0x51,
@@ -342,20 +344,20 @@ describe('IDERDataProcessor', () => {
   })
 
   describe('handleSCSI', () => {
-    let sendCommandEndResponseSpy: jest.SpyInstance
-    let sendDataToHostSpy: jest.SpyInstance
-    let sendCommandSpy: jest.SpyInstance
-    let sendGetDataFromHostSpy: jest.SpyInstance
-    let sendDiskDataSpy: jest.SpyInstance
-    let sendDiskDataExSpy: jest.SpyInstance
+    let sendCommandEndResponseSpy: MockInstance
+    let sendDataToHostSpy: MockInstance
+    let sendCommandSpy: MockInstance
+    let sendGetDataFromHostSpy: MockInstance
+    let sendDiskDataSpy: MockInstance
+    let sendDiskDataExSpy: MockInstance
 
     beforeEach(() => {
-      sendCommandEndResponseSpy = jest.spyOn(amtIder, 'sendCommandEndResponse')
-      sendGetDataFromHostSpy = jest.spyOn(amtIder, 'sendGetDataFromHost')
-      sendDataToHostSpy = jest.spyOn(amtIder, 'sendDataToHost')
-      sendDiskDataSpy = jest.spyOn(amtIder, 'sendDiskData')
-      sendCommandSpy = jest.spyOn(amtIder, 'sendCommand')
-      sendDiskDataExSpy = jest.spyOn(amtIder, 'sendDiskDataEx')
+      sendCommandEndResponseSpy = vi.spyOn(amtIder, 'sendCommandEndResponse')
+      sendGetDataFromHostSpy = vi.spyOn(amtIder, 'sendGetDataFromHost')
+      sendDataToHostSpy = vi.spyOn(amtIder, 'sendDataToHost')
+      sendDiskDataSpy = vi.spyOn(amtIder, 'sendDiskData')
+      sendCommandSpy = vi.spyOn(amtIder, 'sendCommand')
+      sendDiskDataExSpy = vi.spyOn(amtIder, 'sendDiskDataEx')
     })
     afterEach(() => {
       sendCommandEndResponseSpy.mockClear()
@@ -410,7 +412,7 @@ describe('IDERDataProcessor', () => {
     })
     // READ_10 (40)
     it('should handle Read 10 command', () => {
-      sendDiskDataSpy.mockImplementation()
+      sendDiskDataSpy.mockImplementation(() => {})
       const result = amtIder.dataProcessor.handleSCSI(0x28, 0xb0, 'testCDB', 0, 0)
       expect(sendDiskDataSpy).toHaveBeenCalled()
     })
