@@ -54,7 +54,7 @@
     "eslint": "^10.1.0",
     "eslint-config-prettier": "^10.1.2",
     "filereader": "^0.10.3",
-    "jsdom": "^26.1.0",
+    "jsdom": "^30.0.1",
     "prettier-config-standard": "^7.0.0",
     "prettier-plugin-multiline-arrays": "^4.0.3",
     "ts-loader": "^9.2.3",
