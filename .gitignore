@@ -77,3 +77,5 @@ out/
 dist/**
 !dist/core/
 !dist/core/package.json
+/core/
+/bundles/
