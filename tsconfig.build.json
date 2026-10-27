@@ -1,10 +1,14 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "rootDir": "src"
+    "rootDir": "src",
+    "types": ["node"],
+    // skipLibCheck is only relaxed in tsconfig.json for the test/typecheck
+    // config; keep declaration builds strict.
+    "skipLibCheck": false
   },
   "exclude": [
     "./src/test/**/*",
-    "jest.setup.ts"
+    "vitest.setup.ts"
   ]
 }

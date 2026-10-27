@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  **********************************************************************/
 
+import { vi, type MockInstance } from 'vitest'
 import { KeyBoardHelper, UpDown } from '../core/Utilities/KeyboardHelper'
 import { CommsHelper } from '../core/Utilities/CommsHelper'
 import { type ICommunicator } from '../core/Interfaces/ICommunicator'
@@ -20,13 +21,13 @@ function makeKeyEvent(code: string): KeyboardEvent {
 describe('KeyBoardHelper focus-loss key release', () => {
   let helper: KeyBoardHelper
   let comm: ICommunicator
-  let sendKeySpy: jest.SpyInstance
+  let sendKeySpy: MockInstance
 
   beforeEach(() => {
-    comm = { send: jest.fn() } as unknown as ICommunicator
+    comm = { send: vi.fn() } as unknown as ICommunicator
     const desktop = {} as unknown as Desktop
     helper = new KeyBoardHelper(desktop, comm)
-    sendKeySpy = jest.spyOn(CommsHelper, 'sendKey')
+    sendKeySpy = vi.spyOn(CommsHelper, 'sendKey')
     helper.GrabKeyInput()
   })
 

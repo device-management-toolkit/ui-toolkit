@@ -1,11 +1,12 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 /*********************************************************************
  * Copyright (c) Intel Corporation 2019
  * SPDX-License-Identifier: Apache-2.0
  **********************************************************************/
 
+import { vi } from 'vitest'
 import { KeyBoardHelper } from '../core/Utilities/KeyboardHelper'
 import { AmtDesktop } from './helper/testdesktop'
 
@@ -16,7 +17,7 @@ import { Communicator } from './helper/testcommunicator'
 
 describe('Test KeyBoardHelper', () => {
   afterEach(() => {
-    jest.restoreAllMocks()
+    vi.restoreAllMocks()
   })
 
   it('Test GrabKeyInput: KeyInputGrab == false', () => {
@@ -25,7 +26,7 @@ describe('Test KeyBoardHelper', () => {
     const desktop = new AmtDesktop()
     const keyboardhelper = new KeyBoardHelper(desktop, comm)
     keyboardhelper.KeyInputGrab = false
-    const addEventListenerSpy = jest.spyOn(document, 'addEventListener')
+    const addEventListenerSpy = vi.spyOn(document, 'addEventListener')
 
     // Test GrabKeyInput
     keyboardhelper.GrabKeyInput()
@@ -42,7 +43,7 @@ describe('Test KeyBoardHelper', () => {
     const desktop = new AmtDesktop()
     const keyboardhelper = new KeyBoardHelper(desktop, comm)
     keyboardhelper.KeyInputGrab = true
-    const addEventListenerSpy = jest.spyOn(document, 'addEventListener')
+    const addEventListenerSpy = vi.spyOn(document, 'addEventListener')
 
     // Test GrabKeyInput
     keyboardhelper.GrabKeyInput()
@@ -58,7 +59,7 @@ describe('Test KeyBoardHelper', () => {
     const desktop = new AmtDesktop()
     const keyboardhelper = new KeyBoardHelper(desktop, comm)
     keyboardhelper.KeyInputGrab = true
-    const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener')
+    const removeEventListenerSpy = vi.spyOn(document, 'removeEventListener')
 
     // Test UnGrabKeyInput
     keyboardhelper.UnGrabKeyInput()
@@ -75,7 +76,7 @@ describe('Test KeyBoardHelper', () => {
     const desktop = new AmtDesktop()
     const keyboardhelper = new KeyBoardHelper(desktop, comm)
     keyboardhelper.KeyInputGrab = false
-    const removeEventListenerSpy = jest.spyOn(document, 'removeEventListener')
+    const removeEventListenerSpy = vi.spyOn(document, 'removeEventListener')
 
     // Test UnGrabKeyInput
     keyboardhelper.UnGrabKeyInput()

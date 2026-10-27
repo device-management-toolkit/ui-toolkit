@@ -10,15 +10,13 @@ import { Communicator } from './helper/testcommunicator'
 import { ServerCutTextHandler } from './helper/testServerCutTextHandler'
 
 describe('Test processState function in FrameBufferBellServerCutText', () => {
-  it('Test processState: acc string length === 4 and value at position 0 is 0', (doneCallback) => {
+  it('Test processState: acc string length === 4 and value at position 0 is 0', () => {
+    expect.assertions(2)
     // create object
     const communicator = new Communicator()
     const servercuttexthandler = new ServerCutTextHandler()
     const framebuffer = new FrameBufferBellServerCutText(communicator, servercuttexthandler, (state) => {
-      new Promise(() => {
-        expect(state).toBe(105)
-        doneCallback()
-      }).catch(() => console.info('error occured'))
+      expect(state).toBe(105)
     })
 
     // input
@@ -30,15 +28,13 @@ describe('Test processState function in FrameBufferBellServerCutText', () => {
     expect(returnvalue1).toBe(4)
   })
 
-  it('Test processState: acc string length > 4 and value at position 0 is 0', (doneCallback) => {
+  it('Test processState: acc string length > 4 and value at position 0 is 0', () => {
+    expect.assertions(2)
     // create object
     const communicator = new Communicator()
     const servercuttexthandler = new ServerCutTextHandler()
     const framebuffer = new FrameBufferBellServerCutText(communicator, servercuttexthandler, (state) => {
-      new Promise(() => {
-        expect(state).toBe(108)
-        doneCallback()
-      }).catch(() => console.info('error occured'))
+      expect(state).toBe(108)
     })
 
     // input

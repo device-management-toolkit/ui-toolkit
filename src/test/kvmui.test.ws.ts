@@ -136,6 +136,7 @@ class UIToolKitKVM {
   dataProcessor: IDataProcessor
   redirector: IKvmDataCommunicator
   config: RedirectorConfig = {
+    mode: 'kvm',
     protocol: 2,
     fr: new FileReader(),
     host: '800626f0-aca4-4751-803d-d45ddf075ad1',
@@ -166,7 +167,7 @@ class UIToolKitKVM {
   onSend(data: string): any {}
 
   start(): void {
-    this.redirector.start(WebSocket)
+    this.redirector.start(WebSocket as unknown as new (path: string) => globalThis.WebSocket)
   }
 }
 

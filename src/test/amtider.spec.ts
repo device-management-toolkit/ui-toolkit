@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  **********************************************************************/
 
+import { vi, type MockInstance } from 'vitest'
 import { AMTIDER, IDERInfo } from '../core/AMTIDER'
 import { AMTRedirector, Protocol, RedirectorConfig } from '../core/AMTRedirector'
 import { TypeConverter } from '../core/Converter'
@@ -49,26 +50,26 @@ describe('AMTIDER', () => {
 
   describe('AMTIDER stateChange', () => {
     it('should start when newstate is 3', () => {
-      const startSpy = jest.spyOn(amtIder, 'start').mockImplementation()
+      const startSpy = vi.spyOn(amtIder, 'start').mockImplementation(() => {})
       amtIder.stateChange(3)
       expect(startSpy).toHaveBeenCalled()
     })
 
     it('should stop when newstate is 0', () => {
-      const stopSpy = jest.spyOn(amtIder, 'stop').mockImplementation()
+      const stopSpy = vi.spyOn(amtIder, 'stop').mockImplementation(() => {})
       amtIder.stateChange(0)
       expect(stopSpy).toHaveBeenCalled()
     })
   })
 
   it('should start AMTIDER', () => {
-    const sendCommandSpy = jest.spyOn(amtIder, 'sendCommand').mockImplementation()
+    const sendCommandSpy = vi.spyOn(amtIder, 'sendCommand').mockImplementation(() => {})
     amtIder.start()
     expect(sendCommandSpy).toHaveBeenCalledWith(0x40, expect.any(String))
   })
 
   it('should stop AMTIDER', () => {
-    const stopSpy = jest.spyOn(amtRedirector, 'stop').mockImplementation()
+    const stopSpy = vi.spyOn(amtRedirector, 'stop').mockImplementation(() => {})
     amtIder.stop()
     expect(stopSpy).toHaveBeenCalled()
   })
@@ -76,7 +77,7 @@ describe('AMTIDER', () => {
   describe('AMTIDER processData', () => {
     it('should return', () => {
       const binaryData = Buffer.alloc(30).toString()
-      const interpretCommandDataSpy = jest.spyOn(amtIder.dataProcessor, 'interpretCommandData').mockReturnValueOnce(0)
+      const interpretCommandDataSpy = vi.spyOn(amtIder.dataProcessor, 'interpretCommandData').mockReturnValueOnce(0)
 
       amtIder.processData(binaryData)
       expect(amtIder.bytesFromAmt).toBe(30)
@@ -85,8 +86,8 @@ describe('AMTIDER', () => {
 
     it('should stop IDER and return', () => {
       const binaryData = Buffer.alloc(30).toString()
-      const stopSpy = jest.spyOn(amtRedirector, 'stop').mockImplementation()
-      const interpretCommandDataSpy = jest.spyOn(amtIder.dataProcessor, 'interpretCommandData').mockReturnValueOnce(5)
+      const stopSpy = vi.spyOn(amtRedirector, 'stop').mockImplementation(() => {})
+      const interpretCommandDataSpy = vi.spyOn(amtIder.dataProcessor, 'interpretCommandData').mockReturnValueOnce(5)
       amtIder.inSequence = 5
 
       amtIder.processData(binaryData)
@@ -97,7 +98,7 @@ describe('AMTIDER', () => {
 
     it('should continue to process data from AMT', () => {
       const binaryData = Buffer.alloc(35).toString()
-      const interpretCommandDataSpy = jest
+      const interpretCommandDataSpy = vi
         .spyOn(amtIder.dataProcessor, 'interpretCommandData')
         .mockReturnValueOnce(5)
         .mockReturnValueOnce(0)
@@ -111,9 +112,9 @@ describe('AMTIDER', () => {
   })
 
   describe('AMTIDER sendCommand', () => {
-    let socketSendSpy: jest.SpyInstance<void, [string]>
+    let socketSendSpy: MockInstance<(arg: string) => void>
     beforeEach(() => {
-      socketSendSpy = jest.spyOn(amtRedirector, 'socketSend')
+      socketSendSpy = vi.spyOn(amtRedirector, 'socketSend')
     })
     afterEach(() => {
       socketSendSpy.mockClear()
@@ -151,7 +152,7 @@ describe('AMTIDER', () => {
     it('should send an error response', () => {
       const error = true
       const device = 0x01
-      const sendCommandSpy = jest.spyOn(amtIder, 'sendCommand').mockImplementation()
+      const sendCommandSpy = vi.spyOn(amtIder, 'sendCommand').mockImplementation(() => {})
       amtIder.sendCommandEndResponse(error, 0, device)
 
       expect(sendCommandSpy).toHaveBeenCalledWith(
@@ -166,7 +167,7 @@ describe('AMTIDER', () => {
       const device = 0x01
       const asc = 0x12
       const asq = 0x34
-      const sendCommandSpy = jest.spyOn(amtIder, 'sendCommand').mockImplementation()
+      const sendCommandSpy = vi.spyOn(amtIder, 'sendCommand').mockImplementation(() => {})
       amtIder.sendCommandEndResponse(error, sense, device, asc, asq)
 
       expect(sendCommandSpy).toHaveBeenCalledWith(
@@ -207,14 +208,19 @@ describe('AMTIDER', () => {
     beforeEach(() => {
       mockFileReader = {
         onload: null,
-        readAsBinaryString: jest.fn(),
-        readAsArrayBuffer: jest.fn(),
+        readAsBinaryString: vi.fn(),
+        readAsArrayBuffer: vi.fn(),
         result: 'mockData',
         EMPTY: 0,
         LOADING: 1,
         DONE: 2
       }
-      ;(global as any).FileReader = jest.fn(() => mockFileReader)
+      vi.stubGlobal(
+        'FileReader',
+        vi.fn(function () {
+          return mockFileReader
+        })
+      )
       simulateOnload = () => {
         mockFileReader.onload()
       }
@@ -247,7 +253,7 @@ describe('AMTIDER', () => {
       amtIder.iderinfo = { readbfr: 15 } as IDERInfo
       amtIder.g_reset = false
 
-      const sendDiskDataExSpy = jest.spyOn(amtIder, 'sendDiskDataEx')
+      const sendDiskDataExSpy = vi.spyOn(amtIder, 'sendDiskDataEx')
 
       amtIder.sendDiskDataEx(0)
       simulateOnload()
@@ -277,7 +283,7 @@ describe('AMTIDER', () => {
       amtIder.g_media = new Blob(['data'.repeat(1000)])
       amtIder.g_readQueue = [
         { media: new Blob(['anotherData']), dev: 'devValue', lba: 7, len: 12, fr: 0 }]
-      const sendDiskDataExSpy = jest.spyOn(amtIder, 'sendDiskDataEx')
+      const sendDiskDataExSpy = vi.spyOn(amtIder, 'sendDiskDataEx')
 
       amtIder.sendDiskDataEx(0)
       simulateOnload()
@@ -293,13 +299,26 @@ describe('AMTIDER', () => {
   })
 
   describe('sendDiskData', () => {
-    let sendCommandEndResponseSpy: jest.SpyInstance
-    let sendDiskDataExSpy: jest.SpyInstance
+    let sendCommandEndResponseSpy: MockInstance
+    let sendDiskDataExSpy: MockInstance
     beforeEach(() => {
-      sendCommandEndResponseSpy = jest.spyOn(amtIder, 'sendCommandEndResponse')
-      sendDiskDataExSpy = jest.spyOn(amtIder, 'sendDiskDataEx')
+      // sendDiskData calls through to the real sendDiskDataEx, which
+      // constructs a FileReader. Stub it so the async read never fires
+      // onload (and logs) after the test has finished.
+      vi.stubGlobal(
+        'FileReader',
+        vi.fn(function () {
+          return {
+            onload: null,
+            readAsBinaryString: vi.fn(),
+            readAsArrayBuffer: vi.fn()
+          }
+        })
+      )
+      sendCommandEndResponseSpy = vi.spyOn(amtIder, 'sendCommandEndResponse')
+      sendDiskDataExSpy = vi.spyOn(amtIder, 'sendDiskDataEx')
       amtIder.g_readQueue = []
-      amtIder.sectorStats = jest.fn()
+      amtIder.sectorStats = vi.fn()
       amtIder.iderinfo = { readbfr: 15 } as IDERInfo
     })
     afterEach(() => {

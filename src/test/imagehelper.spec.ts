@@ -1,5 +1,5 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
 /*********************************************************************
@@ -7,6 +7,7 @@
  * SPDX-License-Identifier: Apache-2.0
  **********************************************************************/
 
+import { vi } from 'vitest'
 import { ImageHelper } from '../core/Utilities/ImageHelper'
 
 // classes defined for Unit testing
@@ -452,9 +453,9 @@ describe('Test ImageHelper', () => {
     parent.canvasCtx = {
       canvas: canvas,
       fillStyle: '',
-      fillRect: jest.fn(),
-      putImageData: jest.fn(),
-      getImageData: jest.fn().mockReturnValue(new MockImageData(RleVariables.spare1, width, height))
+      fillRect: vi.fn(),
+      putImageData: vi.fn(),
+      getImageData: vi.fn().mockReturnValue(new MockImageData(RleVariables.spare1, width, height))
     }
     parent.spare = new MockImageData(RleVariables.spare1, height, width)
 

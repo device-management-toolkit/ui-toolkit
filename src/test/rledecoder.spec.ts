@@ -1,5 +1,5 @@
 /**
- * @jest-environment jsdom
+ * @vitest-environment jsdom
  */
 
 /*********************************************************************
@@ -7,6 +7,7 @@
  * SPDX-License-Identifier: Apache-2.0
  **********************************************************************/
 
+import { vi } from 'vitest'
 import { RLEDecoder } from '../core/ImageData/RLEDecoder'
 
 // Mock for ImageData
@@ -62,9 +63,9 @@ describe('Test Decode function in RLEDecoder', () => {
     parent.canvasCtx = {
       canvas: canvas,
       fillStyle: '',
-      fillRect: jest.fn(),
-      putImageData: jest.fn(),
-      getImageData: jest.fn().mockReturnValue(new MockImageData(RleVariables.spare1, width, height))
+      fillRect: vi.fn(),
+      putImageData: vi.fn(),
+      getImageData: vi.fn().mockReturnValue(new MockImageData(RleVariables.spare1, width, height))
     }
     parent.spare = new ImageData(RleVariables.spare1, height, width)
 
@@ -107,9 +108,9 @@ describe('Test Decode function in RLEDecoder', () => {
     parent.canvasCtx = {
       canvas: canvas,
       fillStyle: '',
-      fillRect: jest.fn(),
-      putImageData: jest.fn(),
-      getImageData: jest.fn().mockReturnValue(new MockImageData(RleVariables.spare2, height, width))
+      fillRect: vi.fn(),
+      putImageData: vi.fn(),
+      getImageData: vi.fn().mockReturnValue(new MockImageData(RleVariables.spare2, height, width))
     }
     parent.spare = new MockImageData(RleVariables.spare2, height, width)
     parent.bpp = 2
@@ -153,9 +154,9 @@ describe('Test Decode function in RLEDecoder', () => {
     parent.canvasCtx = {
       canvas: canvas,
       fillStyle: '',
-      fillRect: jest.fn(),
-      putImageData: jest.fn(),
-      getImageData: jest.fn().mockReturnValue(new MockImageData(RleVariables.spare3, height, width))
+      fillRect: vi.fn(),
+      putImageData: vi.fn(),
+      getImageData: vi.fn().mockReturnValue(new MockImageData(RleVariables.spare3, height, width))
     }
     parent.spare = new MockImageData(RleVariables.spare3, height, width)
 
@@ -198,9 +199,9 @@ describe('Test Decode function in RLEDecoder', () => {
     parent.canvasCtx = {
       canvas: canvas,
       fillStyle: '',
-      fillRect: jest.fn(),
-      putImageData: jest.fn(),
-      getImageData: jest.fn().mockReturnValue(new MockImageData(RleVariables.spare4, height, width))
+      fillRect: vi.fn(),
+      putImageData: vi.fn(),
+      getImageData: vi.fn().mockReturnValue(new MockImageData(RleVariables.spare4, height, width))
     }
     parent.spare = new MockImageData(RleVariables.spare4, height, width)
 
@@ -243,9 +244,9 @@ describe('Test Decode function in RLEDecoder', () => {
     parent.canvasCtx = {
       canvas: canvas,
       fillStyle: '',
-      fillRect: jest.fn(),
-      putImageData: jest.fn(),
-      getImageData: jest.fn().mockReturnValue(new MockImageData(RleVariables.spare1, width, height))
+      fillRect: vi.fn(),
+      putImageData: vi.fn(),
+      getImageData: vi.fn().mockReturnValue(new MockImageData(RleVariables.spare1, width, height))
     }
     parent.spare = new MockImageData(RleVariables.spare5, height, width)
 
