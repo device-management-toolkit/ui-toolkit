@@ -5,8 +5,10 @@
 
 const path = require('path') // No ES6 in webpack config
 const webpack = require('webpack')
+const { workerConfig, kvmWorkerSourceAlias, kvmWorkerSourceRule } = require('./webpack.config.worker')
 
-module.exports = {
+const coreConfig = {
+  dependencies: [workerConfig.name],
   mode: 'production',
   entry: {
     core: './src/core/index.ts'
@@ -25,6 +27,7 @@ module.exports = {
   },
   module: {
     rules: [
+      kvmWorkerSourceRule,
       {
         test: /\.tsx?$/,
         use: [
@@ -46,6 +49,7 @@ module.exports = {
     ]
   },
   resolve: {
+    alias: kvmWorkerSourceAlias,
     extensions: [
       '.tsx',
       '.ts',
@@ -53,3 +57,5 @@ module.exports = {
     ]
   }
 }
+
+module.exports = [workerConfig, coreConfig]

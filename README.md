@@ -14,6 +14,41 @@ The UI Toolkit is a framework agnostic implementation of remote management featu
 
 The UI Toolkit can be used with your front-end framework of choice such as ReactJS, Angular, or many others. See the [ui-toolkit-react](https://github.com/device-management-toolkit/ui-toolkit-react) and [ui-toolkit-angular](https://github.com/device-management-toolkit/ui-toolkit-angular) repos for framework-specific, pre-built example UI Toolkit implementations.
 
+## KVM viewer
+
+`KvmViewer` connects to a device through the relay and renders its screen to a canvas:
+
+```ts
+import { KvmViewer } from '@device-management-toolkit/ui-toolkit/core'
+
+const viewer = new KvmViewer(canvas)
+viewer.onConnectionStateChange = (state) => console.log(state)
+const keyboard = viewer.createKeyboardHelper()
+
+viewer.start({ server: 'wss://host/mps/ws/relay', deviceId, authToken, bpp: 1 })
+keyboard.GrabKeyInput()
+// ...
+viewer.stop() // ends the session; the viewer can be started again
+viewer.dispose() // releases the canvas listeners and the worker
+```
+
+- **Worker rendering.** When `OffscreenCanvas` is supported, the canvas is transferred to a
+  dedicated worker that parses the RFB stream, decodes RAW/ZRLE tiles and paints. Decoded pixels
+  never return to the main thread. The worker ships inline in the bundle. If a Content Security
+  Policy disallows `blob:` workers, pass `createWorker`, or set `useWorker: false` to run
+  everything on the main thread.
+- **Input first.** The WebSocket stays on the main thread, so keyboard and mouse events are
+  written immediately and never wait behind frame decoding. Only pointer moves are throttled
+  (`inputThrottleMs`, default 33 ms); the latest position is always sent.
+- **Frame requests.** Up to two framebuffer update requests are kept outstanding, and a slot is
+  refilled when an update has been fully decoded. While the page is hidden, requests slow to one
+  per second so the relay keeps the connection open.
+- **Presentation.** Each update is painted as soon as its last rectangle is decoded. Only the
+  changed regions are uploaded, and the canvas never shows a partially decoded update.
+- **Canvas sizing and mouse.** The viewer sizes the canvas to the remote screen and listens to
+  its mouse and wheel events, so the host only lays the canvas out. A fullscreen canvas with
+  `object-fit: contain` is mapped correctly.
+
 ## Additional Resources
 
 - For detailed documentation and Getting Started, [visit the docs site](https://device-management-toolkit.github.io/docs).

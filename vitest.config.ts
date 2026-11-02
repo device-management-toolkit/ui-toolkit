@@ -3,12 +3,19 @@
  * SPDX-License-Identifier: Apache-2.0
  **********************************************************************/
 
+import { fileURLToPath } from 'node:url'
 import { coverageConfigDefaults, defineConfig } from 'vitest/config'
 
 // Treat only affirmative values as CI so e.g. CI=false stays local behavior.
 const isCI = /^(true|1)$/i.test(process.env.CI ?? '')
 
 export default defineConfig({
+  resolve: {
+    // The built KVM worker is inlined by webpack; tests use an empty source (no worker).
+    alias: {
+      '@kvm-worker-source': fileURLToPath(new URL('./src/test/helper/kvmWorkerSourceStub.ts', import.meta.url))
+    }
+  },
   test: {
     // Mirrors the previous jest `testMatch`. The `.spec.js` entry is required
     // for src/test/zlib.spec.js, which exercises the vendored CJS zlib module.
