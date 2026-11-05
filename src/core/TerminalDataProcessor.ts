@@ -9,6 +9,8 @@ import { type IDataProcessor } from './Interfaces'
 /** class to process serial over lan data **/
 export class TerminalDataProcessor implements IDataProcessor {
   terminal: AmtTerminal
+  private readonly decoder = new TextDecoder('utf-8')
+
   constructor(terminal) {
     this.terminal = terminal
   }
@@ -19,17 +21,15 @@ export class TerminalDataProcessor implements IDataProcessor {
   /** processing data received from serial port**/
   processData = (str: string): any => {
     if (this.terminal.capture != null) this.terminal.capture = String(this.terminal.capture) + str
-    let c = ''
+    const bytes: number[] = []
     for (let i = 0; i < str.length; i++) {
       const ch = str.charCodeAt(i)
       if (str[i] === 'J') {
         this.clearTerminal()
-      } else if ((ch & 0x80) !== 0) {
-        c += String.fromCharCode(this.terminal.AsciiToUnicode[ch & 0x7f])
       } else {
-        c += `${str[i]}`
+        bytes.push(ch & 0xff)
       }
     }
-    this.processDataToXterm(c)
+    this.processDataToXterm(this.decoder.decode(new Uint8Array(bytes), { stream: true }))
   }
 }
