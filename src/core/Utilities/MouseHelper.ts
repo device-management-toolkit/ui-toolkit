@@ -57,19 +57,9 @@ export class MouseHelper {
   mousemove(e: MouseEvent): boolean {
     if (this.parent.state !== 4) return true
     const pos = this.getPositionOfControl(this.parent.canvasControl)
-    const bcr = this.parent.canvasControl.getBoundingClientRect()
-    if (this.topposition === 0 || bcr.top > this.topposition) {
-      this.topposition = bcr.top
-    }
-    if (this.leftposition === 0 || bcr.left > this.leftposition) {
-      this.leftposition = bcr.left
-    }
-    const topOffset = this.topposition - bcr.top
-    const leftOffset = this.leftposition - bcr.left
-    this.parent.lastMouseX =
-      (e.pageX - pos[0] + leftOffset) * (this.parent.canvasControl.height / this.parent.canvasControl.offsetHeight)
-    this.parent.lastMouseY =
-      (e.pageY - pos[1] + topOffset) * (this.parent.canvasControl.width / this.parent.canvasControl.offsetWidth)
+    const [fbX, fbY] = this.getFramebufferPosition(e)
+    this.parent.lastMouseX = fbX
+    this.parent.lastMouseY = fbY
 
     if (!isTruthy(this.parent.noMouseRotate)) {
       this.parent.lastMouseX2 = ImageHelper.crotX(this.parent, this.parent.lastMouseX, this.parent.lastMouseY)
@@ -113,6 +103,51 @@ export class MouseHelper {
     return false
   }
 
+  /**
+   * Maps a mouse event to remote framebuffer pixel coordinates.
+   * 
+   * Works from the canvas's on-screen box (getBoundingClientRect + clientX/Y),
+   * so page scrolling, CSS scaling and transforms need no special handling, and
+   * scales each axis by its own ratio. It also honours object-fit: browsers
+   * give a fullscreen element `object-fit: contain`, which letterboxes the
+   * picture inside the element whenever the remote aspect ratio differs from
+   * the screen's.
+   */
+  getFramebufferPosition(e: MouseEvent): [number, number] {
+    const c = this.parent.canvasControl
+    const fbW: number = c.width
+    const fbH: number = c.height
+    if (fbW <= 0 || fbH <= 0) return [0, 0]
+    const r = c.getBoundingClientRect()
+    if (r.width <=0 || r.height <= 0) return [0, 0]
+
+    let scaleX = r.width / fbW
+    let scaleY = r.height / fbH
+    let offsetX = 0
+    let offsetY = 0
+    const fit = this.getObjectFit(c)
+    if (fit === 'contain' || fit === 'scale-down') {
+      let s = Math.min(scaleX, scaleY)
+      if (fit === 'scale-down') s = Math.min(s, 1)
+        offsetX = (r.width - fbW * s) / 2 // default object-position: 50% 50%
+        offsetY = (r.height - fbH * s) / 2
+        scaleX = scaleY = s
+    }
+
+    const x = Math.floor((e.clientX - r.left - offsetX) / scaleX)
+    const y = Math.floor((e.clientY - r.top - offsetY) / scaleY)
+    return [Math.min(Math.max(x, 0), fbW - 1), Math.min(Math.max(y, 0), fbH - 1)]
+  }
+
+  private getObjectFit(c: HTMLElement): string {
+    try {
+      if (typeof getComputedStyle === 'function') return getComputedStyle(c).objectFit ?? ''
+    } catch {
+      // not a real element (tests) - treat as CSS default
+    }
+    return ''
+  }
+
   getPositionOfControl(c: HTMLElement | null): number[] {
     const Position = [0, 0]
 
@@ -125,6 +160,7 @@ export class MouseHelper {
     return Position
   }
 
+  /** @deprecated Offsets are no longer cached; kept for API compatibility */
   resetOffsets(): void {
     this.topposition = 0
     this.leftposition = 0
