@@ -65,6 +65,7 @@ export class AMTRedirector implements ICommunicator {
   onNewState: (state: number) => void
   onStateChanged: (redirector: any, state: number) => void
   onError: () => void
+  onSolOemCapabilities?: (bytes: readonly number[]) => void
   authToken: string
 
   constructor(config: RedirectorConfig) {
@@ -173,7 +174,7 @@ export class AMTRedirector implements ICommunicator {
    * Called when there is new data on the websocket
    * @param e data received over the websocket
    */
-  onMessage(e: MessageEvent<Blob | ArrayBufferLike>): any {
+  onMessage(e: MessageEvent<Blob | ArrayBufferLike | string>): any {
     try {
       // console.log(e.data)
       this.inDataCount++
@@ -256,6 +257,10 @@ export class AMTRedirector implements ICommunicator {
               if (this.amtAccumulator.length < 13) return
               const oemlen = this.amtAccumulator.charCodeAt(12)
               if (this.amtAccumulator.length < 13 + oemlen) return
+              if (this.protocol === Protocol.SOL) {
+                const bytes = Array.from(this.amtAccumulator.substring(13, 13 + oemlen), (byte) => byte.charCodeAt(0))
+                this.onSolOemCapabilities?.(bytes)
+              }
 
               // Query for available authentication
               console.log('Query for available authentication')
