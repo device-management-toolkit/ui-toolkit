@@ -142,4 +142,37 @@ describe('Test AMT redirector class', () => {
 
     expect(redirector.connectState).toEqual(-1)
   })
+
+  it('should stop and report an error when processing FileReader data throws', () => {
+    const close = vi.fn()
+    class FakeWebSocket {
+      readyState = 1
+      onopen: any
+      onmessage: any
+      onclose: any
+      close = close
+      send = vi.fn()
+    }
+    redirector = new AMTRedirector({ ...config, protocol: 2, fr: {} as any })
+    redirector.onNewState = vi.fn()
+    redirector.onStateChanged = vi.fn()
+    redirector.onError = vi.fn()
+    redirector.onProcessData = () => {
+      throw new Error('Invalid tile size')
+    }
+    redirector.start(FakeWebSocket as any)
+    redirector.connectState = 1
+    redirector.fileReaderInUse = true
+    redirector.fileReaderAcc = [new Blob(['queued'])]
+
+    const onload = (redirector.fileReader as any).onload
+    expect(() => onload({ target: { result: 'kvm data' } })).not.toThrow()
+
+    expect(redirector.onError).toHaveBeenCalledTimes(1)
+    expect(redirector.onStateChanged).toHaveBeenLastCalledWith(redirector, 0)
+    expect(close).toHaveBeenCalled()
+    expect(redirector.connectState).toEqual(-1)
+    expect(redirector.fileReaderInUse).toEqual(false)
+    expect(redirector.fileReaderAcc).toEqual([])
+  })
 })
