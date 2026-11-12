@@ -131,7 +131,7 @@ export class AMTRedirector implements ICommunicator {
     this.socket.onmessage = this.onMessage.bind(this)
     this.socket.onclose = this.onSocketClosed.bind(this)
     const onload = (e: ProgressEvent<FileReader>): any => {
-      this.onSocketData(e.target?.result as string)
+      if (!this.onFileReaderData(e.target?.result as string)) return
       if (this.fileReaderAcc.length === 0) {
         this.fileReaderInUse = false
       } else {
@@ -139,7 +139,7 @@ export class AMTRedirector implements ICommunicator {
       }
     }
     const onloadend = (e: ProgressEvent<FileReader>): any => {
-      this.onSocketData(e.target?.result as string)
+      if (!this.onFileReaderData(e.target?.result as string)) return
       if (this.fileReaderAcc.length === 0) {
         this.fileReaderInUse = false
       } else {
@@ -156,6 +156,24 @@ export class AMTRedirector implements ICommunicator {
     }
     console.log('Connecting to websocket')
     this.onStateChange(1)
+  }
+
+  /**
+   * Processes data decoded by the FileReader. FileReader callbacks run outside onMessage's try/catch, so a
+   * processing error must end the session here; otherwise fileReaderInUse stays true and the session freezes.
+   */
+  private onFileReaderData(data: string): boolean {
+    try {
+      this.onSocketData(data)
+      return true
+    } catch (error) {
+      console.error(error)
+      this.fileReaderInUse = false
+      this.fileReaderAcc = []
+      this.stop()
+      this.onError()
+      return false
+    }
   }
 
   onSocketConnected(): any {
