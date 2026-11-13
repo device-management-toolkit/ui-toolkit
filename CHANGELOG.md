@@ -1,3 +1,10 @@
+## [3.3.23](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.22...v3.3.23) (2026-11-13)
+
+
+### Bug Fixes
+
+* support selectable UTF-8 and PC-ANSI/CP437 decoding for SOL ([#1913](https://github.com/device-management-toolkit/ui-toolkit/issues/1913)) ([6136360](https://github.com/device-management-toolkit/ui-toolkit/commit/6136360d98575e2c9ecabed18aae678317e6433b))
+
 ## [3.3.22](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.21...v3.3.22) (2026-10-23)
 
 ## [3.3.21](https://github.com/device-management-toolkit/ui-toolkit/compare/v3.3.20...v3.3.21) (2026-09-21)
