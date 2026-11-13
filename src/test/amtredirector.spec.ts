@@ -44,6 +44,39 @@ describe('Test AMT redirector class', () => {
     expect(redirector.state).toEqual(2)
   })
 
+  it.each([
+    { bytes: [] },
+    { bytes: [0x00] },
+    { bytes: [0x00, 0x84] },
+    { bytes: [
+        0x00,
+        0x03,
+        0xff
+      ] }
+  ])('reports only complete SOL OEM capability payloads ($bytes)', ({ bytes }) => {
+    redirector.protocol = 1
+    redirector.onSolOemCapabilities = vi.fn()
+    const send = vi.spyOn(redirector, 'socketSend').mockImplementation(() => {})
+    const reply = String.fromCharCode(0x11, 0, ...new Array<number>(10).fill(0), bytes.length, ...bytes)
+    redirector.onMessage(new MessageEvent('message', { data: reply.slice(0, -1) }))
+    expect(redirector.onSolOemCapabilities).not.toHaveBeenCalled()
+    redirector.onMessage(new MessageEvent('message', { data: reply.slice(-1) }))
+    expect(redirector.onSolOemCapabilities).toHaveBeenCalledExactlyOnceWith(bytes)
+    expect(send).toHaveBeenCalledOnce()
+  })
+
+  it('does not report KVM OEM data as SOL capabilities', () => {
+    redirector.protocol = 2
+    redirector.onSolOemCapabilities = vi.fn()
+    vi.spyOn(redirector, 'socketSend').mockImplementation(() => {})
+    redirector.onMessage(
+      new MessageEvent('message', {
+        data: String.fromCharCode(0x11, 0, ...new Array<number>(10).fill(0), 2, 0, 4)
+      })
+    )
+    expect(redirector.onSolOemCapabilities).not.toHaveBeenCalled()
+  })
+
   it('should send the data over websocket to the server', () => {
     const data = '0x28'
     redirector.send(data)
