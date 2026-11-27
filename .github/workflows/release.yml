@@ -22,7 +22,7 @@ jobs:
       id-token: write # for semantic-release to create releases
     steps:
       - name: Harden Runner
-        uses: step-security/harden-runner@ccd8616d44fd3846e67624a50d5aad6d37bf2d25 # v2.22.1
+        uses: step-security/harden-runner@1d88384fd173af6ecb012dfd0264a306b711241a # v2.22.4
         with:
           egress-policy: audit
       - name: Checkout
@@ -38,7 +38,7 @@ jobs:
       - run: rsync -a package.json README.md ./dist/
       - name: Semantic Release
         id: semantic
-        uses: cycjimmy/semantic-release-action@03595b5eaf44910cf239ff20904cc52d410f97d4 # v8.1.2
+        uses: cycjimmy/semantic-release-action@ad51787758d9654d5a75150a89a6fa9b3ccef95e # v8.1.4
         with:
           semantic_version: 25.0.2 # It is recommended to specify version range for semantic-release.
         env:
